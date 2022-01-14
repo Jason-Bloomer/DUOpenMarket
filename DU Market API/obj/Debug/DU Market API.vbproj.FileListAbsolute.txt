@@ -1,0 +1,12 @@
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Debug\DU Market API.exe.config
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Debug\DU Market API.exe
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Debug\DU Market API.pdb
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Debug\DU Market API.xml
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU Market API.vbprojResolveAssemblyReference.cache
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU_Market_API.Form1.resources
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU_Market_API.Resources.resources
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU Market API.vbproj.GenerateResource.Cache
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU Market API.exe
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU Market API.xml
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Debug\DU Market API.pdb
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Debug\DUOpenMarket Client.exe.config
