@@ -38,11 +38,19 @@ The server's response will depend on the action:
 
 ## Planned improvements (In no particular order)
 Sort items in the item dropdown, into their respective categories.
+
 Format item order expiration date to be user-readable.
+
 Add item statistics to the right side of window, below item name. Requires a neat way to look them up from a file. And the file. RegEx <3
+
 Add the ability to keep track of the trailing decimal on order prices. (curently is rounded down)
+
 Add a visual, interactive point-graph of the current orders for a given item.
+
 Add Historical data retrieval commands to the API, and use this data to render visual graphs.
+
 Add metastatistics about the overall health and throughput of the economy to the API, and graph them.
+
 Add profit-margin and yeild-margin calculators for industry, which use the current market prices and can factor in talents.
+
 Add fuel/warp-cost and transportation-related calculators using current fuel prices, factoring for talents.
