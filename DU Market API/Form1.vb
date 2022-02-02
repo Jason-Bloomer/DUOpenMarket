@@ -4,6 +4,15 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Environment
 Imports System.Net
+Imports System.Net.Sockets
+Imports System.Threading
+Imports System
+Imports System.Collections.Generic
+Imports System.ComponentModel
+Imports System.Data
+Imports System.Drawing
+Imports System.Windows.Forms
+
 Public Class Form1
 
     '########## GUI/MISC VARS ##########
@@ -22,6 +31,7 @@ Public Class Form1
     Dim WindowMaximizedState As Boolean = False
     Dim WindowNormalBoundsX As Integer = 1280
     Dim WindowNormalBoundsY As Integer = 760
+    Dim ShowDevPanel As Boolean = False
 
     Dim API_Connected As Boolean = False
     Dim API_Username As String = ""
@@ -37,10 +47,19 @@ Public Class Form1
     Dim API_Buy_Orders_UI As New DataTable
     Dim API_Sell_Orders_UI As New DataTable
 
+    Dim ListenerStarted As Boolean = False
+    Dim API_Discord_Auth_Code As String
+    Dim API_Discord_Auth_State As String
+    Dim Discord_Login_Window_Handle As Process
+
+
     Dim LastFileModified As String = ""
     Dim NumberofModifications As Integer = 0
     Dim LogfileLastOffset As Long
     Dim ShowRawData As Boolean = False
+    Dim NumberOfCreates As Integer = 0
+    Dim NumberOfReads As Integer = 0
+    Dim NumberOfUpdates As Integer = 0
 
     Dim currentdate As Date
     Dim CurrYear As String
@@ -97,23 +116,12 @@ Public Class Form1
         Dim savedWindowLocY As String = ""
         Dim savedWindowSizeW As String = ""
         Dim savedWindowSizeH As String = ""
-        savedUsername = GetIniValue("Application", "API_Username", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedPassword = GetIniValue("Application", "API_Password", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedLogFileDir = GetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\RAID7settings.ini")
-        If savedUsername IsNot "" And savedUsername IsNot Nothing Then
-            API_Username = savedUsername
-            UsernameTextBox.Text = savedUsername
-        End If
-
-        If savedPassword IsNot "" And savedPassword IsNot Nothing Then
-            API_Password = savedPassword
-            PasswordTextBox.Text = savedPassword
-        End If
+        savedLogFileDir = GetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         If savedLogFileDir IsNot "" And savedLogFileDir IsNot Nothing Then
             API_LogfileDirectory = savedLogFileDir
             LogDirTextBox.Text = savedLogFileDir
@@ -140,14 +148,12 @@ Public Class Form1
     End Sub
 
     Private Sub SavePrefsToIni()
-        SetIniValue("Application", "API_Username", My.Application.Info.DirectoryPath & "\RAID7settings.ini", API_Username)
-        SetIniValue("Application", "API_Password", My.Application.Info.DirectoryPath & "\RAID7settings.ini", API_Password)
-        SetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\RAID7settings.ini", API_LogfileDirectory)
-        SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\RAID7settings.ini", CStr(WindowMaximizedState))
-        SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\RAID7settings.ini", CStr(Me.Location.X))
-        SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\RAID7settings.ini", CStr(Me.Location.Y))
-        SetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\RAID7settings.ini", CStr(MainPanel.Size.Width))
-        SetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\RAID7settings.ini", CStr(MainPanel.Size.Height))
+        SetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", API_LogfileDirectory)
+        SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(WindowMaximizedState))
+        SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
+        SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
+        SetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Size.Width))
+        SetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Size.Height))
     End Sub
 
 
@@ -249,11 +255,11 @@ Public Class Form1
         API_Sell_Orders.Columns.Add("updated")
         'User-Facing tables
         API_Buy_Orders_UI.Columns.Add("market", GetType(String))
-        API_Buy_Orders_UI.Columns.Add("quantity", GetType(Integer))
+        API_Buy_Orders_UI.Columns.Add("quantity", GetType(Long))
         API_Buy_Orders_UI.Columns.Add("price", GetType(Single))
         API_Buy_Orders_UI.Columns.Add("expiration", GetType(String))
         API_Sell_Orders_UI.Columns.Add("market", GetType(String))
-        API_Sell_Orders_UI.Columns.Add("quantity", GetType(Integer))
+        API_Sell_Orders_UI.Columns.Add("quantity", GetType(Long))
         API_Sell_Orders_UI.Columns.Add("price", GetType(Single))
         API_Sell_Orders_UI.Columns.Add("expiration", GetType(String))
         BuyOrderGridViewRaw.DataSource = API_Buy_Orders_UI
@@ -3225,8 +3231,10 @@ Public Class Form1
     Private Sub UpdateAboutPanelState()
         If showhlp = True Then
             AboutPanel.Visible = True
+            AboutPanel.BringToFront()
         Else
             AboutPanel.Visible = False
+            AboutPanel.SendToBack()
         End If
     End Sub
 
@@ -3336,21 +3344,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub UsernameTextBox_TextChanged(sender As Object, e As EventArgs) Handles UsernameTextBox.TextChanged
-        API_Username = UsernameTextBox.Text
-    End Sub
-
-    Private Sub PasswordTextBox_KeyPressed(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) Handles PasswordTextBox.KeyPress
-        If e.KeyChar = ChrW(Keys.Return) Then
-            ParseConsoleInput(ConsoleInputBox.Text)
-            ConsoleInputBox.Text = ""
-        End If
-    End Sub
-
-    Private Sub PasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles PasswordTextBox.TextChanged
-        API_Password = PasswordTextBox.Text
-    End Sub
-
     Private Sub LogDirTextBox_TextChanged(sender As Object, e As EventArgs) Handles LogDirTextBox.TextChanged
         API_LogfileDirectory = LogDirTextBox.Text
     End Sub
@@ -3365,56 +3358,18 @@ Public Class Form1
 
     Private Sub ConnectionStyling()
         If API_Connected = False Then
-            ConnectButton.Text = "Connect"
+            DiscordLoginButton.Text = "Login With Discord"
             ConnectionLabel.Text = "Not Connected"
             ConnectionPanel.BackColor = Color.FromArgb(255, 215, 65, 65)
             ItemTree.Enabled = False
             ItemTreeSearch.Enabled = False
         Else
-            ConnectButton.Text = "Disconnect"
+            DiscordLoginButton.Text = "Disconnect"
             ConnectionLabel.Text = "Connected"
             ConnectionPanel.BackColor = Color.FromArgb(255, 65, 215, 65)
             ItemTree.Enabled = True
             ItemTreeSearch.Enabled = True
         End If
-    End Sub
-
-    Private Sub ConnectButton_Click(sender As Object, e As EventArgs) Handles ConnectButton.Click
-        If API_Connected = False Then
-            If LogDirTextBox.Text.Trim.Length = 0 Then
-                MsgBox("Invalid log path supplied for file monitoring.")
-                NewEventMsg("Invalid log path supplied for file monitoring.")
-            Else
-                NewEventMsg("Requesting API Access Token...")
-                API_Access_Token = API_Request("http://duopenmarket.xyz/getaccesstoken.php/token?username=" & UsernameTextBox.Text & "&password=" & PasswordTextBox.Text)
-                If API_Access_Token IsNot Nothing Then
-                    API_Access_Token = API_Access_Token.Replace("""", "").Trim()
-                    API_Connected = True
-                    NewEventMsg("Obtained API Access Token. Login successful.")
-                    ConnectionStyling()
-                    FileSystemWatcher1.Filter = "*.xml"
-                    FileSystemWatcher1.Path = LogDirTextBox.Text.Trim
-                    FileSystemWatcher1.NotifyFilter =
-                            IO.NotifyFilters.CreationTime Or IO.NotifyFilters.LastWrite Or
-                            IO.NotifyFilters.LastAccess Or IO.NotifyFilters.FileName
-                    FileSystemWatcher1.EnableRaisingEvents = True
-                    NewEventMsg("Started Log Monitor.")
-                    API_LogFile = GetNewestLogFile(API_LogfileDirectory)
-                    NewEventMsg("Current Log File: " & API_LogFile)
-                    ReadFileLines(API_LogFile)
-                    OperationTimer.Start()
-                End If
-            End If
-        Else
-            FileSystemWatcher1.EnableRaisingEvents = False
-            NewEventMsg("Stopped Log Monitor.")
-            API_Connected = False
-            OperationTimer.Stop()
-            ConnectionStyling()
-            NewEventMsg("Disconnected from API.")
-        End If
-        'Dim TempResponse2 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Access_Token & "/create?orderid=329483&marketid=99&itemid=122&quantity=10&ordertype=1&expiration=12-12-2022%2055:55:55&lastupdated=12-12-2022%2055:55:55&price=66&creator=6")
-        'NewEventMsg(TempResponse2)
     End Sub
 
     Private Sub ConsoleInputBox_EnterSubmit(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) Handles ConsoleInputBox.KeyPress
@@ -3437,10 +3392,10 @@ Public Class Form1
             NewEventMsg(Environment.NewLine)
             NewEventMsg("---------- DUOpenMarket Variable Dump ----------")
             NewEventMsg("API_Connected = " & CStr(API_Connected))
-            NewEventMsg("API_Username = " & CStr(API_Username))
             NewEventMsg("API_LogfileDirectory = " & CStr(API_LogfileDirectory))
             NewEventMsg("API_LogFile = " & CStr(API_LogFile))
-            NewEventMsg("API_Access_Token = " & CStr(API_Access_Token))
+            NewEventMsg("API_Discord_Auth_Code = " & CStr(API_Discord_Auth_Code))
+            NewEventMsg("API_Discord_Auth_State = " & CStr(API_Discord_Auth_State))
             NewEventMsg("API_Last_Log_Processed = " & CStr(API_Last_Log_Processed))
             NewEventMsg("File Buffer Offset = " & CStr(_LastOffset))
             NewEventMsg("LastFileModified = " & CStr(LastFileModified))
@@ -3449,20 +3404,47 @@ Public Class Form1
             NewEventMsg("WindowMaximizedState = " & CStr(WindowMaximizedState))
             NewEventMsg("WindowNormalBoundsX = " & CStr(WindowNormalBoundsX))
             NewEventMsg("WindowNormalBoundsY = " & CStr(WindowNormalBoundsY))
+            NewEventMsg("Showing Raw Data = " & CStr(ShowRawData))
+            NewEventMsg("API Read Requests Sent = " & CStr(NumberOfReads))
+            NewEventMsg("API Update Requests Sent = " & CStr(NumberOfUpdates))
+            NewEventMsg("API Create Requests Sent = " & CStr(NumberOfCreates))
+            NewEventMsg("API Delete Requests Sent = 0")
+            NewEventMsg("Last Item ID From Logs = " & CStr(LastItemId))
             NewEventMsg("------------- End Variable Dump ------------")
         End If
         If inputstr = "help" Then
             match = True
             NewEventMsg(Environment.NewLine)
             NewEventMsg("---------- DUOpenMarket Console Help ----------")
-            NewEventMsg("help  |  Prints this dialogue. D'oh!")
+            NewEventMsg("help   |  Prints this dialogue. D'oh!")
             NewEventMsg("debug  |  Prints the current values of all internal global variables and constants.")
+            NewEventMsg("dev    |  Toggles the developer control panel's visibility.")
+            NewEventMsg("raw    |  Toggles between showing user-readable order data, or raw unmodified data.")
             NewEventMsg("------------- End Console Help ------------")
+        End If
+        If inputstr = "dev" Then
+            If ShowDevPanel = False Then
+                DeveloperPanel.Visible = True
+                DeveloperPanel.BringToFront()
+                NewEventMsg("Showing Developer Panel.")
+                ShowDevPanel = True
+            Else
+                DeveloperPanel.Visible = False
+                DeveloperPanel.SendToBack()
+                NewEventMsg("Hiding Developer Panel.")
+                ShowDevPanel = False
+            End If
+            match = True
         End If
         If inputstr.StartsWith("raw") Then
             match = True
-            ShowRawData = True
-            NewEventMsg("Showing raw API data. Type 'raw' again to go back to user-readable.")
+            If ShowRawData = False Then
+                ShowRawData = True
+                NewEventMsg("Showing raw API data. Type 'raw' again to go back to user-readable.")
+            Else
+                ShowRawData = False
+                NewEventMsg("Showing user-readable data.")
+            End If
         End If
         If match = False Then
             NewEventMsg("Unknown command. Try again or type ""help"" for commands.")
@@ -3655,17 +3637,21 @@ Public Class Form1
 
     Private Sub ProcessNextInQueue()
         Dim OrderType As Integer
-        If CInt(API_Log_Queue(0).quantity) > 0 Then
+        If Convert.ToInt64(API_Log_Queue(0).quantity) > 0 Then
             OrderType = 1
         Else
             OrderType = 2
         End If
-        Dim TempResponse2 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Access_Token & "/read?orderid=" & API_Log_Queue(0).orderid)
+        NumberOfReads = NumberOfReads + 1
+        Dim TempResponse2 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/read?orderid=" & API_Log_Queue(0).orderid)
         If TempResponse2 = "false" Then
             'if the server doesnt have this order, then we create it. what could go wrong?
-            Dim TempResponse3 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Access_Token & "/create?orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price & "&creator=" & API_Username)
+            NumberOfCreates = NumberOfCreates + 1
+            Dim TempResponse3 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/create?orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price & "&creator=" & API_Username)
         Else
-            If TempResponse2.StartsWith("The remote server returned an error") Then
+            If TempResponse2 Is Nothing Then
+                NewEventMsg("TempResponse2 was null!")
+            ElseIf TempResponse2.StartsWith("The remote server returned an error") Then
                 NewEventMsg(TempResponse2)
             Else
                 If TempResponse2.StartsWith("{") Then
@@ -3696,7 +3682,8 @@ Public Class Form1
                         Dim d2 = DateTime.Parse(DateComparison2)
                         If d1 > d2 Then
                             'this order already exists, so we need to update it with new values
-                            Dim TempResponse3 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Access_Token & "/update?orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price)
+                            NumberOfUpdates = NumberOfUpdates + 1
+                            Dim TempResponse3 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/update?orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price)
                         End If
                     End If
                 End If
@@ -3721,6 +3708,10 @@ Public Class Form1
         End If
         ConnectionStyling()
         LogBufferLabel.Text = CStr(_LastOffset)
+        APIReadsLabel.Text = CStr(NumberOfReads)
+        APIUpdatesLabel.Text = CStr(NumberOfUpdates)
+        APICreatesLabel.Text = CStr(NumberOfCreates)
+        'APIDeletesLabel.Text = CStr(NumberOfDeletes)
     End Sub
 
     Private Sub GetLastItemId()
@@ -3754,7 +3745,8 @@ Public Class Form1
                     If e.Node.Name = "itemnil" Then
                         NewEventMsg("Unknown ID for item: " & e.Node.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
                     Else
-                        Dim TempResponse4 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Access_Token & "/read?itemid=" & queryitemid)
+                        NumberOfReads = NumberOfReads + 1
+                        Dim TempResponse4 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/read?itemid=" & queryitemid)
                         If TempResponse4 Is Nothing Then
                             NewEventMsg("Request failed!")
                         Else
@@ -3800,12 +3792,12 @@ Public Class Form1
                                         price3 = price3.Remove(price3.IndexOf(""","""))
                                         If ordertype3 = 1 Then
                                             API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
-                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), CInt(quantity3), CInt(price3 / 100), expdate3)
+                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), Convert.ToInt64(quantity3), CInt(price3 / 100), expdate3)
                                         End If
                                         If ordertype3 = 2 Then
                                             API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                             quantity3 = quantity3 * -1
-                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), CInt(quantity3), CInt(price3 / 100), expdate3)
+                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), Convert.ToInt64(quantity3), CInt(price3 / 100), expdate3)
                                         End If
                                     End While
                                     ResetDataTables()
@@ -3846,5 +3838,170 @@ Public Class Form1
 
     Private Sub ClearSearchBox() Handles ItemSearchTextBox.GotFocus
         ItemSearchTextBox.Text = ""
+    End Sub
+
+    Private Sub TestDiscordLogin() Handles DiscordLoginButton.Click
+        If API_Connected = False Then
+            Dim Discord_Login_Page As String = "http://duopenmarket.xyz/discordclientGetAuthCode.php"
+            Discord_Login_Window_Handle = Process.Start(Discord_Login_Page)
+            If ListenerStarted = False Then
+                CreateListener()
+                ListenerStarted = True
+            End If
+            ConnectionTimer.Start()
+        Else
+            NewEventMsg("Stopped Log Monitor.")
+            API_Connected = False
+            API_Discord_Auth_Code = Nothing
+            API_Discord_Auth_State = Nothing
+            OperationTimer.Stop()
+            ConnectionStyling()
+            NewEventMsg("Disconnected from API.")
+        End If
+    End Sub
+
+    Dim t As Thread
+
+    Public Shared runServer As Boolean = True
+
+    ' Delegate to allow cross-thread update of UI safely
+    Delegate Sub InvokeControl(ByVal [text] As String, ByVal [switch] As Boolean)
+
+    Private Shared listener As HttpListener
+
+    Private Sub Start()
+        AsynchronousListener(New String() {"http://localhost:43296/"})
+    End Sub
+
+    ' Asynchronous HTTP listener. Instantiates and starts the HttpListener class,
+    ' adds the prefix URI's to listen for, and enters the asynchronous processing loop
+    ' until the runServer flag is set false.
+    ' Param name prefixes is the URI prefix array to which the server responds
+    Public Sub AsynchronousListener(ByVal prefixes() As String)
+        ' spin up listener
+        listener = New HttpListener()
+        ' add URI prefixes to listen for
+        Dim s As String
+        For Each s In prefixes
+            listener.Prefixes.Add(s)
+        Next s
+        listener.Start()
+        ' Create the delegate using the method to update the UI
+        Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
+
+        ListBox1.Invoke(_invokeControl, "Entering request processing loop", False)
+        While runServer
+            Dim result As IAsyncResult = listener.BeginGetContext(New AsyncCallback(AddressOf AsynchronousListenerCallback), listener)
+            ' intermediate work can go on here while waiting for the asynchronous callback
+            ' an asynchronous wait handle is used to prevent this thread from terminating
+            ' while waiting for the asynchronous operation to complete.
+            ListBox1.Invoke(_invokeControl, "Waiting for asyncronous request processing.", False)
+            result.AsyncWaitHandle.WaitOne()
+            ListBox1.Invoke(_invokeControl, "Asynchronous request processed.", False)
+        End While
+        ' If the runServer flag gets set to false, stop the server and close the listener.
+        ' for some reason, even after we stop the listener and set it to nothing, the registration still exists... find out how to kill this later.
+        listener.Stop()
+        listener.Abort()
+        listener.Close()
+        listener = Nothing
+    End Sub 'AsynchronousListener
+
+    '/ In order to safely update the UI across threads, a delegate with this method is
+    '/ called using Control.Invoke
+    Private Shared Sub InvokeUIThread(ByVal [text] As String, ByVal [switch] As Boolean)
+        If switch = True Then
+            Form1.ConsoleTextBox.AppendText(Environment.NewLine & [text])
+            Form1.ConsoleTextBox.Select(Form1.ConsoleTextBox.TextLength, 0)
+            Form1.ConsoleTextBox.ScrollToCaret()
+        Else
+            Form1.ListBox1.Items.Add([text])
+        End If
+    End Sub 'InvokeUIThread
+
+    ' Method called back when a client connects. BeginGetContext contains the AsynchCallback delegate
+    ' for this method.
+    ' param name result is the state object containing the HttpListener instance
+    Public Sub AsynchronousListenerCallback(ByVal result As IAsyncResult)
+        Try
+            Dim listener As HttpListener = CType(result.AsyncState, HttpListener)
+            ' Call EndGetContext to signal the completion of the asynchronous operation.
+            Dim context As HttpListenerContext = listener.EndGetContext(result)
+            Dim request As HttpListenerRequest = context.Request
+
+            API_Discord_Auth_Code = request.RawUrl.Split("&")(0).Remove(0, 7)
+            API_Discord_Auth_State = request.RawUrl.Split("&")(1).Remove(0, 6)
+
+            Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
+            ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_Code, True)
+            ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_State, True)
+
+            ' Get the response object to send our confirmation.
+            Dim response As HttpListenerResponse = context.Response
+            ' Construct a minimal response string.
+            Dim responseString As String = "<HTML onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><BODY onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><img style=""position:absolute;top:0;left:0;width:100%;height:100%"" src=""http://duopenmarket.xyz/assets/images/bg2.png""/><div style=""position:absolute;top:15%;left:27%;width:50%;height:35%;color:#FFFFFF;font-family:'Courier New';font-size:24px""><center><H1>DUOpenMarket - Authentication Successful</H1><br><br><br><br><H1>This window should close automatically.<br>You may close it if it does not.</H1></center></div></BODY></HTML>"
+            Dim buffer As Byte() = System.Text.Encoding.UTF8.GetBytes(responseString)
+            ' Get the response OutputStream and write the response to it.
+            response.ContentLength64 = buffer.Length
+            ' Identify the content type.
+            response.ContentType = "text/html"
+            Dim output As System.IO.Stream = response.OutputStream
+            output.Write(buffer, 0, buffer.Length)
+            ' Properly flush and close the output stream
+            output.Flush()
+            output.Close()
+            StopListener()
+        Catch ex As Exception
+            Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
+            ConsoleTextBox.Invoke(_invokeControl, ex.Message, True)
+            StopListener()
+        End Try
+    End Sub
+
+    Private Sub CreateListener()
+        runServer = True
+        t = New Thread(New ThreadStart(AddressOf Start))
+        t.Start()
+        LoginTimer.Start()
+    End Sub
+
+    Private Sub StopListener()
+        runServer = False
+        t.Abort()
+        LoginTimer.Stop()
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        CreateListener()
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        StopListener()
+    End Sub
+
+    Private Sub LoginTimer_Tick(sender As Object, e As EventArgs) Handles LoginTimer.Tick
+        If t IsNot Nothing Then
+            NewEventMsg("Login attempt timed out.")
+            StopListener()
+        End If
+    End Sub
+
+    Private Sub ConnectionTimer_Tick(sender As Object, e As EventArgs) Handles ConnectionTimer.Tick
+        If API_Discord_Auth_Code IsNot Nothing Then
+            If LogDirTextBox.Text.Trim.Length = 0 Then
+                MsgBox("Invalid log path supplied for file monitoring.")
+                NewEventMsg("Invalid log path supplied for file monitoring.")
+            Else
+                API_Connected = True
+                NewEventMsg("Obtained Authorization code. Login successful.")
+                ConnectionStyling()
+                NewEventMsg("Started Log Monitor.")
+                API_LogFile = GetNewestLogFile(API_LogfileDirectory)
+                NewEventMsg("Current Log File: " & API_LogFile)
+                ConnectionTimer.Stop()
+                ReadFileLines(API_LogFile)
+                OperationTimer.Start()
+            End If
+        End If
     End Sub
 End Class
