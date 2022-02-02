@@ -40,6 +40,8 @@ name: .NET Core Desktop
 
 on:
   push:
+    tags:
+      - "v*.*.*"
     branches: [ main ]
     paths-ignore:
       - '**/*.md'
