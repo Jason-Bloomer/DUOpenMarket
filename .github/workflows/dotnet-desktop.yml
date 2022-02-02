@@ -82,7 +82,7 @@ jobs:
       run: msbuild "DU Market API.sln" /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
  
     - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2
       with:
-        name: published_webapp
-        path: bin\Release\Publish
+        name: DUOpenMarket-Release-Alpha
+        path: "DU Market API\bin\Release\app.publish"
