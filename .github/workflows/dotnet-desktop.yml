@@ -85,4 +85,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: DUOpenMarket-Release-Alpha
-        path: "DU Market API\bin\Release\app.publish"
+        path: "DU Market API\\bin\\Release\\app.publish"
