@@ -50,6 +50,7 @@ Public Class Form1
     Dim ListenerStarted As Boolean = False
     Dim API_Discord_Auth_Code As String
     Dim API_Discord_Auth_State As String
+    Dim API_Discord_Allow_New_Auth As Boolean = False
     Dim Discord_Login_Window_Handle As Process
 
 
@@ -3929,8 +3930,11 @@ Public Class Form1
             Dim context As HttpListenerContext = listener.EndGetContext(result)
             Dim request As HttpListenerRequest = context.Request
 
-            API_Discord_Auth_Code = request.RawUrl.Split("&")(0).Remove(0, 7)
-            API_Discord_Auth_State = request.RawUrl.Split("&")(1).Remove(0, 6)
+            If API_Discord_Allow_New_Auth = True Then
+                API_Discord_Auth_Code = request.RawUrl.Split("&")(0).Remove(0, 7)
+                API_Discord_Auth_State = request.RawUrl.Split("&")(1).Remove(0, 6)
+                API_Discord_Allow_New_Auth = False
+            End If
 
             Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
             ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_Code, True)
@@ -3963,6 +3967,7 @@ Public Class Form1
         t = New Thread(New ThreadStart(AddressOf Start))
         t.Start()
         LoginTimer.Start()
+        API_Discord_Allow_New_Auth = True
     End Sub
 
     Private Sub StopListener()
