@@ -22,12 +22,12 @@ DUOpenMarket Client
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
-<member name="P:DU_Market_API.My.Resources.Resources.bg2">
+<member name="P:DU_Market_API.My.Resources.Resources.grabber">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
-<member name="P:DU_Market_API.My.Resources.Resources.grabber">
+<member name="P:DU_Market_API.My.Resources.Resources.loginbg">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

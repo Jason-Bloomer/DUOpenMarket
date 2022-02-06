@@ -53,14 +53,21 @@ Public Class Form1
     Dim API_Discord_Allow_New_Auth As Boolean = False
     Dim Discord_Login_Window_Handle As Process
 
-
     Dim LastFileModified As String = ""
     Dim NumberofModifications As Integer = 0
     Dim LogfileLastOffset As Long
-    Dim ShowRawData As Boolean = False
     Dim NumberOfCreates As Integer = 0
     Dim NumberOfReads As Integer = 0
     Dim NumberOfUpdates As Integer = 0
+    Dim ShowRawData As Boolean = False
+
+    Dim ShowFilters As Boolean = False
+    Dim FilterPriceMin As Long
+    Dim FilterPriceMax As Long
+    Dim FilterQuantityMin As Long
+    Dim FilterQuantityMax As Long
+    Dim FilterMarketList As New List(Of FilterMarketListStructure)
+    Dim FilterItemList As New List(Of FilterItemListStructure)
 
     Dim currentdate As Date
     Dim CurrYear As String
@@ -111,22 +118,16 @@ Public Class Form1
     Private Sub LoadPrefsFromIni()
         Dim savedUsername As String = ""
         Dim savedPassword As String = ""
-        Dim savedLogFileDir As String = ""
         Dim savedWindowState As String = ""
         Dim savedWindowLocX As String = ""
         Dim savedWindowLocY As String = ""
         Dim savedWindowSizeW As String = ""
         Dim savedWindowSizeH As String = ""
-        savedLogFileDir = GetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        If savedLogFileDir IsNot "" And savedLogFileDir IsNot Nothing Then
-            API_LogfileDirectory = savedLogFileDir
-            LogDirTextBox.Text = savedLogFileDir
-        End If
         If savedWindowState IsNot "" And savedWindowState IsNot Nothing Then
             WindowMaximizedState = CStr(savedWindowState)
         End If
@@ -149,7 +150,6 @@ Public Class Form1
     End Sub
 
     Private Sub SavePrefsToIni()
-        SetIniValue("Application", "API_LogFileDir", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", API_LogfileDirectory)
         SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(WindowMaximizedState))
         SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
         SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
@@ -160,15 +160,17 @@ Public Class Form1
 
     '############################## Form Load ##############################
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CenterLoginElements()
         TimeStampInt()
         LoadPrefsFromIni()
-        LogDirTextBox.Text = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
+        API_LogfileDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
         FileSystemWatcher1.IncludeSubdirectories = False
         FileSystemWatcher1.EnableRaisingEvents = False
         InitDataTables()
         InitItemList()
         InitMarketTable()
         SetupGridViewStyling()
+        InitAdvMarketTree()
         NewEventMsg("Initialized.")
     End Sub
 
@@ -182,15 +184,27 @@ Public Class Form1
         Dim price As String
     End Structure
 
+    Structure FilterMarketListStructure
+        Dim Name As String
+        Dim Text As String
+    End Structure
+
+    Structure FilterItemListStructure
+        Dim Name As String
+        Dim Text As String
+    End Structure
+
     Private Sub SetupGridViewStyling()
         Dim col1 As DataGridViewColumn = SellOrderGridViewRaw.Columns(0)
         Dim col2 As DataGridViewColumn = SellOrderGridViewRaw.Columns(1)
         Dim col3 As DataGridViewColumn = SellOrderGridViewRaw.Columns(2)
         Dim col4 As DataGridViewColumn = SellOrderGridViewRaw.Columns(3)
-        Dim col5 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(0)
-        Dim col6 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(1)
-        Dim col7 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(2)
-        Dim col8 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(3)
+        Dim col5 As DataGridViewColumn = SellOrderGridViewRaw.Columns(4)
+        Dim col6 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(0)
+        Dim col7 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(1)
+        Dim col8 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(2)
+        Dim col9 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(3)
+        Dim col10 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(4)
         col1.Width = 194
         col2.Width = 194
         col3.Width = 194
@@ -199,6 +213,8 @@ Public Class Form1
         col6.Width = 194
         col7.Width = 194
         col8.Width = 194
+        col9.Width = 194
+        col10.Width = 194
     End Sub
 
     Private Sub TimeStampInt()
@@ -256,13 +272,15 @@ Public Class Form1
         API_Sell_Orders.Columns.Add("updated")
         'User-Facing tables
         API_Buy_Orders_UI.Columns.Add("market", GetType(String))
-        API_Buy_Orders_UI.Columns.Add("quantity", GetType(Long))
-        API_Buy_Orders_UI.Columns.Add("price", GetType(Single))
+        API_Buy_Orders_UI.Columns.Add("quantity", GetType(String))
+        API_Buy_Orders_UI.Columns.Add("price", GetType(String))
         API_Buy_Orders_UI.Columns.Add("expiration", GetType(String))
+        API_Buy_Orders_UI.Columns.Add("item", GetType(String))
         API_Sell_Orders_UI.Columns.Add("market", GetType(String))
-        API_Sell_Orders_UI.Columns.Add("quantity", GetType(Long))
-        API_Sell_Orders_UI.Columns.Add("price", GetType(Single))
+        API_Sell_Orders_UI.Columns.Add("quantity", GetType(String))
+        API_Sell_Orders_UI.Columns.Add("price", GetType(String))
         API_Sell_Orders_UI.Columns.Add("expiration", GetType(String))
+        API_Sell_Orders_UI.Columns.Add("item", GetType(String))
         BuyOrderGridViewRaw.DataSource = API_Buy_Orders_UI
         SellOrderGridViewRaw.DataSource = API_Sell_Orders_UI
     End Sub
@@ -430,6 +448,150 @@ Public Class Form1
         API_Market_Table.Rows.Add(1718, "Market Talemai Moon II 2")
     End Sub
 
+    Private Sub InitAdvMarketTree()
+        AdvMarketTreeView.Nodes.Add("1623", "Market Alioth District 06")
+        AdvMarketTreeView.Nodes.Add("1617", "Market Alioth District 01")
+        AdvMarketTreeView.Nodes.Add("1619", "Market Alioth District 02")
+        AdvMarketTreeView.Nodes.Add("1620", "Market Alioth District 03")
+        AdvMarketTreeView.Nodes.Add("1621", "Market Alioth District 04")
+        AdvMarketTreeView.Nodes.Add("1622", "Market Alioth District 05")
+        AdvMarketTreeView.Nodes.Add("1624", "Market Alioth District 07")
+        AdvMarketTreeView.Nodes.Add("1633", "Market Alioth District 08")
+        AdvMarketTreeView.Nodes.Add("1634", "Market Alioth District 09")
+        AdvMarketTreeView.Nodes.Add("1618", "Market Alioth District 10")
+        AdvMarketTreeView.Nodes.Add("1642", "Market Alioth 11")
+        AdvMarketTreeView.Nodes.Add("1643", "Market Alioth 12")
+        AdvMarketTreeView.Nodes.Add("1644", "Market Alioth 13")
+        AdvMarketTreeView.Nodes.Add("1645", "Market Alioth 14")
+        AdvMarketTreeView.Nodes.Add("17559", "Market Alioth 15")
+        AdvMarketTreeView.Nodes.Add("1647", "Market Alioth 16")
+        AdvMarketTreeView.Nodes.Add("1648", "Market Alioth 17")
+        AdvMarketTreeView.Nodes.Add("1649", "Market Alioth 18")
+        AdvMarketTreeView.Nodes.Add("1650", "Market Alioth 19")
+        AdvMarketTreeView.Nodes.Add("1641", "Market Alioth 20")
+        AdvMarketTreeView.Nodes.Add("1755", "Market Sanctuary 01")
+        AdvMarketTreeView.Nodes.Add("1889", "Market Sanctuary 02")
+        AdvMarketTreeView.Nodes.Add("1890", "Market Sanctuary 03")
+        AdvMarketTreeView.Nodes.Add("1891", "Market Sanctuary 04")
+        AdvMarketTreeView.Nodes.Add("1892", "Market Sanctuary 05")
+        AdvMarketTreeView.Nodes.Add("1893", "Market Sanctuary 06")
+        AdvMarketTreeView.Nodes.Add("1894", "Market Sanctuary 07")
+        AdvMarketTreeView.Nodes.Add("1895", "Market Sanctuary 08")
+        AdvMarketTreeView.Nodes.Add("1896", "Market Sanctuary 09")
+        AdvMarketTreeView.Nodes.Add("1756", "Market Sanctuary 10")
+        AdvMarketTreeView.Nodes.Add("1704", "Market Sanctuary 11")
+        AdvMarketTreeView.Nodes.Add("1705", "Market Sanctuary 12")
+        AdvMarketTreeView.Nodes.Add("1706", "Market Sanctuary 13")
+        AdvMarketTreeView.Nodes.Add("1707", "Market Sanctuary 14")
+        AdvMarketTreeView.Nodes.Add("1708", "Market Sanctuary 15")
+        AdvMarketTreeView.Nodes.Add("1709", "Market Sanctuary 16")
+        AdvMarketTreeView.Nodes.Add("1710", "Market Sanctuary 17")
+        AdvMarketTreeView.Nodes.Add("1711", "Market Sanctuary 18")
+        AdvMarketTreeView.Nodes.Add("1712", "Market Sanctuary 19")
+        AdvMarketTreeView.Nodes.Add("1703", "Market Sanctuary 20")
+        AdvMarketTreeView.Nodes.Add("1699", "Market Alioth Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1700", "Market Alioth Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1701", "Market Alioth Moon IV 1")
+        AdvMarketTreeView.Nodes.Add("1702", "Market Alioth Moon IV 2")
+        AdvMarketTreeView.Nodes.Add("1635", "Market Madis 1")
+        AdvMarketTreeView.Nodes.Add("1636", "Market Madis 2")
+        AdvMarketTreeView.Nodes.Add("1637", "Market Madis 3")
+        AdvMarketTreeView.Nodes.Add("1638", "Market Madis 4")
+        AdvMarketTreeView.Nodes.Add("1639", "Market Madis 5")
+        AdvMarketTreeView.Nodes.Add("1640", "Market Madis 6")
+        AdvMarketTreeView.Nodes.Add("1693", "Market Madis Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1694", "Market Madis Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1695", "Market Madis Moon II 1")
+        AdvMarketTreeView.Nodes.Add("1696", "Market Madis Moon II 2")
+        AdvMarketTreeView.Nodes.Add("1697", "Market Madis Moon III 1")
+        AdvMarketTreeView.Nodes.Add("1698", "Market Madis Moon III 2")
+        AdvMarketTreeView.Nodes.Add("1651", "Market Thades 1")
+        AdvMarketTreeView.Nodes.Add("1652", "Market Thades 2")
+        AdvMarketTreeView.Nodes.Add("1653", "Market Thades 3")
+        AdvMarketTreeView.Nodes.Add("1654", "Market Thades 4")
+        AdvMarketTreeView.Nodes.Add("1655", "Market Thades 5")
+        AdvMarketTreeView.Nodes.Add("1656", "Market Thades 6")
+        AdvMarketTreeView.Nodes.Add("1713", "Market Thades Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1714", "Market Thades Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1715", "Market Thades Moon II 1")
+        AdvMarketTreeView.Nodes.Add("1716", "Market Thades Moon II 2")
+        'AdvMarketTreeView.Nodes.Add("35747", "Small Market") -- Location unknown. It's in the market list, coords of 0,0,0. Maybe a dev-only object? Or just something that doesnt actually exist.
+        AdvMarketTreeView.Nodes.Add("1745", "Market Ion 1")
+        AdvMarketTreeView.Nodes.Add("1746", "Market Ion 2")
+        AdvMarketTreeView.Nodes.Add("1747", "Market Ion 3")
+        AdvMarketTreeView.Nodes.Add("1748", "Market Ion 4")
+        AdvMarketTreeView.Nodes.Add("1749", "Market Ion 5")
+        AdvMarketTreeView.Nodes.Add("1750", "Market Ion 6")
+        AdvMarketTreeView.Nodes.Add("1751", "Market Ion Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1752", "Market Ion Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1753", "Market Ion Moon II 1")
+        AdvMarketTreeView.Nodes.Add("1754", "Market Ion Moon II 2")
+        AdvMarketTreeView.Nodes.Add("1657", "Market Talemai 1")
+        AdvMarketTreeView.Nodes.Add("1658", "Market Talemai 2")
+        AdvMarketTreeView.Nodes.Add("1659", "Market Talemai 3")
+        AdvMarketTreeView.Nodes.Add("1660", "Market Talemai 4")
+        AdvMarketTreeView.Nodes.Add("1661", "Market Talemai 5")
+        AdvMarketTreeView.Nodes.Add("1662", "Market Talemai 6")
+        AdvMarketTreeView.Nodes.Add("1721", "Market Talemai Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1722", "Market Talemai Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1717", "Market Talemai Moon II 1")
+        AdvMarketTreeView.Nodes.Add("1718", "Market Talemai Moon II 2")
+        AdvMarketTreeView.Nodes.Add("1719", "Market Talemai Moon III 1")
+        AdvMarketTreeView.Nodes.Add("1720", "Market Talemai Moon III 2")
+        AdvMarketTreeView.Nodes.Add("1663", "Market Feli 1")
+        AdvMarketTreeView.Nodes.Add("1664", "Market Feli 2")
+        AdvMarketTreeView.Nodes.Add("1665", "Market Feli 3")
+        AdvMarketTreeView.Nodes.Add("1666", "Market Feli 4")
+        AdvMarketTreeView.Nodes.Add("1667", "Market Feli 5")
+        AdvMarketTreeView.Nodes.Add("1668", "Market Feli 6")
+        AdvMarketTreeView.Nodes.Add("1723", "Market Feli Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1724", "Market Feli Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1669", "Market Sicari 1")
+        AdvMarketTreeView.Nodes.Add("1670", "Market Sicari 2")
+        AdvMarketTreeView.Nodes.Add("1671", "Market Sicari 3")
+        AdvMarketTreeView.Nodes.Add("1672", "Market Sicari 4")
+        AdvMarketTreeView.Nodes.Add("1673", "Market Sicari 5")
+        AdvMarketTreeView.Nodes.Add("1674", "Market Sicari 6")
+        AdvMarketTreeView.Nodes.Add("1675", "Market Sinnen 1")
+        AdvMarketTreeView.Nodes.Add("1676", "Market Sinnen 2")
+        AdvMarketTreeView.Nodes.Add("1677", "Market Sinnen 3")
+        AdvMarketTreeView.Nodes.Add("1678", "Market Sinnen 4")
+        AdvMarketTreeView.Nodes.Add("1679", "Market Sinnen 5")
+        AdvMarketTreeView.Nodes.Add("1680", "Market Sinnen 6")
+        AdvMarketTreeView.Nodes.Add("1681", "Market Teoma 1")
+        AdvMarketTreeView.Nodes.Add("1682", "Market Teoma 2")
+        AdvMarketTreeView.Nodes.Add("1683", "Market Teoma 3")
+        AdvMarketTreeView.Nodes.Add("1684", "Market Teoma 4")
+        AdvMarketTreeView.Nodes.Add("1685", "Market Teoma 5")
+        AdvMarketTreeView.Nodes.Add("1686", "Market Teoma 6")
+        AdvMarketTreeView.Nodes.Add("1687", "Market Jago 1")
+        AdvMarketTreeView.Nodes.Add("1688", "Market Jago 2")
+        AdvMarketTreeView.Nodes.Add("1689", "Market Jago 3")
+        AdvMarketTreeView.Nodes.Add("1690", "Market Jago 4")
+        AdvMarketTreeView.Nodes.Add("1691", "Market Jago 5")
+        AdvMarketTreeView.Nodes.Add("1692", "Market Jago 6")
+        AdvMarketTreeView.Nodes.Add("1725", "Market Sinnen Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1726", "Market Sinnen Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1727", "Market Lacobus 1")
+        AdvMarketTreeView.Nodes.Add("1728", "Market Lacobus 2")
+        AdvMarketTreeView.Nodes.Add("1729", "Market Lacobus 3")
+        AdvMarketTreeView.Nodes.Add("1730", "Market Lacobus 4")
+        AdvMarketTreeView.Nodes.Add("1731", "Market Lacobus 5")
+        AdvMarketTreeView.Nodes.Add("1732", "Market Lacobus 6")
+        AdvMarketTreeView.Nodes.Add("1735", "Market Lacobus Moon I 1")
+        AdvMarketTreeView.Nodes.Add("1736", "Market Lacobus Moon I 2")
+        AdvMarketTreeView.Nodes.Add("1737", "Market Lacobus Moon II 1")
+        AdvMarketTreeView.Nodes.Add("1738", "Market Lacobus Moon II 2")
+        AdvMarketTreeView.Nodes.Add("1733", "Market Lacobus Moon III 1")
+        AdvMarketTreeView.Nodes.Add("1734", "Market Lacobus Moon III 2")
+        AdvMarketTreeView.Nodes.Add("1739", "Market Symeon 1")
+        AdvMarketTreeView.Nodes.Add("1740", "Market Symeon 2")
+        AdvMarketTreeView.Nodes.Add("1741", "Market Symeon 3")
+        AdvMarketTreeView.Nodes.Add("1742", "Market Symeon 4")
+        AdvMarketTreeView.Nodes.Add("1743", "Market Symeon 5")
+        AdvMarketTreeView.Nodes.Add("1744", "Market Symeon 6")
+    End Sub
+
     Private Sub InitItemList()
         Dim categorynode1 As TreeNode = ItemTree.Nodes.Add("node1", "Aphelia Mission Packages")
         Dim categorynode11 As TreeNode = categorynode1.Nodes.Add("node11", "Very Large Mission Packages")
@@ -499,11 +661,11 @@ Public Class Form1
 
 
 
-        Dim categorynode212 As TreeNode = categorynode2.Nodes.Add("node1", "Laser Ammo")
+        Dim categorynode212 As TreeNode = categorynode21.Nodes.Add("node1", "Laser Ammo")
 
-        Dim categorynode213 As TreeNode = categorynode2.Nodes.Add("node1", "Missile Pod Ammo")
+        Dim categorynode213 As TreeNode = categorynode21.Nodes.Add("node1", "Missile Pod Ammo")
 
-        Dim categorynode214 As TreeNode = categorynode2.Nodes.Add("node1", "Railgun Ammo")
+        Dim categorynode214 As TreeNode = categorynode21.Nodes.Add("node1", "Railgun Ammo")
 
 
         Dim categorynode22 As TreeNode = categorynode2.Nodes.Add("node1", "Fireworks")
@@ -571,18 +733,23 @@ Public Class Form1
         ItemTree.Nodes.Add("item1339058404", "Canopy Metal triangle S")
         ItemTree.Nodes.Add("item265675573", "Canopy Metal triangle M")
         ItemTree.Nodes.Add("item3943842048", "Canopy Metal triangle L")
+
         ItemTree.Nodes.Add("item3204140764", "Exotic Mining Unit L")
         ItemTree.Nodes.Add("item3204140767", "Rare Mining Unit L")
         ItemTree.Nodes.Add("item3204140766", "Advanced Mining Unit L")
         ItemTree.Nodes.Add("item3204140761", "Uncommon Mining Unit L")
         ItemTree.Nodes.Add("item1949562989", "Basic Mining Unit S")
         ItemTree.Nodes.Add("item3204140760", "Basic Mining Unit L")
+
         ItemTree.Nodes.Add("item2421673145", "Space Fuel Tank XS")
+
         ItemTree.Nodes.Add("item2882830295", "Shield Generator XS")
         ItemTree.Nodes.Add("item3696387320", "Shield Generator S")
         ItemTree.Nodes.Add("item254923774", "Shield Generator M")
         ItemTree.Nodes.Add("item2034818941", "Shield Generator L")
+
         ItemTree.Nodes.Add("item2413564665", "Deep Space Asteroid Tracker")
+
         ItemTree.Nodes.Add("item2814304696", "Black Steel Panel")
         ItemTree.Nodes.Add("item2814304696", "Dark Gray Steel Panel")
         ItemTree.Nodes.Add("item2814304696", "Gray Steel Panel")
@@ -599,59 +766,80 @@ Public Class Form1
         ItemTree.Nodes.Add("item2814304696", "Painted Yellow Steel")
         ItemTree.Nodes.Add("item2814304696", "Painted White Steel")
         ItemTree.Nodes.Add("item2814304696", "Painted Red Steel")
+
         ItemTree.Nodes.Add("item111253038", "Advanced Precision Railgun M")
         ItemTree.Nodes.Add("item111253039", "Rare Precision Railgun M")
         ItemTree.Nodes.Add("item111253024", "Exotic Precision Railgun M")
+
         ItemTree.Nodes.Add("item1767704175", "Advanced Agile Railgun S")
         ItemTree.Nodes.Add("item1767704174", "Rare Agile Railgun S")
         ItemTree.Nodes.Add("item1767704161", "Exotic Agile Railgun S")
+
         ItemTree.Nodes.Add("item223437801", "Advanced Defense Railgun S")
         ItemTree.Nodes.Add("item223437800", "Rare Defense Railgun S")
         ItemTree.Nodes.Add("item223437807", "Exotic Defense Railgun S")
+
         ItemTree.Nodes.Add("item2991505111", "Advanced Heavy Railgun S")
+        ItemTree.Nodes.Add("item2991505104", "Rare Heavy Railgun S")
         ItemTree.Nodes.Add("item2991505105", "Exotic Heavy Railgun S")
+
         ItemTree.Nodes.Add("item831043069", "Advanced Precision Railgun S")
         ItemTree.Nodes.Add("item831043070", "Rare Precision Railgun S")
         ItemTree.Nodes.Add("item831043071", "Exotic Precision Railgun S")
-        ItemTree.Nodes.Add("item2991505104", "Rare Heavy Railgun S")
+
         ItemTree.Nodes.Add("item1641776328", "Exotic Heavy Railgun M")
         ItemTree.Nodes.Add("item1641776331", "Rare Heavy Railgun M")
         ItemTree.Nodes.Add("item1641776330", "Advanced Heavy Railgun M")
+
         ItemTree.Nodes.Add("item3396072237", "Exotic Defense Railgun M")
+
         ItemTree.Nodes.Add("item2239993844", "Advanced Precision Missile XS")
         ItemTree.Nodes.Add("item2239993845", "Rare Precision Missile XS")
         ItemTree.Nodes.Add("item2239993846", "Exotic Precision Missile XS")
+
         ItemTree.Nodes.Add("item3650288374", "Advanced Agile Missile L")
         ItemTree.Nodes.Add("item3650288369", "Rare Agile Missile L")
         ItemTree.Nodes.Add("item3650288368", "Exotic Agile Missile L")
+
         ItemTree.Nodes.Add("item3453451048", "Advanced Defense Missile L")
         ItemTree.Nodes.Add("item3453451051", "Rare Defense Missile L")
         ItemTree.Nodes.Add("item3453451050", "Exotic Defense Missile L")
+
         ItemTree.Nodes.Add("item3611570509", "Exotic Heavy Missile XS")
         ItemTree.Nodes.Add("item708864069", "Advanced Heavy Missile L")
         ItemTree.Nodes.Add("item708864067", "Exotic Heavy Missile L")
+
         ItemTree.Nodes.Add("item1205879485", "Advanced Precision Missile L")
         ItemTree.Nodes.Add("item1205879482", "Rare Precision Missile L")
         ItemTree.Nodes.Add("item1205879483", "Exotic Precision Missile L")
+
         ItemTree.Nodes.Add("item598736203", "Advanced Agile Missile M")
         ItemTree.Nodes.Add("item598736196", "Rare Agile Missile M")
         ItemTree.Nodes.Add("item598736197", "Exotic Agile Missile M")
+
         ItemTree.Nodes.Add("item1068910670", "Advanced Defense Missile M")
         ItemTree.Nodes.Add("item1068910671", "Rare Defense Missile M")
-        ItemTree.Nodes.Add("item708864066", "Rare Heavy Missile L")
         ItemTree.Nodes.Add("item1068910656", "Exotic Defense Missile M")
+
+        ItemTree.Nodes.Add("item708864066", "Rare Heavy Missile L")
+
+        ItemTree.Nodes.Add("item3611570511", "Advanced Heavy Missile XS")
         ItemTree.Nodes.Add("item3611570508", "Rare Heavy Missile XS")
+
         ItemTree.Nodes.Add("item134390789", "Exotic Defense Missile XS")
+
         ItemTree.Nodes.Add("item3840109424", "Advanced Precision Laser M")
         ItemTree.Nodes.Add("item3840109425", "Rare Precision Laser M")
         ItemTree.Nodes.Add("item3840109426", "Exotic Precision Laser M")
+
         ItemTree.Nodes.Add("item4124398193", "Advanced Agile Laser S")
         ItemTree.Nodes.Add("item4124398192", "Rare Agile Laser S")
         ItemTree.Nodes.Add("item4124398199", "Exotic Agile Laser S")
+
         ItemTree.Nodes.Add("item1737118473", "Advanced Defense Laser S")
         ItemTree.Nodes.Add("item1737118474", "Rare Defense Laser S")
         ItemTree.Nodes.Add("item1737118475", "Exotic Defense Laser S")
-        ItemTree.Nodes.Add("item3611570511", "Advanced Heavy Missile XS")
+
         ItemTree.Nodes.Add("item338218847", "Advanced Heavy Laser S")
         ItemTree.Nodes.Add("item338218841", "Exotic Heavy Laser S")
         ItemTree.Nodes.Add("item3730148334", "Advanced Precision Laser S")
@@ -2480,31 +2668,39 @@ Public Class Form1
         ItemTree.Nodes.Add("item3655856020", "Command seat controller")
         ItemTree.Nodes.Add("item1866437084", "Remote Controller")
         ItemTree.Nodes.Add("item3415128439", "Programming board")
+
         ItemTree.Nodes.Add("item2125213321", "Container L")
         ItemTree.Nodes.Add("item1689381593", "Container XS")
         ItemTree.Nodes.Add("item1594689569", "Container S")
         ItemTree.Nodes.Add("item521274609", "Container M")
         ItemTree.Nodes.Add("item373359444", "Container Hub")
+
         ItemTree.Nodes.Add("item773467906", "Space Fuel Tank M")
         ItemTree.Nodes.Add("item1790622152", "Space Fuel Tank S")
         ItemTree.Nodes.Add("item2212207656", "Space Fuel Tank L")
+
         ItemTree.Nodes.Add("item1663412227", "Rocket Fuel Tank XS")
         ItemTree.Nodes.Add("item2477859329", "Rocket Fuel Tank M")
         ItemTree.Nodes.Add("item4180073139", "Rocket Fuel Tank L")
         ItemTree.Nodes.Add("item3126840739", "Rocket Fuel Tank S")
+
         ItemTree.Nodes.Add("item3273319200", "Atmospheric Fuel Tank XS")
         ItemTree.Nodes.Add("item3464628964", "Atmospheric Fuel Tank M")
         ItemTree.Nodes.Add("item3039582547", "Atmospheric Fuel Tank L")
         ItemTree.Nodes.Add("item2183619036", "Atmospheric Fuel Tank S")
+
         ItemTree.Nodes.Add("item16651125", "Deprecated Dispenser")
+
         ItemTree.Nodes.Add("item50309297", "Ammo Container XL L")
         ItemTree.Nodes.Add("item300986010", "Ammo Container S XS")
         ItemTree.Nodes.Add("item2300179701", "Ammo Container M S")
         ItemTree.Nodes.Add("item923167511", "Ammo Container L M")
+
         ItemTree.Nodes.Add("item966816758", "Anti-Gravity Pulsor")
         ItemTree.Nodes.Add("item3997343699", "Anti-Gravity Generator S")
         ItemTree.Nodes.Add("item233079829", "Anti-Gravity Generator M")
         ItemTree.Nodes.Add("item294414265", "Anti-Gravity Generator L")
+
         ItemTree.Nodes.Add("item1182663952", "Manganese Scrap")
         ItemTree.Nodes.Add("item1423148560", "Sulfur Scrap")
         ItemTree.Nodes.Add("item1831205658", "Sodium Scrap")
@@ -2522,6 +2718,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item3857279161", "Carbon Scrap")
         ItemTree.Nodes.Add("item1251531294", "Calcium Scrap")
         ItemTree.Nodes.Add("item2417840347", "Aluminium Scrap")
+
         ItemTree.Nodes.Add("item3211418846", "Pure Scandium")
         ItemTree.Nodes.Add("item947806142", "Pure Oxygen")
         ItemTree.Nodes.Add("item1126600143", "Niobium pure")
@@ -2544,6 +2741,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item159858782", "Pure carbon")
         ItemTree.Nodes.Add("item2112763718", "Pure Calcium")
         ItemTree.Nodes.Add("item2240749601", "Pure aluminium")
+
         ItemTree.Nodes.Add("item770773323", "Wood product")
         ItemTree.Nodes.Add("item255776324", "Vanamer product")
         ItemTree.Nodes.Add("item1734893264", "Ti-Nb Supraconductor product")
@@ -2575,6 +2773,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item18262914", "Al-Fe Alloy product")
         ItemTree.Nodes.Add("item2301749833", "Ag-Li Reinforced glass product")
         ItemTree.Nodes.Add("item1942154251", "Advanced glass product")
+
         ItemTree.Nodes.Add("item2162350405", "Vanadinite")
         ItemTree.Nodes.Add("item629636034", "Illmenite")
         ItemTree.Nodes.Add("item4041459743", "Pyrite")
@@ -2595,6 +2794,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item262147665", "Bauxite")
         ItemTree.Nodes.Add("item789110817", "Columbite")
         ItemTree.Nodes.Add("item3546085401", "Cobaltite")
+
         ItemTree.Nodes.Add("item2497146600", "White pattern wood")
         ItemTree.Nodes.Add("item2497146600", "Stained gray pattern wood")
         ItemTree.Nodes.Add("item2497146600", "Aged gray pattern wood")
@@ -2646,6 +2846,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2497146600", "Polished brown wood 1")
         ItemTree.Nodes.Add("item2497146600", "Polished black wood")
         ItemTree.Nodes.Add("item2497146600", "Matte white wood")
+
         ItemTree.Nodes.Add("item2814304696", "Stained yellow pattern steel")
         ItemTree.Nodes.Add("item2814304696", "Aged yellow pattern steel")
         ItemTree.Nodes.Add("item2814304696", "Blue pattern steel")
@@ -2716,6 +2917,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2814304696", "Aged blue pattern steel")
         ItemTree.Nodes.Add("item2814304696", "Aged red pattern steel")
         ItemTree.Nodes.Add("item2814304696", "Polished light red steel steel")
+
         ItemTree.Nodes.Add("item1269767483", "Stained yellow pattern plastic")
         ItemTree.Nodes.Add("item1269767483", "Aged yellow pattern plastic")
         ItemTree.Nodes.Add("item1269767483", "Stained yellow pattern plastic (cold)")
@@ -2839,6 +3041,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item1269767483", "Glossy dark beige plastic (cold)")
         ItemTree.Nodes.Add("item1269767483", "Glossy beige plastic (cold)")
         ItemTree.Nodes.Add("item1269767483", "Glossy beige plastic")
+
         ItemTree.Nodes.Add("item2003621933", "Stained yellow pattern marble (cold)")
         ItemTree.Nodes.Add("item2003621933", "Aged yellow pattern marble (cold)")
         ItemTree.Nodes.Add("item2003621933", "Yellow pattern marble (cold)")
@@ -2908,6 +3111,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2003621933", "Polished beige marble (cold)")
         ItemTree.Nodes.Add("item2003621933", "Polished light orange marble (cold)")
         ItemTree.Nodes.Add("item2003621933", "Polished dark orange marble (cold)")
+
         ItemTree.Nodes.Add("item38264863", "White pattern concrete")
         ItemTree.Nodes.Add("item38264863", "Stained gray pattern concrete")
         ItemTree.Nodes.Add("item38264863", "Aged gray pattern concrete")
@@ -2923,6 +3127,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item38264863", "Waxed dark gray concrete")
         ItemTree.Nodes.Add("item38264863", "Waxed gray concrete")
         ItemTree.Nodes.Add("item38264863", "Waxed black concrete")
+
         ItemTree.Nodes.Add("item2647328640", "White pattern carbon fiber")
         ItemTree.Nodes.Add("item2647328640", "Stained gray pattern carbon fiber")
         ItemTree.Nodes.Add("item2647328640", "Aged gray pattern carbon fiber")
@@ -2938,6 +3143,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2647328640", "Glossy dark gray carbon fiber")
         ItemTree.Nodes.Add("item2647328640", "Glossy gray carbon fiber")
         ItemTree.Nodes.Add("item2647328640", "Glossy black carbon fiber")
+
         ItemTree.Nodes.Add("item2698580432", "White pattern brick")
         ItemTree.Nodes.Add("item2698580432", "Stained gray pattern brick")
         ItemTree.Nodes.Add("item2698580432", "Aged gray pattern brick")
@@ -2989,6 +3195,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2698580432", "Waxed black brick")
         ItemTree.Nodes.Add("item2698580432", "Matte dark gray brick")
         ItemTree.Nodes.Add("item2698580432", "Matte light gray brick")
+
         ItemTree.Nodes.Add("item402511494", "White pattern Titanium")
         ItemTree.Nodes.Add("item402511494", "Stained gray pattern Titanium")
         ItemTree.Nodes.Add("item402511494", "Aged gray pattern Titanium")
@@ -3004,6 +3211,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item402511494", "Polished dark gray Titanium")
         ItemTree.Nodes.Add("item402511494", "Polished gray Titanium")
         ItemTree.Nodes.Add("item402511494", "Polished black Titanium")
+
         ItemTree.Nodes.Add("item2085561075", "White pattern iron")
         ItemTree.Nodes.Add("item2085561075", "Stained gray pattern iron")
         ItemTree.Nodes.Add("item2085561075", "Aged gray pattern iron")
@@ -3019,6 +3227,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2085561075", "Polished dark gray iron")
         ItemTree.Nodes.Add("item2085561075", "Polished gray iron")
         ItemTree.Nodes.Add("item2085561075", "Polished black iron")
+
         ItemTree.Nodes.Add("item2892111312", "White pattern Gold")
         ItemTree.Nodes.Add("item2892111312", "Stained gray pattern Gold")
         ItemTree.Nodes.Add("item2892111312", "Aged gray pattern Gold")
@@ -3034,6 +3243,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item2892111312", "Polished dark gray Gold")
         ItemTree.Nodes.Add("item2892111312", "Polished gray Gold")
         ItemTree.Nodes.Add("item2892111312", "Polished black Gold")
+
         ItemTree.Nodes.Add("item1374916603", "Polished gray Copper")
         ItemTree.Nodes.Add("item1374916603", "Polished black Copper")
         ItemTree.Nodes.Add("item1374916603", "White pattern Copper")
@@ -3049,6 +3259,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item1374916603", "Polished white Copper")
         ItemTree.Nodes.Add("item1374916603", "Polished light gray Copper")
         ItemTree.Nodes.Add("item1374916603", "Polished dark gray Copper")
+
         ItemTree.Nodes.Add("item1406093224", "White pattern Chromium")
         ItemTree.Nodes.Add("item1406093224", "Stained gray pattern Chromium")
         ItemTree.Nodes.Add("item1406093224", "Aged gray pattern Chromium")
@@ -3064,6 +3275,7 @@ Public Class Form1
         ItemTree.Nodes.Add("item1406093224", "Polished dark gray Chromium")
         ItemTree.Nodes.Add("item1406093224", "Polished gray Chromium")
         ItemTree.Nodes.Add("item1406093224", "Polished black Chromium")
+
         ItemTree.Nodes.Add("item123493466", "White aluminium pattern")
         ItemTree.Nodes.Add("item123493466", "Stained gray pattern aluminium")
         ItemTree.Nodes.Add("item123493466", "Aged gray pattern aluminium")
@@ -3079,15 +3291,21 @@ Public Class Form1
         ItemTree.Nodes.Add("item123493466", "Polished dark gray aluminium")
         ItemTree.Nodes.Add("item123493466", "Polished gray aluminium")
         ItemTree.Nodes.Add("item123493466", "Polished black aluminium")
+
         ItemTree.Nodes.Add("item3729464850", "Catalyst 5")
         ItemTree.Nodes.Add("item3729464849", "Catalyst 4")
         ItemTree.Nodes.Add("item3729464848", "Catalyst 3")
+
         ItemTree.Nodes.Add("item840202987", "Kergon-X4 fuel")
         ItemTree.Nodes.Add("item840202986", "Kergon-X3 fuel")
         ItemTree.Nodes.Add("item840202981", "Kergon-X2 fuel")
         ItemTree.Nodes.Add("item840202980", "Kergon-X1 fuel")
+
         ItemTree.Nodes.Add("item106455050", "Xeron Fuel")
+
         ItemTree.Nodes.Add("item2579672037", "Nitron Fuel")
+
+
         ItemTree.Nodes.Add("item2277755297", "Railgun Electromagnetic Ammo S")
         ItemTree.Nodes.Add("item3511898141", "Railgun Precision Electromagnetic Ammo S")
         ItemTree.Nodes.Add("item3384068103", "Railgun Heavy Electromagnetic Ammo S")
@@ -3221,22 +3439,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button11.Click
-        If showhlp = True Then
-            showhlp = False
-        Else
-            showhlp = True
-        End If
-        UpdateAboutPanelState()
-    End Sub
-
-    Private Sub UpdateAboutPanelState()
-        If showhlp = True Then
-            AboutPanel.Visible = True
-            AboutPanel.BringToFront()
-        Else
-            AboutPanel.Visible = False
-            AboutPanel.SendToBack()
-        End If
+        AboutForm.Show()
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
@@ -3252,10 +3455,11 @@ Public Class Form1
             WindowMaximizedState = True
             Dim currScreen As Screen = Screen.FromControl(Me)
             Dim newbnds As Size = New Size()
-            newbnds.Height = currScreen.Bounds.Height
-            newbnds.Width = currScreen.Bounds.Width
+            newbnds.Height = currScreen.WorkingArea.Height
+            newbnds.Width = currScreen.WorkingArea.Width
             MainPanel.Size = newbnds
         End If
+        CenterLoginElements()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -3268,18 +3472,19 @@ Public Class Form1
         Me.Dispose()
     End Sub
 
-    Private Sub TitleBar_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MainPanel.MouseUp
+    Private Sub TitleBar_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles TitleBarPanel.MouseUp
         Go = False
         LeftSet = False
         TopSet = False
     End Sub
 
-    Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MainPanel.MouseDown
+    Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles TitleBarPanel.MouseDown
         Go = True
     End Sub
 
-    Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MainPanel.MouseMove
+    Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles TitleBarPanel.MouseMove
         If Go = True Then
+
             If Me.WindowState = FormWindowState.Maximized Then
                 Me.WindowState = FormWindowState.Normal
                 WindowMaximizedState = False
@@ -3287,43 +3492,77 @@ Public Class Form1
             HoldLeft = (Control.MousePosition.X)
             HoldTop = (Control.MousePosition.Y)
             If TopSet = False Then
-                OffTop = HoldTop - sender.Parent.Location.Y
+                OffTop = HoldTop - sender.Parent.Parent.Location.Y
                 TopSet = True
             End If
             If LeftSet = False Then
-                OffLeft = HoldLeft - sender.Parent.Location.X
+                OffLeft = HoldLeft - sender.Parent.Parent.Location.X
                 LeftSet = True
             End If
-            Dim newpoint As New Point
-            newpoint.X = HoldLeft - OffLeft
-            newpoint.Y = HoldTop - OffTop
-            sender.Parent.Location = newpoint
+            'reset size if maximized, to whatever size we were before maximizing
+            Dim newbnds As Size = New Size()
             If Me.WindowState = FormWindowState.Normal Then
-                Dim newbnds As Size = New Size()
                 newbnds.Height = WindowNormalBoundsY
                 newbnds.Width = WindowNormalBoundsX
                 MainPanel.Size = newbnds
             Else
-                Dim newbnds As Size = New Size()
                 newbnds.Height = Screen.PrimaryScreen.Bounds.Height
                 newbnds.Width = Screen.PrimaryScreen.Bounds.Width
                 MainPanel.Size = newbnds
             End If
-            sender.Parent.Refresh()
+            'define where the window has been dragged to
+            Dim newpoint As New Point
+            newpoint.X = HoldLeft - OffLeft
+            newpoint.Y = HoldTop - OffTop
+            Dim AllScreens() As Screen = Screen.AllScreens
+            Dim XwithinBounds As Boolean = False
+            Dim YwithinBounds As Boolean = False
+            Dim WwithinBounds As Boolean = False
+            Dim HwithinBounds As Boolean = False
+            For Each displayScreen As Screen In AllScreens
+                'check if that point would put any part of the window off screen, and if so, correct
+                If newpoint.X > displayScreen.WorkingArea.X Then
+                    XwithinBounds = True
+                End If
+                If (newpoint.X + newbnds.Width) < (displayScreen.WorkingArea.X + displayScreen.WorkingArea.Width) Then
+                    WwithinBounds = True
+                End If
+
+                If newpoint.Y > displayScreen.WorkingArea.Y Then
+                    YwithinBounds = True
+                End If
+                If (newpoint.Y + newbnds.Height) < (displayScreen.WorkingArea.Y + displayScreen.WorkingArea.Height) Then
+                    HwithinBounds = True
+                End If
+            Next displayScreen
+            If XwithinBounds = True And WwithinBounds = True Then
+                newpoint.X = HoldLeft - OffLeft
+            Else
+                newpoint.X = sender.Parent.Parent.Location.X
+            End If
+
+            If YwithinBounds = True And HwithinBounds = True Then
+                newpoint.Y = HoldTop - OffTop
+            Else
+                newpoint.Y = sender.Parent.Parent.Location.Y
+            End If
+            sender.Parent.Parent.Location = newpoint
+            sender.Parent.Parent.Refresh()
+            CenterLoginElements()
         End If
     End Sub
 
-    Private Sub ResizeGrabber_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseUp
+    Private Sub ResizeGrabber_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseUp, ResizeGrabber2.MouseUp
         Go = False
         LeftSet = False
         TopSet = False
     End Sub
 
-    Private Sub ResizeGrabber_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseDown
+    Private Sub ResizeGrabber_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseDown, ResizeGrabber2.MouseDown
         Go = True
     End Sub
 
-    Private Sub ResizeGrabber_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseMove
+    Private Sub ResizeGrabber_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ResizeGrabber.MouseMove, ResizeGrabber2.MouseMove
         If Go = True Then
             HoldWidth = (Control.MousePosition.X - Me.Left)
             HoldHeight = (Control.MousePosition.Y - Me.Top)
@@ -3342,18 +3581,32 @@ Public Class Form1
             Me.Width = HoldWidth
             Me.Height = HoldHeight
             Me.Refresh()
+            CenterLoginElements()
         End If
     End Sub
 
-    Private Sub LogDirTextBox_TextChanged(sender As Object, e As EventArgs) Handles LogDirTextBox.TextChanged
-        API_LogfileDirectory = LogDirTextBox.Text
-    End Sub
-
-    Private Sub LogFileBrowseButton_Click(sender As Object, e As EventArgs) Handles LogFileBrowseButton.Click
-        Dim fd As FolderBrowserDialog = New FolderBrowserDialog()
-        fd.RootFolder = SpecialFolder.LocalApplicationData
-        If fd.ShowDialog() = DialogResult.OK Then
-            LogDirTextBox.Text = fd.SelectedPath
+    Private Sub CenterLoginElements()
+        If LoginPanel.Visible = True Then
+            Dim temp1 As Point
+            Dim temp2 As Point
+            Dim temp3 As Point
+            Dim temp4 As Point
+            Dim temp5 As Point
+            temp1.X = (LoginPanel.Size.Width / 2) - (LoginLogoPictureBox.Size.Width / 2)
+            temp1.Y = ((LoginPanel.Size.Height / 2) - (LoginLogoPictureBox.Size.Height / 2)) * 0.5
+            LoginLogoPictureBox.Location = temp1
+            temp2.X = (LoginPanel.Size.Width / 2) - (LoginLabel1.Size.Width / 2)
+            temp2.Y = ((LoginPanel.Size.Height / 2) - (LoginLabel1.Size.Height / 2)) * 1.2
+            LoginLabel1.Location = temp2
+            temp3.X = (LoginPanel.Size.Width / 2) - (LoginLabel2.Size.Width / 2)
+            temp3.Y = (((LoginPanel.Size.Height / 2) - (LoginLabel2.Size.Height / 2)) * 1.2) + 30
+            LoginLabel2.Location = temp3
+            temp4.X = (LoginPanel.Size.Width / 2) - (LoginLabel3.Size.Width / 2)
+            temp4.Y = (((LoginPanel.Size.Height / 2) - (LoginLabel3.Size.Height / 2)) * 1.2) + 60
+            LoginLabel3.Location = temp4
+            temp5.X = (LoginPanel.Size.Width / 2) - (DiscordLoginButton2.Size.Width / 2)
+            temp5.Y = ((LoginPanel.Size.Height / 2) - (DiscordLoginButton2.Size.Height / 2)) * 1.6
+            DiscordLoginButton2.Location = temp5
         End If
     End Sub
 
@@ -3364,19 +3617,26 @@ Public Class Form1
             ConnectionPanel.BackColor = Color.FromArgb(255, 215, 65, 65)
             ItemTree.Enabled = False
             ItemTreeSearch.Enabled = False
+            MarketPanel.Visible = False
+            LoginPanel.Visible = True
         Else
             DiscordLoginButton.Text = "Disconnect"
             ConnectionLabel.Text = "Connected"
             ConnectionPanel.BackColor = Color.FromArgb(255, 65, 215, 65)
             ItemTree.Enabled = True
             ItemTreeSearch.Enabled = True
+            MarketPanel.Visible = True
+            LoginPanel.Visible = False
         End If
     End Sub
 
-    Private Sub ConsoleInputBox_EnterSubmit(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) Handles ConsoleInputBox.KeyPress
-        If e.KeyChar = ChrW(Keys.Return) Then
-            ParseConsoleInput(ConsoleInputBox.Text)
-            ConsoleInputBox.Text = ""
+    Private Sub ConsoleInputBox_TextChanged(sender As Object, e As EventArgs) Handles ConsoleInputBox.TextChanged
+        If ConsoleInputBox.Text IsNot "" Then
+            Dim lastchar As String = ConsoleInputBox.Text.Remove(0, ConsoleInputBox.Text.Length - 1)
+            If AscW(lastchar) = 10 Then
+                ParseConsoleInput(ConsoleInputBox.Text.Remove(ConsoleInputBox.Text.Length - 2, 2))
+                ConsoleInputBox.Text = ""
+            End If
         End If
     End Sub
 
@@ -3437,7 +3697,7 @@ Public Class Form1
             End If
             match = True
         End If
-        If inputstr.StartsWith("raw") Then
+        If inputstr = "raw" Then
             match = True
             If ShowRawData = False Then
                 ShowRawData = True
@@ -3445,6 +3705,14 @@ Public Class Form1
             Else
                 ShowRawData = False
                 NewEventMsg("Showing user-readable data.")
+            End If
+        End If
+        If inputstr = "lastid" Then
+            match = True
+            If UniqueItemIds.Count > 0 Then
+                NewEventMsg("Last parsed item ID: " & UniqueItemIds(UniqueItemIds.Last))
+            Else
+                NewEventMsg("No logs have been parsed, no ID's have been seen.")
             End If
         End If
         If match = False Then
@@ -3724,11 +3992,9 @@ Public Class Form1
                 End If
             Next item
             If seen = False Then
-                NewEventMsg(API_Log_Queue(0).itemtype)
                 UniqueItemIds.Add(CStr(API_Log_Queue(0).itemtype))
             End If
         Else
-            NewEventMsg(API_Log_Queue(0).itemtype)
             UniqueItemIds.Add(API_Log_Queue(0).itemtype.ToString)
         End If
     End Sub
@@ -3791,14 +4057,24 @@ Public Class Form1
                                         TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
                                         Dim price3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
                                         price3 = price3.Remove(price3.IndexOf(""","""))
+                                        'Price values that come in from logs or the API, need to be divided by 100. EG 327189 is actually 3271.89, and should be displayed that way
+                                        Dim price3String As String
+                                        If price3.Length > 2 Then
+                                            Dim price3temp As String = price3.Remove(0, price3.Length - 2)
+                                            price3String = price3.Remove(price3.Length - 2, 2) & "." & price3temp
+                                        Else
+                                            price3String = "." & price3
+                                        End If
                                         If ordertype3 = 1 Then
                                             API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
-                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), Convert.ToInt64(quantity3), CInt(price3 / 100), expdate3)
+                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
                                         End If
                                         If ordertype3 = 2 Then
+                                            If quantity3.StartsWith("-") Then
+                                                quantity3 = quantity3.Remove(0, 1)
+                                            End If
                                             API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
-                                            quantity3 = quantity3 * -1
-                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), Convert.ToInt64(quantity3), CInt(price3 / 100), expdate3)
+                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
                                         End If
                                     End While
                                     ResetDataTables()
@@ -3820,17 +4096,66 @@ Public Class Form1
         Next
     End Function
 
+    Private Function GetTimeRemaining(ByVal dateinput As String, ByVal orderidinput As String)
+        Dim timeremaining As TimeSpan
+        Dim timestring As String
+        If dateinput.StartsWith("@(") Then
+            TimeStampInt()
+            Dim Datetemp1 As String = dateinput.Remove(0, dateinput.IndexOf(") ") + 2) 'remove the unix time stamp
+            Dim Datetemp3 As Date = Convert.ToDateTime(Datetemp1)
+            If Datetemp3 > currentdate Then
+                timeremaining = Datetemp3.Subtract(currentdate)
+                If timeremaining.TotalSeconds > 120 Then
+                    If timeremaining.TotalMinutes > 59 Then
+                        If timeremaining.TotalHours > 48 Then
+                            timestring = CStr(Math.Round(timeremaining.TotalDays)) & " days"
+                        Else
+                            timestring = CStr(Math.Round(timeremaining.TotalHours)) & " hours"
+                        End If
+                    Else
+                        timestring = CStr(Math.Round(timeremaining.TotalMinutes)) & " minutes"
+                    End If
+                Else
+                    timestring = CStr(Math.Round(timeremaining.TotalSeconds)) & " seconds"
+                End If
+            Else
+                timestring = "Expired"
+            End If
+        Else
+            timestring = "Invalid timestamp"
+        End If
+        Return timestring
+    End Function
+
     Private Sub ItemSearchTextBox_TextChanged(sender As Object, e As EventArgs) Handles ItemSearchTextBox.TextChanged
         If ItemSearchTextBox.Text IsNot "" And ItemSearchTextBox.Text IsNot Nothing And ItemSearchTextBox.Text IsNot "Search..." Then
-            ItemTreeSearch.Nodes.Clear()
-            ItemTreeSearch.Visible = True
-            ItemTree.Visible = False
-            For Each tn As TreeNode In ItemTree.Nodes
-                Dim compstr As String = tn.Text
-                If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
-                    ItemTreeSearch.Nodes.Add(tn.Name, tn.Text)
-                End If
-            Next tn
+            If ShowFilters = True Then
+                AdvItemTreeView.Nodes.Clear()
+                For Each tn As TreeNode In ItemTree.Nodes
+                    If tn.Name.StartsWith("node") Then
+                        'This is a category node, do not add it to list
+                    Else
+                        Dim compstr As String = tn.Text
+                        If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
+                            AdvItemTreeView.Nodes.Add(tn.Name, tn.Text)
+                        End If
+                    End If
+                Next tn
+            Else
+                ItemTreeSearch.Nodes.Clear()
+                ItemTreeSearch.Visible = True
+                ItemTree.Visible = False
+                For Each tn As TreeNode In ItemTree.Nodes
+                    If tn.Name.StartsWith("node") Then
+                        'This is a category node, do not add it to list
+                    Else
+                        Dim compstr As String = tn.Text
+                        If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
+                            ItemTreeSearch.Nodes.Add(tn.Name, tn.Text)
+                        End If
+                    End If
+                Next tn
+            End If
         Else
             ItemTreeSearch.Visible = False
             ItemTree.Visible = True
@@ -3841,7 +4166,7 @@ Public Class Form1
         ItemSearchTextBox.Text = ""
     End Sub
 
-    Private Sub TestDiscordLogin() Handles DiscordLoginButton.Click
+    Private Sub TestDiscordLogin() Handles DiscordLoginButton.Click, DiscordLoginButton2.Click
         If API_Connected = False Then
             Dim Discord_Login_Page As String = "http://duopenmarket.xyz/discordclientGetAuthCode.php"
             Discord_Login_Window_Handle = Process.Start(Discord_Login_Page)
@@ -3858,6 +4183,7 @@ Public Class Form1
             OperationTimer.Stop()
             ConnectionStyling()
             NewEventMsg("Disconnected from API.")
+            CenterLoginElements()
         End If
     End Sub
 
@@ -3936,14 +4262,14 @@ Public Class Form1
                 API_Discord_Allow_New_Auth = False
             End If
 
-            Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
-            ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_Code, True)
-            ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_State, True)
+            'Dim _invokeControl As New InvokeControl(AddressOf InvokeUIThread)
+            'ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_Code, True)
+            'ConsoleTextBox.Invoke(_invokeControl, API_Discord_Auth_State, True)
 
             ' Get the response object to send our confirmation.
             Dim response As HttpListenerResponse = context.Response
             ' Construct a minimal response string.
-            Dim responseString As String = "<HTML onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><BODY onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><img style=""position:absolute;top:0;left:0;width:100%;height:100%"" src=""http://duopenmarket.xyz/assets/images/bg2.png""/><div style=""position:absolute;top:15%;left:27%;width:50%;height:35%;color:#FFFFFF;font-family:'Courier New';font-size:24px""><center><H1>DUOpenMarket - Authentication Successful</H1><br><br><br><br><H1>This window should close automatically.<br>You may close it if it does not.</H1></center></div></BODY></HTML>"
+            Dim responseString As String = "<HTML onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><BODY onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><script>setTimeout(function() {window.close();}, 50);</script><img style=""position:absolute;top:0;left:0;width:100%;height:100%"" src=""http://duopenmarket.xyz/assets/images/bg2.png""/><div style=""position:absolute;top:15%;left:27%;width:50%;height:35%;color:#FFFFFF;font-family:'Courier New';font-size:24px""><center><H1>DUOpenMarket - Authentication Successful</H1><br><br><br><br><H1>This window should close automatically.<br>You may close it if it does not.</H1></center></div></BODY></HTML>"
             Dim buffer As Byte() = System.Text.Encoding.UTF8.GetBytes(responseString)
             ' Get the response OutputStream and write the response to it.
             response.ContentLength64 = buffer.Length
@@ -3993,20 +4319,256 @@ Public Class Form1
 
     Private Sub ConnectionTimer_Tick(sender As Object, e As EventArgs) Handles ConnectionTimer.Tick
         If API_Discord_Auth_Code IsNot Nothing Then
-            If LogDirTextBox.Text.Trim.Length = 0 Then
-                MsgBox("Invalid log path supplied for file monitoring.")
+            If API_LogfileDirectory.Trim.Length = 0 Then
                 NewEventMsg("Invalid log path supplied for file monitoring.")
-            Else
-                API_Connected = True
-                NewEventMsg("Obtained Authorization code. Login successful.")
-                ConnectionStyling()
-                NewEventMsg("Started Log Monitor.")
-                API_LogFile = GetNewestLogFile(API_LogfileDirectory)
-                NewEventMsg("Current Log File: " & API_LogFile)
                 ConnectionTimer.Stop()
-                ReadFileLines(API_LogFile)
-                OperationTimer.Start()
+                FileSystemWatcher1.EnableRaisingEvents = False
+            Else
+                If API_Discord_Auth_Code = "=access_denied" Then
+                    NewEventMsg("The user cancelled authorization through discord.")
+                    ConnectionTimer.Stop()
+                    FileSystemWatcher1.EnableRaisingEvents = False
+                Else
+                    API_Connected = True
+                    LoginPanel.Visible = False
+                    NewEventMsg("Obtained Authorization code. Login successful.")
+                    ConnectionStyling()
+                    FileSystemWatcher1.Filter = API_LogfileDirectory.Trim
+                    FileSystemWatcher1.Path = API_LogfileDirectory.Trim
+                    FileSystemWatcher1.NotifyFilter =
+                IO.NotifyFilters.CreationTime Or IO.NotifyFilters.LastWrite Or
+                IO.NotifyFilters.LastAccess Or IO.NotifyFilters.FileName
+                    FileSystemWatcher1.EnableRaisingEvents = True
+                    NewEventMsg("Started Log Monitor.")
+                    API_LogFile = GetNewestLogFile(API_LogfileDirectory)
+                    NewEventMsg("Current Log File: " & API_LogFile)
+                    ConnectionTimer.Stop()
+                    ReadFileLines(API_LogFile)
+                    OperationTimer.Start()
+                End If
             End If
         End If
+    End Sub
+
+    Private Sub AdvFilteringToggleButton_Click(sender As Object, e As EventArgs) Handles AdvFilteringToggleButton.Click
+        If ShowFilters = False Then
+            AdvFilteringToggleButton.Text = "Hide Advanced Filtering"
+            ItemTree.Visible = False
+            ItemTree.Enabled = False
+            ItemTreeSearch.Visible = False
+            ItemTreeSearch.Enabled = False
+            FilterOrdersButton.Visible = True
+            FilterResetButton.Visible = True
+            FilterPanel.Visible = True
+            FilterPanel.BringToFront()
+            ShowFilters = True
+        Else
+            AdvFilteringToggleButton.Text = "Show Advanced Filtering"
+            ItemTree.Visible = True
+            ItemTree.Enabled = True
+            ItemTreeSearch.Visible = True
+            ItemTreeSearch.Enabled = True
+            FilterOrdersButton.Visible = False
+            FilterResetButton.Visible = False
+            FilterPanel.Visible = False
+            FilterPanel.SendToBack()
+            ShowFilters = False
+        End If
+    End Sub
+
+    Private Sub FilterOrdersButton_Click(sender As Object, e As EventArgs) Handles FilterOrdersButton.Click
+        ResetAdvFilters()
+        If FilterPriceMinBox.Text IsNot "" And FilterPriceMinBox.Text IsNot Nothing Then
+            FilterPriceMin = CLng(FilterPriceMinBox.Text)
+        End If
+        If FilterPriceMaxBox.Text IsNot "" And FilterPriceMaxBox.Text IsNot Nothing Then
+            FilterPriceMax = CLng(FilterPriceMaxBox.Text)
+        End If
+        If FilterQuantityMinBox.Text IsNot "" And FilterQuantityMinBox.Text IsNot Nothing Then
+            FilterQuantityMin = CLng(FilterQuantityMinBox.Text)
+        End If
+        If FilterQuantityMaxBox.Text IsNot "" And FilterQuantityMaxBox.Text IsNot Nothing Then
+            FilterQuantityMax = CLng(FilterQuantityMaxBox.Text)
+        End If
+        For Each selectedMarketNode As TreeNode In AdvMarketTreeView.Nodes
+            If selectedMarketNode.Checked = True Then
+                Dim NewItem2 As FilterMarketListStructure
+                NewItem2.Name = selectedMarketNode.Name
+                NewItem2.Text = selectedMarketNode.Text
+                FilterMarketList.Add(NewItem2)
+            End If
+        Next selectedMarketNode
+        For Each selectedItemNode As TreeNode In AdvItemTreeView.Nodes
+            If selectedItemNode.Checked = True Then
+                Dim NewItem3 As FilterItemListStructure
+                NewItem3.Name = selectedItemNode.Name
+                NewItem3.Text = selectedItemNode.Text
+                FilterItemList.Add(NewItem3)
+            End If
+        Next selectedItemNode
+        ClearDataTables()
+        For Each filterItem As FilterItemListStructure In FilterItemList
+            For Each filterMarket As FilterMarketListStructure In FilterMarketList
+                If API_Connected = True Then
+                    Dim queryitemid As String = filterItem.Name.Remove(0, 4)
+                    NewEventMsg("Sending Read request for: " & filterItem.Text & " - ID: " & queryitemid)
+                    If filterItem.Name IsNot "" Then
+                        If filterItem.Name.StartsWith("item") Then
+                            If filterItem.Name = "itemnil" Then
+                                NewEventMsg("Unknown ID for item: " & filterItem.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
+                            Else
+                                NumberOfReads = NumberOfReads + 1
+                                Dim TempResponse4 As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/read?itemid=" & queryitemid & "&marketid=" & filterMarket.Name) ' & filterstring
+                                If TempResponse4 Is Nothing Then
+                                    NewEventMsg("Request failed!")
+                                Else
+                                    If TempResponse4.StartsWith("The remote server returned an error") Then
+                                        NewEventMsg(TempResponse4)
+                                    Else
+                                        UpdateSelectedItem(filterItem.Text)
+                                        If TempResponse4 = "false" Then
+                                            NewEventMsg("Server returned no data for item.")
+                                        Else
+                                            Dim first As Boolean = True
+                                            While TempResponse4.Length > 48
+                                                Dim orderid3 As String
+                                                If first = True Then
+                                                    orderid3 = TempResponse4.Remove(0, 2)
+                                                    orderid3 = orderid3.Remove(orderid3.IndexOf(""":"))
+                                                    first = False
+                                                Else
+                                                    orderid3 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                                    orderid3 = orderid3.Remove(orderid3.IndexOf(""""))
+                                                    TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                                End If
+                                                Dim marketid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                marketid3 = marketid3.Remove(marketid3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim itemid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                itemid3 = itemid3.Remove(itemid3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim quantity3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                quantity3 = quantity3.Remove(quantity3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim ordertype3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                ordertype3 = ordertype3.Remove(ordertype3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim expdate3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                expdate3 = expdate3.Remove(expdate3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim lastupdated3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                lastupdated3 = lastupdated3.Remove(lastupdated3.IndexOf(""","""))
+                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                Dim price3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                price3 = price3.Remove(price3.IndexOf(""","""))
+                                                'Price values that come in from logs or the API, need to be divided by 100. EG 327189 is actually 3271.89, and should be displayed that way
+                                                Dim price3String As String
+                                                If price3.Length > 2 Then
+                                                    Dim price3temp As String = price3.Remove(0, price3.Length - 2)
+                                                    price3String = price3.Remove(price3.Length - 2, 2) & "." & price3temp
+                                                Else
+                                                    price3String = "." & price3
+                                                End If
+                                                If ordertype3 = 1 Then
+                                                    Dim pass As Boolean = True
+                                                    If Not FilterPriceMin = Nothing Then
+                                                        If Convert.ToInt64(price3) < FilterPriceMin Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterPriceMax = Nothing Then
+                                                        If Convert.ToInt64(price3) > FilterPriceMax Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterQuantityMin = Nothing Then
+                                                        If Convert.ToInt64(quantity3) < FilterQuantityMin Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterQuantityMax = Nothing Then
+                                                        If Convert.ToInt64(quantity3) > FilterQuantityMax Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If pass = True Then
+                                                        API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
+                                                        API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), filterItem.Text)
+                                                    End If
+                                                End If
+                                                If ordertype3 = 2 Then
+                                                    If quantity3.StartsWith("-") Then
+                                                        quantity3 = quantity3.Remove(0, 1)
+                                                    End If
+                                                    Dim pass As Boolean = True
+                                                    If Not FilterPriceMin = Nothing Then
+                                                        If Convert.ToInt64(price3) < FilterPriceMin Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterPriceMax = Nothing Then
+                                                        If Convert.ToInt64(price3) > FilterPriceMax Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterQuantityMin = Nothing Then
+                                                        If Convert.ToInt64(quantity3) < FilterQuantityMin Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If Not FilterQuantityMax = Nothing Then
+                                                        If Convert.ToInt64(quantity3) > FilterQuantityMax Then
+                                                            pass = False
+                                                        End If
+                                                    End If
+                                                    If pass = True Then
+                                                        API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
+                                                        API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), filterItem.Text)
+                                                    End If
+                                                End If
+                                            End While
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                Else
+                    NewEventMsg("Cannot send Read Request - Not logged in.")
+                End If
+            Next filterMarket
+        Next filterItem
+        ResetDataTables()
+    End Sub
+
+    Private Sub ResetAdvFilters()
+        FilterMarketList.Clear()
+        FilterItemList.Clear()
+        FilterPriceMin = Nothing
+        FilterPriceMax = Nothing
+        FilterQuantityMin = Nothing
+        FilterQuantityMax = Nothing
+    End Sub
+
+    Private Sub ResetAdvFilterUI()
+        ResetAdvFilters()
+        FilterPriceMinBox.Text = ""
+        FilterPriceMaxBox.Text = ""
+        FilterQuantityMinBox.Text = ""
+        FilterQuantityMaxBox.Text = ""
+        For Each selectedMarketNode2 As TreeNode In AdvMarketTreeView.Nodes
+            selectedMarketNode2.Checked = False
+        Next selectedMarketNode2
+        For Each selectedItemNode2 As TreeNode In AdvItemTreeView.Nodes
+            selectedItemNode2.Checked = False
+        Next selectedItemNode2
+    End Sub
+
+    Private Sub FilterResetButton_Click(sender As Object, e As EventArgs) Handles FilterResetButton.Click
+        ResetAdvFilterUI()
+    End Sub
+
+    Private Sub SettingsButton_Click(sender As Object, e As EventArgs) Handles SettingsButton.Click
+
     End Sub
 End Class
