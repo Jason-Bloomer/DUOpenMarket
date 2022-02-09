@@ -36,7 +36,7 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with: 
               upload_url: ${{ steps.create_release.outputs.upload_url }}
-              asset_path: "./DU Market API/bin/Release/app.publish/DUOpenMarket Client.exe"
+              asset_path: "./DUOpenMarket/DUOpenMarket Client.exe"
               asset_name: "DUOpenMarket Client.exe"
               asset_content_type: application/zip
         - name: Publish release
