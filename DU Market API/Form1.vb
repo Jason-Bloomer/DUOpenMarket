@@ -33,6 +33,7 @@ Public Class Form1
     Dim WindowNormalBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
 
+    Dim API_Client_Version As String = "0.42.1"
     Dim API_Connected As Boolean = False
     Dim API_Username As String = ""
     Dim API_Password As String = ""
@@ -56,11 +57,14 @@ Public Class Form1
     Dim LastFileModified As String = ""
     Dim NumberofModifications As Integer = 0
     Dim LogfileLastOffset As Long
+    Dim LastItemId As String = ""
+    Dim UniqueItemIds As New List(Of String)
     Dim NumberOfCreates As Integer = 0
     Dim NumberOfReads As Integer = 0
     Dim NumberOfUpdates As Integer = 0
     Dim ShowRawData As Boolean = False
 
+    Dim SearchUserTyping As Boolean = False
     Dim ShowFilters As Boolean = False
     Dim FilterPriceMin As Long
     Dim FilterPriceMax As Long
@@ -79,10 +83,19 @@ Public Class Form1
 
     Dim TempResponse As String
 
-    Dim LastItemId As String = ""
+    Public Setting_SaveWindowLoc As String
+    Public Setting_SaveGridLayout As String
 
-    Dim UniqueItemIds As New List(Of String)
-
+    Dim savedSellOrdrGridCol1W As String
+    Dim savedSellOrdrGridCol2W As String
+    Dim savedSellOrdrGridCol3W As String
+    Dim savedSellOrdrGridCol4W As String
+    Dim savedSellOrdrGridCol5W As String
+    Dim savedBuyOrdrGridCol1W As String
+    Dim savedBuyOrdrGridCol2W As String
+    Dim savedBuyOrdrGridCol3W As String
+    Dim savedBuyOrdrGridCol4W As String
+    Dim savedBuyOrdrGridCol5W As String
 
     '############################## DLL Imports ##############################
     <DllImport("kernel32")>
@@ -116,60 +129,119 @@ Public Class Form1
     End Function
 
     Private Sub LoadPrefsFromIni()
-        Dim savedUsername As String = ""
-        Dim savedPassword As String = ""
-        Dim savedWindowState As String = ""
-        Dim savedWindowLocX As String = ""
-        Dim savedWindowLocY As String = ""
-        Dim savedWindowSizeW As String = ""
-        Dim savedWindowSizeH As String = ""
-        savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        If savedWindowState IsNot "" And savedWindowState IsNot Nothing Then
-            WindowMaximizedState = CStr(savedWindowState)
-        End If
-        If savedWindowSizeW IsNot "" And savedWindowSizeW IsNot Nothing Then
-            If savedWindowSizeH IsNot "" And savedWindowSizeH IsNot Nothing Then
-                Dim newbnds As Size = New Size()
-                newbnds.Width = CInt(savedWindowSizeW)
-                newbnds.Height = CInt(savedWindowSizeH)
-                MainPanel.Parent.Size = newbnds
+        Dim savedWindowState As String
+        Dim savedWindowLocX As String
+        Dim savedWindowLocY As String
+        Dim savedWindowSizeW As String
+        Dim savedWindowSizeH As String
+        Dim savedAbtWindowLocX As String
+        Dim savedAbtWindowLocY As String
+        Dim savedSetWindowLocX As String
+        Dim savedSetWindowLocY As String
+        Setting_SaveWindowLoc = GetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        Setting_SaveGridLayout = GetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+        If Setting_SaveWindowLoc = "True" Then
+            savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedAbtWindowLocX = GetIniValue("Application", "AbtWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedAbtWindowLocY = GetIniValue("Application", "AbtWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSetWindowLocX = GetIniValue("Application", "SetWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSetWindowLocY = GetIniValue("Application", "SetWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            If savedWindowState IsNot "" And savedWindowState IsNot Nothing Then
+                WindowMaximizedState = CBool(savedWindowState)
+            End If
+            If savedWindowSizeW IsNot "" And savedWindowSizeW IsNot Nothing Then
+                If savedWindowSizeH IsNot "" And savedWindowSizeH IsNot Nothing Then
+                    Dim newbnds As Size = New Size()
+                    newbnds.Width = CInt(savedWindowSizeW)
+                    newbnds.Height = CInt(savedWindowSizeH)
+                    MainPanel.Parent.Size = newbnds
+                End If
+            End If
+            If savedWindowLocX IsNot "" And savedWindowLocX IsNot Nothing Then
+                If savedWindowLocY IsNot "" And savedWindowLocY IsNot Nothing Then
+                    Dim newpoint As New Point
+                    newpoint.X = CInt(savedWindowLocX)
+                    newpoint.Y = CInt(savedWindowLocY)
+                    MainPanel.Parent.Location = newpoint
+                End If
+            End If
+            If savedAbtWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
+                If savedAbtWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
+                    Dim newpoint As New Point
+                    newpoint.X = CInt(savedAbtWindowLocX)
+                    newpoint.Y = CInt(savedAbtWindowLocY)
+                    AboutForm.Location = newpoint
+                End If
+            End If
+            If savedSetWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
+                If savedSetWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
+                    Dim newpoint As New Point
+                    newpoint.X = CInt(savedSetWindowLocX)
+                    newpoint.Y = CInt(savedSetWindowLocY)
+                    SettingsForm.Location = newpoint
+                End If
             End If
         End If
-        If savedWindowLocX IsNot "" And savedWindowLocX IsNot Nothing Then
-            If savedWindowLocY IsNot "" And savedWindowLocY IsNot Nothing Then
-                Dim newpoint As New Point
-                newpoint.X = CInt(savedWindowLocX)
-                newpoint.Y = CInt(savedWindowLocY)
-                MainPanel.Parent.Location = newpoint
-            End If
+        If Setting_SaveGridLayout = "True" Then
+            savedSellOrdrGridCol1W = GetIniValue("Application", "SellOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSellOrdrGridCol2W = GetIniValue("Application", "SellOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSellOrdrGridCol3W = GetIniValue("Application", "SellOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSellOrdrGridCol4W = GetIniValue("Application", "SellOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedSellOrdrGridCol5W = GetIniValue("Application", "SellOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedBuyOrdrGridCol1W = GetIniValue("Application", "BuyOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedBuyOrdrGridCol2W = GetIniValue("Application", "BuyOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedBuyOrdrGridCol3W = GetIniValue("Application", "BuyOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedBuyOrdrGridCol4W = GetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            savedBuyOrdrGridCol5W = GetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
         End If
     End Sub
 
     Private Sub SavePrefsToIni()
-        SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(WindowMaximizedState))
-        SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
-        SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
-        SetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Size.Width))
-        SetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Size.Height))
+        SetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
+        SetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveGridLayout))
+        If Setting_SaveWindowLoc = "True" Then
+            SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(WindowMaximizedState))
+            SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
+            SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
+            SetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Parent.Size.Width))
+            SetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Parent.Size.Height))
+            SetIniValue("Application", "AbtWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(AboutForm.Location.X))
+            SetIniValue("Application", "AbtWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(AboutForm.Location.Y))
+            SetIniValue("Application", "SetWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SettingsForm.Location.X))
+            SetIniValue("Application", "SetWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SettingsForm.Location.Y))
+        End If
+        If Setting_SaveGridLayout = "True" Then
+            SetIniValue("Application", "SellOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SellOrderGridViewRaw.Columns(0).Width))
+            SetIniValue("Application", "SellOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SellOrderGridViewRaw.Columns(1).Width))
+            SetIniValue("Application", "SellOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SellOrderGridViewRaw.Columns(2).Width))
+            SetIniValue("Application", "SellOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SellOrderGridViewRaw.Columns(3).Width))
+            SetIniValue("Application", "SellOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SellOrderGridViewRaw.Columns(4).Width))
+            SetIniValue("Application", "BuyOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(0).Width))
+            SetIniValue("Application", "BuyOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(1).Width))
+            SetIniValue("Application", "BuyOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(2).Width))
+            SetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(3).Width))
+            SetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(4).Width))
+        End If
     End Sub
 
 
     '############################## Form Load ##############################
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CenterLoginElements()
+        CheckForUpdates()
         TimeStampInt()
         LoadPrefsFromIni()
+        CenterLoginElements()
         API_LogfileDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
         FileSystemWatcher1.IncludeSubdirectories = False
         FileSystemWatcher1.EnableRaisingEvents = False
         InitDataTables()
         InitItemList()
-        InitMarketTable()
         SetupGridViewStyling()
+        InitMarketTable()
         InitAdvMarketTree()
         NewEventMsg("Initialized.")
     End Sub
@@ -195,26 +267,52 @@ Public Class Form1
     End Structure
 
     Private Sub SetupGridViewStyling()
-        Dim col1 As DataGridViewColumn = SellOrderGridViewRaw.Columns(0)
-        Dim col2 As DataGridViewColumn = SellOrderGridViewRaw.Columns(1)
-        Dim col3 As DataGridViewColumn = SellOrderGridViewRaw.Columns(2)
-        Dim col4 As DataGridViewColumn = SellOrderGridViewRaw.Columns(3)
-        Dim col5 As DataGridViewColumn = SellOrderGridViewRaw.Columns(4)
-        Dim col6 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(0)
-        Dim col7 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(1)
-        Dim col8 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(2)
-        Dim col9 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(3)
-        Dim col10 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(4)
-        col1.Width = 194
-        col2.Width = 194
-        col3.Width = 194
-        col4.Width = 194
-        col5.Width = 194
-        col6.Width = 194
-        col7.Width = 194
-        col8.Width = 194
-        col9.Width = 194
-        col10.Width = 194
+        If savedSellOrdrGridCol1W = Nothing And savedSellOrdrGridCol2W = Nothing And savedSellOrdrGridCol3W = Nothing And savedSellOrdrGridCol4W = Nothing And savedSellOrdrGridCol5W = Nothing Then
+            Dim col1 As DataGridViewColumn = SellOrderGridViewRaw.Columns(0)
+            Dim col2 As DataGridViewColumn = SellOrderGridViewRaw.Columns(1)
+            Dim col3 As DataGridViewColumn = SellOrderGridViewRaw.Columns(2)
+            Dim col4 As DataGridViewColumn = SellOrderGridViewRaw.Columns(3)
+            Dim col5 As DataGridViewColumn = SellOrderGridViewRaw.Columns(4)
+            col1.Width = 194
+            col2.Width = 194
+            col3.Width = 194
+            col4.Width = 194
+            col5.Width = 194
+        Else
+            Dim col1 As DataGridViewColumn = SellOrderGridViewRaw.Columns(0)
+            Dim col2 As DataGridViewColumn = SellOrderGridViewRaw.Columns(1)
+            Dim col3 As DataGridViewColumn = SellOrderGridViewRaw.Columns(2)
+            Dim col4 As DataGridViewColumn = SellOrderGridViewRaw.Columns(3)
+            Dim col5 As DataGridViewColumn = SellOrderGridViewRaw.Columns(4)
+            col1.Width = savedSellOrdrGridCol1W
+            col2.Width = savedSellOrdrGridCol2W
+            col3.Width = savedSellOrdrGridCol3W
+            col4.Width = savedSellOrdrGridCol4W
+            col5.Width = savedSellOrdrGridCol5W
+        End If
+        If savedBuyOrdrGridCol1W = Nothing And savedBuyOrdrGridCol2W = Nothing And savedBuyOrdrGridCol3W = Nothing And savedBuyOrdrGridCol4W = Nothing And savedBuyOrdrGridCol5W = Nothing Then
+            Dim col1 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(0)
+            Dim col2 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(1)
+            Dim col3 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(2)
+            Dim col4 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(3)
+            Dim col5 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(4)
+            col1.Width = 194
+            col2.Width = 194
+            col3.Width = 194
+            col4.Width = 194
+            col5.Width = 194
+        Else
+            Dim col1 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(0)
+            Dim col2 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(1)
+            Dim col3 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(2)
+            Dim col4 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(3)
+            Dim col5 As DataGridViewColumn = BuyOrderGridViewRaw.Columns(4)
+            col1.Width = savedBuyOrdrGridCol1W
+            col2.Width = savedBuyOrdrGridCol2W
+            col3.Width = savedBuyOrdrGridCol3W
+            col4.Width = savedBuyOrdrGridCol4W
+            col5.Width = savedBuyOrdrGridCol5W
+        End If
     End Sub
 
     Private Sub TimeStampInt()
@@ -3436,9 +3534,106 @@ Public Class Form1
         ItemTree.Nodes.Add("item726551231", "Cannon Heavy Thermic Ammo XS")
         ItemTree.Nodes.Add("item147467923", "Cannon Defense Thermic Ammo XS")
         ItemTree.Nodes.Add("item370579567", "Cannon Agile Thermic Ammo XS")
+        ItemTree.Nodes.Add("item2542033786", "Metal Throne")
+        ItemTree.Nodes.Add("item392866463", "Golden Throne")
+        ItemTree.Nodes.Add("item536277576", "Obsidian Throne")
     End Sub
 
+    Private Sub CheckForUpdates()
+        Dim UpdateCheckCurrent As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/version?").Trim("""")
+        If UpdateCheckCurrent = API_Client_Version Then
+            'Do nothing, we are up to date.
+        Else
+            'Current version and running version do not match.
+            'We need to now get the minimum supported client version from the server, and check if the running version is greater than that.
+            Dim forceupdflag As Boolean = False
+            Dim UpdateCheckMinimum As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/minversion?").Trim("""")
+            Dim versubsself() As String = API_Client_Version.Split(".")
+            Dim versubs() As String = UpdateCheckMinimum.Split(".")
+            If CInt(versubs(0)) > CInt(versubsself(0)) Then
+                forceupdflag = True
+            End If
+            If CInt(versubs(1)) > CInt(versubsself(1)) Then
+                forceupdflag = True
+            End If
+            If CInt(versubs(2)) > CInt(versubsself(2)) And CInt(versubs(1)) >= CInt(versubsself(1)) Then
+                forceupdflag = True
+            End If
+            If forceupdflag = True Then
+                RequireUpdate()
+            Else
+                'Running version is above minimum server requirements, but is still not the latest.
+                LoginUpdateBanner.Visible = True
+                UpdateButton1.Visible = True
+                UpdateButton2.Visible = True
+            End If
+        End If
+    End Sub
+
+    Private Sub RequireUpdate()
+        DiscordLoginButton.Enabled = False
+        DiscordLoginButton2.Enabled = False
+        DiscordLoginButton.Visible = False
+        DiscordLoginButton2.Visible = False
+        LoginUpdateBanner.BackColor = Color.FromArgb(255, 215, 65, 65)
+        LoginUpdateBanner.Visible = True
+        UpdateButton1.Visible = True
+        UpdateButton2.Visible = True
+        LoginUpdateText.Text = "An update for DUOpenMarket is required. Download?"
+    End Sub
+
+    Private Sub UpdateButton1_Click(sender As Object, e As EventArgs) Handles UpdateButton1.Click
+        'Simple self-update subroutine. First we'll get the binary contents from github, and save it to a temporary text file.
+        'If the download isnt interrupted and succeeds, we will need to close the current instance of the program and launch the new one after renaming it to an exe.
+        'The easiest way to do this is with a simple batch script, which is created via the streamwriter.
+        'In batch, there's no simple command to wait a period of time without requiring the user to press a key...
+        'To get around this we can use "Ping localhost -n X >NUL" where X is the number of seconds we want to wait, +1.
+        'This is necessary to make sure the download and disk operations are complete before proceeding to the next command in the batch file.
+        'May not be adequate on slower systems. Testing required.
+        My.Computer.FileSystem.WriteAllBytes(My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp", GetURLDataBin("https://github.com/Jason-Bloomer/DUOpenMarket/releases/download/v0.41.1/DUOpenMarket.Client.exe"), False)
+        Dim My_Process As New Process()
+        Dim My_Process_Info As New ProcessStartInfo()
+        Dim strPath As String = My.Application.Info.DirectoryPath & "\DUOM-update.bat"
+        Dim swDestruct As StreamWriter = New StreamWriter(strPath)
+        swDestruct.WriteLine("PING localhost -n 3 >NUL && taskkill /F /IM ""DUOpenMarket Client.exe"" && PING localhost -n 6 >NUL && del """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe"" && ren """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp"" """ & "DUOpenMarket Client.exe"" && del """ & strPath & """ && PING localhost -n 3 >NUL  && """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe""")
+        swDestruct.Close()
+        My_Process_Info.FileName = strPath
+        My_Process_Info.CreateNoWindow = True
+        My_Process_Info.UseShellExecute = False
+        My_Process.EnableRaisingEvents = False
+        My_Process.StartInfo = My_Process_Info
+        My_Process.Start()
+    End Sub
+
+    Private Sub UpdateButton2_Click(sender As Object, e As EventArgs) Handles UpdateButton2.Click
+        Dim manualdownload As Process = Process.Start("https://github.com/Jason-Bloomer/DUOpenMarket/releases/")
+    End Sub
+
+    Public Function GetURLDataBin(ByVal URL As String, Optional ByRef UserName As String = "", Optional ByRef Password As String = "") As Byte()
+        Dim Req As HttpWebRequest
+        Dim SourceStream As System.IO.Stream
+        Dim Response As HttpWebResponse
+        Try
+            Req = HttpWebRequest.Create(URL)
+            Response = Req.GetResponse()
+            SourceStream = Response.GetResponseStream()
+            Dim Buffer(4096) As Byte, BlockSize As Integer
+            Dim TempStream As New MemoryStream
+            Do
+                BlockSize = SourceStream.Read(Buffer, 0, 4096)
+                If BlockSize > 0 Then TempStream.Write(Buffer, 0, BlockSize)
+            Loop While BlockSize > 0
+            Return TempStream.ToArray()
+        Catch ex As Exception
+            NewEventMsg(ex.Message)
+        Finally
+            SourceStream.Close()
+            Response.Close()
+        End Try
+    End Function
+
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        AboutForm.Label6.Text = "Desktop Client v" & API_Client_Version
         AboutForm.Show()
     End Sub
 
@@ -3607,6 +3802,7 @@ Public Class Form1
             temp5.X = (LoginPanel.Size.Width / 2) - (DiscordLoginButton2.Size.Width / 2)
             temp5.Y = ((LoginPanel.Size.Height / 2) - (DiscordLoginButton2.Size.Height / 2)) * 1.6
             DiscordLoginButton2.Location = temp5
+            LoginLabel2.Text = "Desktop Client - v" + API_Client_Version
         End If
     End Sub
 
@@ -3709,11 +3905,15 @@ Public Class Form1
         End If
         If inputstr = "lastid" Then
             match = True
-            If UniqueItemIds.Count > 0 Then
-                NewEventMsg("Last parsed item ID: " & UniqueItemIds(UniqueItemIds.Last))
-            Else
-                NewEventMsg("No logs have been parsed, no ID's have been seen.")
-            End If
+            Try
+                If UniqueItemIds.Count > 0 Then
+                    NewEventMsg("Last parsed item ID: " & UniqueItemIds(UniqueItemIds.Last))
+                Else
+                    NewEventMsg("No logs have been parsed, no ID's have been seen.")
+                End If
+            Catch ex As Exception
+                NewEventMsg(ex.Message)
+            End Try
         End If
         If match = False Then
             NewEventMsg("Unknown command. Try again or type ""help"" for commands.")
@@ -3943,7 +4143,7 @@ Public Class Form1
                     Dim price As String = TempResponse2.Remove(0, TempResponse2.IndexOf(""":""") + 3)
                     price = price.Remove(price.IndexOf(""","""))
                     If lastupdated2 = API_Log_Queue(0).lastupdate Then
-                        'These orders have the same update date, but different data... This shouldn't be possible, and suggests tampering, but let's just ignore this case for now.
+                        'These orders have the same update date, we would need to compare it to the data in the queue to find out if they are different. But that would be very costly. Let's for now, assume the server already has the correct data and do nothing.
                     Else
                         Dim DateComparison1 As String = API_Log_Queue(0).lastupdate.Remove(0, API_Log_Queue(0).lastupdate.IndexOf(" "))
                         Dim DateComparison2 As String = lastupdated2.Remove(0, lastupdated2.IndexOf(" "))
@@ -4129,37 +4329,47 @@ Public Class Form1
 
     Private Sub ItemSearchTextBox_TextChanged(sender As Object, e As EventArgs) Handles ItemSearchTextBox.TextChanged
         If ItemSearchTextBox.Text IsNot "" And ItemSearchTextBox.Text IsNot Nothing And ItemSearchTextBox.Text IsNot "Search..." Then
-            If ShowFilters = True Then
-                AdvItemTreeView.Nodes.Clear()
-                For Each tn As TreeNode In ItemTree.Nodes
-                    If tn.Name.StartsWith("node") Then
-                        'This is a category node, do not add it to list
-                    Else
-                        Dim compstr As String = tn.Text
-                        If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
-                            AdvItemTreeView.Nodes.Add(tn.Name, tn.Text)
-                        End If
-                    End If
-                Next tn
-            Else
-                ItemTreeSearch.Nodes.Clear()
-                ItemTreeSearch.Visible = True
-                ItemTree.Visible = False
-                For Each tn As TreeNode In ItemTree.Nodes
-                    If tn.Name.StartsWith("node") Then
-                        'This is a category node, do not add it to list
-                    Else
-                        Dim compstr As String = tn.Text
-                        If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
-                            ItemTreeSearch.Nodes.Add(tn.Name, tn.Text)
-                        End If
-                    End If
-                Next tn
-            End If
+            SearchTimer.Stop()
+            SearchTimer.Start()
         Else
             ItemTreeSearch.Visible = False
             ItemTree.Visible = True
         End If
+    End Sub
+
+    Private Sub SearchItems()
+        If ShowFilters = True Then
+            AdvItemTreeView.Nodes.Clear()
+            For Each tn As TreeNode In ItemTree.Nodes
+                If tn.Name.StartsWith("node") Then
+                    'This is a category node, do not add it to list
+                Else
+                    Dim compstr As String = tn.Text
+                    If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
+                        AdvItemTreeView.Nodes.Add(tn.Name, tn.Text)
+                    End If
+                End If
+            Next tn
+        Else
+            ItemTreeSearch.Nodes.Clear()
+            ItemTreeSearch.Visible = True
+            ItemTree.Visible = False
+            For Each tn As TreeNode In ItemTree.Nodes
+                If tn.Name.StartsWith("node") Then
+                    'This is a category node, do not add it to list
+                Else
+                    Dim compstr As String = tn.Text
+                    If compstr.ToLower.Contains(ItemSearchTextBox.Text.ToLower) Then
+                        ItemTreeSearch.Nodes.Add(tn.Name, tn.Text)
+                    End If
+                End If
+            Next tn
+        End If
+    End Sub
+
+    Private Sub SearchTimer_Tick(sender As Object, e As EventArgs) Handles SearchTimer.Tick
+        SearchItems()
+        SearchTimer.Stop()
     End Sub
 
     Private Sub ClearSearchBox() Handles ItemSearchTextBox.GotFocus
@@ -4569,6 +4779,10 @@ Public Class Form1
     End Sub
 
     Private Sub SettingsButton_Click(sender As Object, e As EventArgs) Handles SettingsButton.Click
+        SettingsForm.Show()
+    End Sub
 
+    Private Sub BuyOrderGridViewRaw_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles BuyOrderGridViewRaw.CellClick
+        SelectedItemLabel.Text = BuyOrderGridViewRaw.Rows(e.RowIndex).Cells(e.ColumnIndex).Value
     End Sub
 End Class

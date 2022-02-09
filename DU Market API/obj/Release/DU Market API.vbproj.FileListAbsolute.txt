@@ -15,3 +15,4 @@ E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMa
 E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.exe.manifest
 E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.application
 E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.AboutForm.resources
+E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.SettingsForm.resources

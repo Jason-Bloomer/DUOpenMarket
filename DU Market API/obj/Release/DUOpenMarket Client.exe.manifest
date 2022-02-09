@@ -43,24 +43,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DUOpenMarket Client.exe" size="1497088">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DUOpenMarket Client.exe" size="1512448">
       <assemblyIdentity name="DUOpenMarket Client" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>mLF8b2geyM7kNy0ZGVGl4JXZ1AT2+kXluu45Qqyj1Mk=</dsig:DigestValue>
+        <dsig:DigestValue>yxkV9yFbgBBRbqJy3KyiMjJntdlEx6Ain8LKP83kZlQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="DUOpenMarket Client.exe.config" size="305">
+  <file name="DUOpenMarket Client.exe.config" size="298">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Tq6n6/KMQg12A1Gq8bXJanI5zkKYFTJuqKu7sADAcnI=</dsig:DigestValue>
+      <dsig:DigestValue>r0lcqBm7OxGhTtEM6PcRoplaGsZoJGBmQDBpHpqmp2c=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Resources\bg2.png" size="3382">

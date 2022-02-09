@@ -4,17 +4,17 @@
   <description asmv2:publisher="Jason Bloomer" asmv2:product="DUOpenMarket Desktop Client" asmv2:supportUrl="http://duopenmarket.xyz/" co.v1:errorReportUrl="http://duopenmarket.xyz/" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="DUOpenMarket Client.exe.manifest" size="4635">
+    <dependentAssembly dependencyType="install" codebase="DUOpenMarket Client.exe.manifest" size="8489">
       <assemblyIdentity name="DUOpenMarket Client.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="en" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3NGpirSFUl9zZg0M2tKlmD2aJBRjyv0PZHnbKvXpPVI=</dsig:DigestValue>
+        <dsig:DigestValue>syBpbW3uUDK02g3l9IWfkwLdXJcLcpOqoClldwoBvXw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

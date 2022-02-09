@@ -4,7 +4,7 @@
   <description asmv2:publisher="Jason Bloomer" asmv2:product="DUOpenMarket Desktop Client" asmv2:supportUrl="http://duopenmarket.xyz/" co.v1:errorReportUrl="http://duopenmarket.xyz/" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="DUOpenMarket Client.exe.manifest" size="5861">
@@ -14,7 +14,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>EOd+qIco0Q3AhqE43K9o+hPSla8auw2PqHSkgQpJwJk=</dsig:DigestValue>
+        <dsig:DigestValue>dEUGjltioNuBAgjfKz2IuB7rNKDBRusFkfWniQHOCGo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

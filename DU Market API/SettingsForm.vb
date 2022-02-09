@@ -1,4 +1,4 @@
-﻿Public Class AboutForm
+﻿Public Class SettingsForm
     Dim Go As Boolean
     Dim LeftSet As Boolean
     Dim TopSet As Boolean
@@ -9,33 +9,17 @@
     Dim HoldWidth As Integer
     Dim HoldHeight As Integer
 
-    Private Sub AboutForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    Private Sub DiscordLoginButton_Click(sender As Object, e As EventArgs) Handles DiscordLoginButton.Click
-        Process.Start("http://duopenmarket.xyz")
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Process.Start("https://github.com/Jason-Bloomer/DUOpenMarket")
-    End Sub
-
-    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        Me.Close()
-    End Sub
-
-    Private Sub TitleBar_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles AboutTitleBar.MouseUp
+    Private Sub TitleBar_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseUp
         Go = False
         LeftSet = False
         TopSet = False
     End Sub
 
-    Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles AboutTitleBar.MouseDown
+    Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseDown
         Go = True
     End Sub
 
-    Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles AboutTitleBar.MouseMove
+    Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseMove
         If Go = True Then
             HoldLeft = (Control.MousePosition.X)
             HoldTop = (Control.MousePosition.Y)
@@ -53,5 +37,13 @@
             sender.Parent.Location = newpoint
             sender.Parent.Refresh()
         End If
+    End Sub
+
+    Public Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        Form1.Setting_SaveWindowLoc = CStr(CheckBox1.Checked)
+    End Sub
+
+    Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
+        Form1.Setting_SaveGridLayout = CStr(CheckBox2.Checked)
     End Sub
 End Class
