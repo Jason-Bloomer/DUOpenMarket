@@ -46,4 +46,8 @@
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
         Form1.Setting_SaveGridLayout = CStr(CheckBox2.Checked)
     End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Me.Close()
+    End Sub
 End Class

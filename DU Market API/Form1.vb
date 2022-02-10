@@ -33,7 +33,8 @@ Public Class Form1
     Dim WindowNormalBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
 
-    Dim API_Client_Version As String = "0.42.1"
+    Dim API_Client_Version As String = "0.42.3"
+    Dim API_Available_Version As String
     Dim API_Connected As Boolean = False
     Dim API_Username As String = ""
     Dim API_Password As String = ""
@@ -3545,6 +3546,7 @@ Public Class Form1
             'Do nothing, we are up to date.
         Else
             'Current version and running version do not match.
+            API_Available_Version = UpdateCheckCurrent
             'We need to now get the minimum supported client version from the server, and check if the running version is greater than that.
             Dim forceupdflag As Boolean = False
             Dim UpdateCheckMinimum As String = API_Request("http://duopenmarket.xyz/openmarketapi.php/minversion?").Trim("""")
@@ -3590,19 +3592,23 @@ Public Class Form1
         'To get around this we can use "Ping localhost -n X >NUL" where X is the number of seconds we want to wait, +1.
         'This is necessary to make sure the download and disk operations are complete before proceeding to the next command in the batch file.
         'May not be adequate on slower systems. Testing required.
-        My.Computer.FileSystem.WriteAllBytes(My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp", GetURLDataBin("https://github.com/Jason-Bloomer/DUOpenMarket/releases/download/v0.41.1/DUOpenMarket.Client.exe"), False)
-        Dim My_Process As New Process()
-        Dim My_Process_Info As New ProcessStartInfo()
-        Dim strPath As String = My.Application.Info.DirectoryPath & "\DUOM-update.bat"
-        Dim swDestruct As StreamWriter = New StreamWriter(strPath)
-        swDestruct.WriteLine("PING localhost -n 3 >NUL && taskkill /F /IM ""DUOpenMarket Client.exe"" && PING localhost -n 6 >NUL && del """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe"" && ren """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp"" """ & "DUOpenMarket Client.exe"" && del """ & strPath & """ && PING localhost -n 3 >NUL  && """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe""")
-        swDestruct.Close()
-        My_Process_Info.FileName = strPath
-        My_Process_Info.CreateNoWindow = True
-        My_Process_Info.UseShellExecute = False
-        My_Process.EnableRaisingEvents = False
-        My_Process.StartInfo = My_Process_Info
-        My_Process.Start()
+        If API_Available_Version = "" Or API_Available_Version = Nothing Then
+            NewEventMsg("Failed to get newest version number from server.")
+        Else
+            My.Computer.FileSystem.WriteAllBytes(My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp", GetURLDataBin("https://github.com/Jason-Bloomer/DUOpenMarket/releases/download/v" & API_Available_Version & "/DUOpenMarket.Client.exe"), False)
+            Dim My_Process As New Process()
+            Dim My_Process_Info As New ProcessStartInfo()
+            Dim strPath As String = My.Application.Info.DirectoryPath & "\DUOM-update.bat"
+            Dim swDestruct As StreamWriter = New StreamWriter(strPath)
+            swDestruct.WriteLine("PING localhost -n 3 >NUL && taskkill /F /IM ""DUOpenMarket Client.exe"" && PING localhost -n 6 >NUL && del """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe"" && ren """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.temp"" """ & "DUOpenMarket Client.exe"" && del """ & strPath & """ && PING localhost -n 3 >NUL  && """ & My.Application.Info.DirectoryPath & "\DUOpenMarket Client.exe""")
+            swDestruct.Close()
+            My_Process_Info.FileName = strPath
+            My_Process_Info.CreateNoWindow = True
+            My_Process_Info.UseShellExecute = False
+            My_Process.EnableRaisingEvents = False
+            My_Process.StartInfo = My_Process_Info
+            My_Process.Start()
+        End If
     End Sub
 
     Private Sub UpdateButton2_Click(sender As Object, e As EventArgs) Handles UpdateButton2.Click

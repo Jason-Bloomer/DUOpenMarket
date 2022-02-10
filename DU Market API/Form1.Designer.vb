@@ -23,16 +23,16 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle40 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
@@ -42,23 +42,11 @@ Partial Class Form1
         Me.MainPanel = New System.Windows.Forms.Panel()
         Me.TitleBarPanel = New System.Windows.Forms.Panel()
         Me.SettingsButton = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
-        Me.LoginPanel = New System.Windows.Forms.Panel()
-        Me.UpdateButton2 = New System.Windows.Forms.Button()
-        Me.UpdateButton1 = New System.Windows.Forms.Button()
-        Me.LoginUpdateBanner = New System.Windows.Forms.Panel()
-        Me.LoginUpdateText = New System.Windows.Forms.Label()
-        Me.ResizeGrabber2 = New System.Windows.Forms.PictureBox()
-        Me.LoginLabel3 = New System.Windows.Forms.Label()
-        Me.LoginLabel2 = New System.Windows.Forms.Label()
-        Me.LoginLabel1 = New System.Windows.Forms.Label()
-        Me.LoginLogoPictureBox = New System.Windows.Forms.PictureBox()
-        Me.DiscordLoginButton2 = New System.Windows.Forms.Button()
         Me.MarketPanel = New System.Windows.Forms.Panel()
         Me.DeveloperPanel = New System.Windows.Forms.Panel()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -95,7 +83,6 @@ Partial Class Form1
         Me.Button3 = New System.Windows.Forms.Button()
         Me.ConsoleSubmitButton = New System.Windows.Forms.Button()
         Me.ItemTree = New System.Windows.Forms.TreeView()
-        Me.ResizeGrabber = New System.Windows.Forms.PictureBox()
         Me.ItemTreeSearch = New System.Windows.Forms.TreeView()
         Me.ConsoleTextBox = New System.Windows.Forms.TextBox()
         Me.StatsPanel = New System.Windows.Forms.Panel()
@@ -121,13 +108,21 @@ Partial Class Form1
         Me.LoginTimer = New System.Windows.Forms.Timer(Me.components)
         Me.ConnectionTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SearchTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ResizeGrabber = New System.Windows.Forms.PictureBox()
+        Me.LoginPanel = New System.Windows.Forms.Panel()
+        Me.UpdateButton2 = New System.Windows.Forms.Button()
+        Me.UpdateButton1 = New System.Windows.Forms.Button()
+        Me.LoginUpdateBanner = New System.Windows.Forms.Panel()
+        Me.LoginUpdateText = New System.Windows.Forms.Label()
+        Me.ResizeGrabber2 = New System.Windows.Forms.PictureBox()
+        Me.LoginLabel3 = New System.Windows.Forms.Label()
+        Me.LoginLabel2 = New System.Windows.Forms.Label()
+        Me.LoginLabel1 = New System.Windows.Forms.Label()
+        Me.LoginLogoPictureBox = New System.Windows.Forms.PictureBox()
+        Me.DiscordLoginButton2 = New System.Windows.Forms.Button()
         Me.MainPanel.SuspendLayout()
         Me.TitleBarPanel.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.LoginPanel.SuspendLayout()
-        Me.LoginUpdateBanner.SuspendLayout()
-        CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MarketPanel.SuspendLayout()
         Me.DeveloperPanel.SuspendLayout()
         Me.FilterPanel.SuspendLayout()
@@ -140,10 +135,15 @@ Partial Class Form1
         Me.ConnectionPanel.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StatsPanel.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.LoginPanel.SuspendLayout()
+        Me.LoginUpdateBanner.SuspendLayout()
+        CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -189,8 +189,8 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MainPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
         Me.MainPanel.Controls.Add(Me.TitleBarPanel)
-        Me.MainPanel.Controls.Add(Me.MarketPanel)
         Me.MainPanel.Controls.Add(Me.LoginPanel)
+        Me.MainPanel.Controls.Add(Me.MarketPanel)
         Me.MainPanel.Location = New System.Drawing.Point(0, 0)
         Me.MainPanel.Name = "MainPanel"
         Me.MainPanel.Size = New System.Drawing.Size(1280, 760)
@@ -227,17 +227,6 @@ Partial Class Form1
         Me.SettingsButton.Text = "⚙"
         Me.SettingsButton.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.SettingsButton.UseVisualStyleBackColor = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
-        Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 30)
-        Me.PictureBox1.TabIndex = 19
-        Me.PictureBox1.TabStop = False
         '
         'Label22
         '
@@ -305,159 +294,6 @@ Partial Class Form1
         Me.Button6.TabIndex = 4
         Me.Button6.Text = "─"
         Me.Button6.UseVisualStyleBackColor = True
-        '
-        'LoginPanel
-        '
-        Me.LoginPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LoginPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
-        Me.LoginPanel.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.loginbg
-        Me.LoginPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.LoginPanel.Controls.Add(Me.UpdateButton2)
-        Me.LoginPanel.Controls.Add(Me.UpdateButton1)
-        Me.LoginPanel.Controls.Add(Me.LoginUpdateBanner)
-        Me.LoginPanel.Controls.Add(Me.ResizeGrabber2)
-        Me.LoginPanel.Controls.Add(Me.LoginLabel3)
-        Me.LoginPanel.Controls.Add(Me.LoginLabel2)
-        Me.LoginPanel.Controls.Add(Me.LoginLabel1)
-        Me.LoginPanel.Controls.Add(Me.LoginLogoPictureBox)
-        Me.LoginPanel.Controls.Add(Me.DiscordLoginButton2)
-        Me.LoginPanel.Location = New System.Drawing.Point(0, 34)
-        Me.LoginPanel.Name = "LoginPanel"
-        Me.LoginPanel.Size = New System.Drawing.Size(1280, 726)
-        Me.LoginPanel.TabIndex = 23
-        '
-        'UpdateButton2
-        '
-        Me.UpdateButton2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UpdateButton2.BackColor = System.Drawing.Color.Transparent
-        Me.UpdateButton2.FlatAppearance.BorderSize = 2
-        Me.UpdateButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.UpdateButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdateButton2.ForeColor = System.Drawing.Color.Silver
-        Me.UpdateButton2.Location = New System.Drawing.Point(634, 666)
-        Me.UpdateButton2.Name = "UpdateButton2"
-        Me.UpdateButton2.Size = New System.Drawing.Size(278, 31)
-        Me.UpdateButton2.TabIndex = 31
-        Me.UpdateButton2.Text = "Show GitHub Releases"
-        Me.UpdateButton2.UseVisualStyleBackColor = False
-        '
-        'UpdateButton1
-        '
-        Me.UpdateButton1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.UpdateButton1.BackColor = System.Drawing.Color.Transparent
-        Me.UpdateButton1.FlatAppearance.BorderSize = 2
-        Me.UpdateButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.UpdateButton1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdateButton1.ForeColor = System.Drawing.Color.Silver
-        Me.UpdateButton1.Location = New System.Drawing.Point(328, 666)
-        Me.UpdateButton1.Name = "UpdateButton1"
-        Me.UpdateButton1.Size = New System.Drawing.Size(278, 31)
-        Me.UpdateButton1.TabIndex = 29
-        Me.UpdateButton1.Text = "Automatic Download And Run"
-        Me.UpdateButton1.UseVisualStyleBackColor = False
-        '
-        'LoginUpdateBanner
-        '
-        Me.LoginUpdateBanner.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LoginUpdateBanner.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LoginUpdateBanner.Controls.Add(Me.LoginUpdateText)
-        Me.LoginUpdateBanner.Location = New System.Drawing.Point(0, 632)
-        Me.LoginUpdateBanner.Name = "LoginUpdateBanner"
-        Me.LoginUpdateBanner.Size = New System.Drawing.Size(1280, 31)
-        Me.LoginUpdateBanner.TabIndex = 28
-        Me.LoginUpdateBanner.Visible = False
-        '
-        'LoginUpdateText
-        '
-        Me.LoginUpdateText.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LoginUpdateText.BackColor = System.Drawing.Color.Transparent
-        Me.LoginUpdateText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LoginUpdateText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(36, Byte), Integer))
-        Me.LoginUpdateText.Location = New System.Drawing.Point(0, 0)
-        Me.LoginUpdateText.Name = "LoginUpdateText"
-        Me.LoginUpdateText.Size = New System.Drawing.Size(1280, 31)
-        Me.LoginUpdateText.TabIndex = 29
-        Me.LoginUpdateText.Text = "An update for DUOpenMarket is available, but not required. Download?"
-        Me.LoginUpdateText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ResizeGrabber2
-        '
-        Me.ResizeGrabber2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ResizeGrabber2.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
-        Me.ResizeGrabber2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ResizeGrabber2.Cursor = System.Windows.Forms.Cursors.SizeNWSE
-        Me.ResizeGrabber2.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
-        Me.ResizeGrabber2.Location = New System.Drawing.Point(1264, 710)
-        Me.ResizeGrabber2.Name = "ResizeGrabber2"
-        Me.ResizeGrabber2.Size = New System.Drawing.Size(16, 16)
-        Me.ResizeGrabber2.TabIndex = 27
-        Me.ResizeGrabber2.TabStop = False
-        '
-        'LoginLabel3
-        '
-        Me.LoginLabel3.AutoSize = True
-        Me.LoginLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LoginLabel3.ForeColor = System.Drawing.Color.DarkGray
-        Me.LoginLabel3.Location = New System.Drawing.Point(445, 463)
-        Me.LoginLabel3.Name = "LoginLabel3"
-        Me.LoginLabel3.Size = New System.Drawing.Size(353, 16)
-        Me.LoginLabel3.TabIndex = 26
-        Me.LoginLabel3.Text = "A Third-Party, Open-Source Market Tool for Dual Universe"
-        '
-        'LoginLabel2
-        '
-        Me.LoginLabel2.AutoSize = True
-        Me.LoginLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LoginLabel2.ForeColor = System.Drawing.Color.DarkGray
-        Me.LoginLabel2.Location = New System.Drawing.Point(518, 424)
-        Me.LoginLabel2.Name = "LoginLabel2"
-        Me.LoginLabel2.Size = New System.Drawing.Size(205, 24)
-        Me.LoginLabel2.TabIndex = 25
-        Me.LoginLabel2.Text = "Desktop Client - v0.00.0"
-        '
-        'LoginLabel1
-        '
-        Me.LoginLabel1.AutoSize = True
-        Me.LoginLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LoginLabel1.ForeColor = System.Drawing.Color.DarkGray
-        Me.LoginLabel1.Location = New System.Drawing.Point(536, 401)
-        Me.LoginLabel1.Name = "LoginLabel1"
-        Me.LoginLabel1.Size = New System.Drawing.Size(174, 24)
-        Me.LoginLabel1.TabIndex = 24
-        Me.LoginLabel1.Text = "DUOpenMarket API"
-        '
-        'LoginLogoPictureBox
-        '
-        Me.LoginLogoPictureBox.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLogoPictureBox.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
-        Me.LoginLogoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.LoginLogoPictureBox.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
-        Me.LoginLogoPictureBox.Location = New System.Drawing.Point(467, 101)
-        Me.LoginLogoPictureBox.Name = "LoginLogoPictureBox"
-        Me.LoginLogoPictureBox.Size = New System.Drawing.Size(309, 294)
-        Me.LoginLogoPictureBox.TabIndex = 24
-        Me.LoginLogoPictureBox.TabStop = False
-        '
-        'DiscordLoginButton2
-        '
-        Me.DiscordLoginButton2.BackColor = System.Drawing.Color.Transparent
-        Me.DiscordLoginButton2.FlatAppearance.BorderSize = 2
-        Me.DiscordLoginButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DiscordLoginButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DiscordLoginButton2.ForeColor = System.Drawing.Color.Silver
-        Me.DiscordLoginButton2.Location = New System.Drawing.Point(450, 526)
-        Me.DiscordLoginButton2.Name = "DiscordLoginButton2"
-        Me.DiscordLoginButton2.Size = New System.Drawing.Size(343, 61)
-        Me.DiscordLoginButton2.TabIndex = 20
-        Me.DiscordLoginButton2.Text = "Login With Discord"
-        Me.DiscordLoginButton2.UseVisualStyleBackColor = False
         '
         'MarketPanel
         '
@@ -769,48 +605,48 @@ Partial Class Form1
         Me.BuyOrderGridViewRaw.AllowUserToAddRows = False
         Me.BuyOrderGridViewRaw.AllowUserToDeleteRows = False
         Me.BuyOrderGridViewRaw.AllowUserToResizeRows = False
-        DataGridViewCellStyle31.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle31.ForeColor = System.Drawing.Color.Silver
-        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle31
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Silver
+        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.BuyOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BuyOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.BuyOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle32.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle32.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle32.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle32
-        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle33.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle33.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle33.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle33
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle3
         Me.BuyOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
         Me.BuyOrderGridViewRaw.Location = New System.Drawing.Point(3, 23)
         Me.BuyOrderGridViewRaw.Name = "BuyOrderGridViewRaw"
         Me.BuyOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle34.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle34.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle34.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle34
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.BuyOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle35.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle35.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle35.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle35.SelectionForeColor = System.Drawing.Color.White
-        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle35
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White
+        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.BuyOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.BuyOrderGridViewRaw.Size = New System.Drawing.Size(784, 175)
         Me.BuyOrderGridViewRaw.TabIndex = 0
@@ -819,49 +655,49 @@ Partial Class Form1
         '
         Me.SellOrderGridViewRaw.AllowUserToAddRows = False
         Me.SellOrderGridViewRaw.AllowUserToDeleteRows = False
-        DataGridViewCellStyle36.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle36.ForeColor = System.Drawing.Color.Silver
-        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle36
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Silver
+        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.SellOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SellOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.SellOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle37.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle37.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle37.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle37
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.SellOrderGridViewRaw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle38.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle38.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle38.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle38.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle38.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle38
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle8
         Me.SellOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
         Me.SellOrderGridViewRaw.Location = New System.Drawing.Point(3, 224)
         Me.SellOrderGridViewRaw.Name = "SellOrderGridViewRaw"
         Me.SellOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle39.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle39.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle39.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle39.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle39.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle39.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle39
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.SellOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle40.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle40.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle40.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle40.SelectionForeColor = System.Drawing.Color.White
-        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle40
+        DataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.White
+        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle10
         Me.SellOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SellOrderGridViewRaw.Size = New System.Drawing.Size(784, 176)
         Me.SellOrderGridViewRaw.TabIndex = 18
@@ -1035,19 +871,6 @@ Partial Class Form1
         Me.ItemTree.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ItemTree.Size = New System.Drawing.Size(213, 414)
         Me.ItemTree.TabIndex = 0
-        '
-        'ResizeGrabber
-        '
-        Me.ResizeGrabber.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ResizeGrabber.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
-        Me.ResizeGrabber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ResizeGrabber.Cursor = System.Windows.Forms.Cursors.SizeNWSE
-        Me.ResizeGrabber.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
-        Me.ResizeGrabber.Location = New System.Drawing.Point(1264, 710)
-        Me.ResizeGrabber.Name = "ResizeGrabber"
-        Me.ResizeGrabber.Size = New System.Drawing.Size(16, 16)
-        Me.ResizeGrabber.TabIndex = 1
-        Me.ResizeGrabber.TabStop = False
         '
         'ItemTreeSearch
         '
@@ -1300,6 +1123,185 @@ Partial Class Form1
         '
         Me.SearchTimer.Interval = 1000
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.PictureBox1.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 30)
+        Me.PictureBox1.TabIndex = 19
+        Me.PictureBox1.TabStop = False
+        '
+        'ResizeGrabber
+        '
+        Me.ResizeGrabber.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ResizeGrabber.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ResizeGrabber.Cursor = System.Windows.Forms.Cursors.SizeNWSE
+        Me.ResizeGrabber.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber.Location = New System.Drawing.Point(1264, 710)
+        Me.ResizeGrabber.Name = "ResizeGrabber"
+        Me.ResizeGrabber.Size = New System.Drawing.Size(16, 16)
+        Me.ResizeGrabber.TabIndex = 1
+        Me.ResizeGrabber.TabStop = False
+        '
+        'LoginPanel
+        '
+        Me.LoginPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoginPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
+        Me.LoginPanel.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.loginbg
+        Me.LoginPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.LoginPanel.Controls.Add(Me.UpdateButton2)
+        Me.LoginPanel.Controls.Add(Me.UpdateButton1)
+        Me.LoginPanel.Controls.Add(Me.LoginUpdateBanner)
+        Me.LoginPanel.Controls.Add(Me.ResizeGrabber2)
+        Me.LoginPanel.Controls.Add(Me.LoginLabel3)
+        Me.LoginPanel.Controls.Add(Me.LoginLabel2)
+        Me.LoginPanel.Controls.Add(Me.LoginLabel1)
+        Me.LoginPanel.Controls.Add(Me.LoginLogoPictureBox)
+        Me.LoginPanel.Controls.Add(Me.DiscordLoginButton2)
+        Me.LoginPanel.Location = New System.Drawing.Point(0, 34)
+        Me.LoginPanel.Name = "LoginPanel"
+        Me.LoginPanel.Size = New System.Drawing.Size(1280, 726)
+        Me.LoginPanel.TabIndex = 23
+        '
+        'UpdateButton2
+        '
+        Me.UpdateButton2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UpdateButton2.BackColor = System.Drawing.Color.Transparent
+        Me.UpdateButton2.FlatAppearance.BorderSize = 2
+        Me.UpdateButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.UpdateButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdateButton2.ForeColor = System.Drawing.Color.Silver
+        Me.UpdateButton2.Location = New System.Drawing.Point(634, 666)
+        Me.UpdateButton2.Name = "UpdateButton2"
+        Me.UpdateButton2.Size = New System.Drawing.Size(278, 31)
+        Me.UpdateButton2.TabIndex = 31
+        Me.UpdateButton2.Text = "Show GitHub Releases"
+        Me.UpdateButton2.UseVisualStyleBackColor = False
+        Me.UpdateButton2.Visible = False
+        '
+        'UpdateButton1
+        '
+        Me.UpdateButton1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UpdateButton1.BackColor = System.Drawing.Color.Transparent
+        Me.UpdateButton1.FlatAppearance.BorderSize = 2
+        Me.UpdateButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.UpdateButton1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdateButton1.ForeColor = System.Drawing.Color.Silver
+        Me.UpdateButton1.Location = New System.Drawing.Point(328, 666)
+        Me.UpdateButton1.Name = "UpdateButton1"
+        Me.UpdateButton1.Size = New System.Drawing.Size(278, 31)
+        Me.UpdateButton1.TabIndex = 29
+        Me.UpdateButton1.Text = "Automatic Download And Run"
+        Me.UpdateButton1.UseVisualStyleBackColor = False
+        Me.UpdateButton1.Visible = False
+        '
+        'LoginUpdateBanner
+        '
+        Me.LoginUpdateBanner.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoginUpdateBanner.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.LoginUpdateBanner.Controls.Add(Me.LoginUpdateText)
+        Me.LoginUpdateBanner.Location = New System.Drawing.Point(0, 632)
+        Me.LoginUpdateBanner.Name = "LoginUpdateBanner"
+        Me.LoginUpdateBanner.Size = New System.Drawing.Size(1280, 31)
+        Me.LoginUpdateBanner.TabIndex = 28
+        Me.LoginUpdateBanner.Visible = False
+        '
+        'LoginUpdateText
+        '
+        Me.LoginUpdateText.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LoginUpdateText.BackColor = System.Drawing.Color.Transparent
+        Me.LoginUpdateText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginUpdateText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(36, Byte), Integer))
+        Me.LoginUpdateText.Location = New System.Drawing.Point(0, 0)
+        Me.LoginUpdateText.Name = "LoginUpdateText"
+        Me.LoginUpdateText.Size = New System.Drawing.Size(1280, 31)
+        Me.LoginUpdateText.TabIndex = 29
+        Me.LoginUpdateText.Text = "An update for DUOpenMarket is available, but not required. Download?"
+        Me.LoginUpdateText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'ResizeGrabber2
+        '
+        Me.ResizeGrabber2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ResizeGrabber2.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ResizeGrabber2.Cursor = System.Windows.Forms.Cursors.SizeNWSE
+        Me.ResizeGrabber2.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber2.Location = New System.Drawing.Point(1264, 710)
+        Me.ResizeGrabber2.Name = "ResizeGrabber2"
+        Me.ResizeGrabber2.Size = New System.Drawing.Size(16, 16)
+        Me.ResizeGrabber2.TabIndex = 27
+        Me.ResizeGrabber2.TabStop = False
+        '
+        'LoginLabel3
+        '
+        Me.LoginLabel3.AutoSize = True
+        Me.LoginLabel3.BackColor = System.Drawing.Color.Transparent
+        Me.LoginLabel3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel3.ForeColor = System.Drawing.Color.DarkGray
+        Me.LoginLabel3.Location = New System.Drawing.Point(445, 463)
+        Me.LoginLabel3.Name = "LoginLabel3"
+        Me.LoginLabel3.Size = New System.Drawing.Size(353, 16)
+        Me.LoginLabel3.TabIndex = 26
+        Me.LoginLabel3.Text = "A Third-Party, Open-Source Market Tool for Dual Universe"
+        '
+        'LoginLabel2
+        '
+        Me.LoginLabel2.AutoSize = True
+        Me.LoginLabel2.BackColor = System.Drawing.Color.Transparent
+        Me.LoginLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel2.ForeColor = System.Drawing.Color.DarkGray
+        Me.LoginLabel2.Location = New System.Drawing.Point(518, 424)
+        Me.LoginLabel2.Name = "LoginLabel2"
+        Me.LoginLabel2.Size = New System.Drawing.Size(205, 24)
+        Me.LoginLabel2.TabIndex = 25
+        Me.LoginLabel2.Text = "Desktop Client - v0.00.0"
+        '
+        'LoginLabel1
+        '
+        Me.LoginLabel1.AutoSize = True
+        Me.LoginLabel1.BackColor = System.Drawing.Color.Transparent
+        Me.LoginLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel1.ForeColor = System.Drawing.Color.DarkGray
+        Me.LoginLabel1.Location = New System.Drawing.Point(536, 401)
+        Me.LoginLabel1.Name = "LoginLabel1"
+        Me.LoginLabel1.Size = New System.Drawing.Size(174, 24)
+        Me.LoginLabel1.TabIndex = 24
+        Me.LoginLabel1.Text = "DUOpenMarket API"
+        '
+        'LoginLogoPictureBox
+        '
+        Me.LoginLogoPictureBox.BackColor = System.Drawing.Color.Transparent
+        Me.LoginLogoPictureBox.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.LoginLogoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.LoginLogoPictureBox.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.LoginLogoPictureBox.Location = New System.Drawing.Point(467, 101)
+        Me.LoginLogoPictureBox.Name = "LoginLogoPictureBox"
+        Me.LoginLogoPictureBox.Size = New System.Drawing.Size(309, 294)
+        Me.LoginLogoPictureBox.TabIndex = 24
+        Me.LoginLogoPictureBox.TabStop = False
+        '
+        'DiscordLoginButton2
+        '
+        Me.DiscordLoginButton2.BackColor = System.Drawing.Color.Transparent
+        Me.DiscordLoginButton2.FlatAppearance.BorderSize = 2
+        Me.DiscordLoginButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.DiscordLoginButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DiscordLoginButton2.ForeColor = System.Drawing.Color.Silver
+        Me.DiscordLoginButton2.Location = New System.Drawing.Point(450, 526)
+        Me.DiscordLoginButton2.Name = "DiscordLoginButton2"
+        Me.DiscordLoginButton2.Size = New System.Drawing.Size(343, 61)
+        Me.DiscordLoginButton2.TabIndex = 20
+        Me.DiscordLoginButton2.Text = "Login With Discord"
+        Me.DiscordLoginButton2.UseVisualStyleBackColor = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1315,12 +1317,6 @@ Partial Class Form1
         Me.MainPanel.ResumeLayout(False)
         Me.TitleBarPanel.ResumeLayout(False)
         Me.TitleBarPanel.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.LoginPanel.ResumeLayout(False)
-        Me.LoginPanel.PerformLayout()
-        Me.LoginUpdateBanner.ResumeLayout(False)
-        CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MarketPanel.ResumeLayout(False)
         Me.MarketPanel.PerformLayout()
         Me.DeveloperPanel.ResumeLayout(False)
@@ -1342,12 +1338,18 @@ Partial Class Form1
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.TableLayoutPanel3.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
-        CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StatsPanel.ResumeLayout(False)
         Me.StatsPanel.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.LoginPanel.ResumeLayout(False)
+        Me.LoginPanel.PerformLayout()
+        Me.LoginUpdateBanner.ResumeLayout(False)
+        CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
