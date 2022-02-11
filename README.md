@@ -33,9 +33,12 @@ The server's response will depend on the action:
 
 
 ## Planned improvements (In no particular order)
-Sort items in the item dropdown, into their respective categories.
 
-Format item order expiration date to be user-readable.
+:heavy_check_mark: Format item order expiration date to be user-readable.
+
+:heavy_check_mark: Add the ability to keep track of the trailing decimal on order prices. (curently is rounded down)
+
+:white_check_mark: Sort items in the item dropdown, into their respective categories.
 
 Add item statistics to the right side of window, below item name. Requires a neat way to look them up from a file. And the file. RegEx <3
 
