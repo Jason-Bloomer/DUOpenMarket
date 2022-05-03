@@ -10,10 +10,45 @@
     Dim HoldHeight As Integer
 
     Private Sub AboutForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        UpdateThemeState()
     End Sub
 
-    Private Sub DiscordLoginButton_Click(sender As Object, e As EventArgs) Handles DiscordLoginButton.Click
+    Public Sub UpdateThemeState()
+        If Form1.ThemeState = 0 Then
+            Me.BackColor = Color.FromArgb(255, 30, 36, 42)
+            Panel1.BackgroundImage = My.Resources.loginbg
+            Panel1.BackColor = Color.FromArgb(255, 30, 36, 42)
+            Label22.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Button8.BackColor = Color.FromArgb(255, 30, 36, 42)
+            Button8.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Label1.ForeColor = Color.Gray
+            Label2.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Label3.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Label4.ForeColor = Color.FromArgb(255, 192, 192, 0)
+            Label5.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Label6.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Button1.ForeColor = Color.FromArgb(255, 224, 224, 224)
+            Button2.ForeColor = Color.FromArgb(255, 224, 224, 224)
+        End If
+        If Form1.ThemeState = 1 Then
+            Me.BackColor = Color.FromArgb(255, 224, 224, 224)
+            Panel1.BackgroundImage = My.Resources.loginbgneg
+            Panel1.BackColor = Color.FromArgb(255, 224, 224, 224)
+            Label22.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Button8.BackColor = Color.FromArgb(255, 224, 224, 224)
+            Button8.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Label1.ForeColor = Color.Gray
+            Label2.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Label3.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Label4.ForeColor = Color.FromArgb(255, 0, 50, 192)
+            Label5.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Label6.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Button1.ForeColor = Color.FromArgb(255, 30, 36, 42)
+            Button2.ForeColor = Color.FromArgb(255, 30, 36, 42)
+        End If
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Process.Start("http://duopenmarket.xyz")
     End Sub
 

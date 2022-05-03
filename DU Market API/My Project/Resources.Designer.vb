@@ -73,9 +73,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property grabberneg() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("grabberneg", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property loginbg() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("loginbg", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property loginbgneg() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("loginbgneg", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

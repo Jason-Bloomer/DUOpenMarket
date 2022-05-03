@@ -27,7 +27,17 @@ DUOpenMarket Client
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DU_Market_API.My.Resources.Resources.grabberneg">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DU_Market_API.My.Resources.Resources.loginbg">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DU_Market_API.My.Resources.Resources.loginbgneg">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

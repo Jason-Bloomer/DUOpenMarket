@@ -32,7 +32,7 @@ Partial Class AboutForm
         Me.Label5 = New System.Windows.Forms.Label()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.DiscordLoginButton = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -105,7 +105,7 @@ Partial Class AboutForm
         Me.Panel1.Controls.Add(Me.Label5)
         Me.Panel1.Controls.Add(Me.PictureBox2)
         Me.Panel1.Controls.Add(Me.Button1)
-        Me.Panel1.Controls.Add(Me.DiscordLoginButton)
+        Me.Panel1.Controls.Add(Me.Button2)
         Me.Panel1.Controls.Add(Me.Label4)
         Me.Panel1.Controls.Add(Me.Label3)
         Me.Panel1.Controls.Add(Me.Label2)
@@ -163,19 +163,19 @@ Partial Class AboutForm
         Me.Button1.Text = "GitHub Repository"
         Me.Button1.UseVisualStyleBackColor = False
         '
-        'DiscordLoginButton
+        'Button2
         '
-        Me.DiscordLoginButton.BackColor = System.Drawing.Color.Transparent
-        Me.DiscordLoginButton.FlatAppearance.BorderSize = 2
-        Me.DiscordLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DiscordLoginButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DiscordLoginButton.ForeColor = System.Drawing.Color.Silver
-        Me.DiscordLoginButton.Location = New System.Drawing.Point(180, 136)
-        Me.DiscordLoginButton.Name = "DiscordLoginButton"
-        Me.DiscordLoginButton.Size = New System.Drawing.Size(213, 28)
-        Me.DiscordLoginButton.TabIndex = 21
-        Me.DiscordLoginButton.Text = "DUOpenMarket.XYZ"
-        Me.DiscordLoginButton.UseVisualStyleBackColor = False
+        Me.Button2.BackColor = System.Drawing.Color.Transparent
+        Me.Button2.FlatAppearance.BorderSize = 2
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button2.ForeColor = System.Drawing.Color.Silver
+        Me.Button2.Location = New System.Drawing.Point(180, 136)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(213, 28)
+        Me.Button2.TabIndex = 21
+        Me.Button2.Text = "DUOpenMarket.XYZ"
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'Label4
         '
@@ -251,7 +251,7 @@ Partial Class AboutForm
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Button1 As Button
-    Friend WithEvents DiscordLoginButton As Button
+    Friend WithEvents Button2 As Button
     Friend WithEvents AboutTitleBar As Panel
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label6 As Label

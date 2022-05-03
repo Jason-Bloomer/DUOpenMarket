@@ -211,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\bg2.png" />
+    <None Include="Resources\loginbgneg.bmp" />
+    <None Include="Resources\loginbgneg.png" />
+    <None Include="Resources\grabberneg.png" />
     <Content Include="Resources\logo_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
