@@ -14,35 +14,24 @@ Simply put, NO. DUOpenMarket is perfectly legal to use and infact there are many
 
 # DUOpenMarket API Developer Documentation
 
-To use the API you will first need to log in through discord or obtain a valid Authorization code for a discord account, and supply it to the API as part of the URI string.
-
-If the auth code is valid the server will accept commands from that user in the format:
-
-` http://duopenmarket.xyz/openmarketapi.php/[DISCORD_AUTH_CODE]/[ACTION] `
-
-Where [ACTION] is either create, read, update, or delete, followed by the appropriate URI variable inputs. Here is the Action string for an example API request:
-
-` create?orderid=329482&marketid=53&itemid=125&quantity=467777&ordertype=1&expiration=12-12-2022%2055:55:55&lastupdated=12-12-2022%2055:55:55&price=66 `
-
-The server's response will depend on the action:
-
-    Create: A JSON-encapsulated True response, indicates the request succeeded. False indicates the request failed.
-    Read: If request succeeds, the requested data is returned JSON-encapsulated. False indicates the request failed.
-    Update: A JSON-encapsulated True response, indicates the request succeeded. False indicates the request failed.
-    Delete: A JSON-encapsulated True response, indicates the request succeeded. False indicates the request failed.
 
 
-## Planned improvements (In no particular order)
+
+## Planned features/improvements (In no particular order)
 
 :heavy_check_mark: Format item order expiration date to be user-readable.
 
 :heavy_check_mark: Add the ability to keep track of the trailing decimal on order prices. (curently is rounded down)
 
-:white_check_mark: Sort items in the item dropdown, into their respective categories.
+:heavy_check_mark: Sort items in the item dropdown, into their respective categories.
+
+:heavy_check_mark: Process orders in batches. (improve server read efficiency)
+
+:heavy_check_mark: Custom sorting functions for order columns. (String values sort alphabetically, Number values sort numerically)
+
+Add a "Resource Manager" panel or window, which can automatically update/restore/backup user scripts, holograms, and sounds.
 
 Add item statistics to the right side of window, below item name. Requires a neat way to look them up from a file. And the file. RegEx <3
-
-Add the ability to keep track of the trailing decimal on order prices. (curently is rounded down)
 
 Add a visual, interactive point-graph of the current orders for a given item.
 
@@ -53,3 +42,5 @@ Add metastatistics about the overall health and throughput of the economy to the
 Add profit-margin and yeild-margin calculators for industry, which use the current market prices and can factor in talents.
 
 Add fuel/warp-cost and transportation-related calculators using current fuel prices, factoring for talents.
+
+Add an interface for tracking relationships bewteen player accounts and discord ID's, for the purpose of providing a "reputation" for a given player.
