@@ -23,23 +23,13 @@ Simply put, NO. DUOpenMarket is perfectly legal to use and infact there are many
 
 ## Planned features/improvements (In no particular order)
 
-:heavy_check_mark: Format item order expiration date to be user-readable.
-
-:heavy_check_mark: Add the ability to keep track of the trailing decimal on order prices. (curently is rounded down)
-
-:heavy_check_mark: Sort items in the item dropdown, into their respective categories.
-
-:heavy_check_mark: Process orders in batches. (improve server read efficiency)
-
-:heavy_check_mark: Custom sorting functions for order columns. (String values sort alphabetically, Number values sort numerically)
-
 Add a "Resource Manager" panel or window, which can automatically update/restore/backup user scripts, holograms, and sounds.
 
 Add item statistics to the right side of window, below item name. Requires a neat way to look them up from a file. And the file. RegEx <3
 
 Add a visual, interactive point-graph of the current orders for a given item.
 
-Add Historical data retrieval commands to the API, and use this data to render visual graphs.
+Add Historical data retrieval commands to the API, and use this data to render visual graphs on the clientside.
 
 Add metastatistics about the overall health and throughput of the economy to the API, and graph them.
 
