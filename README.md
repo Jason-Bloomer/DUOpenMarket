@@ -18,7 +18,11 @@ The DUOpenMarket Desktop client ONLY accesses logfiles created by Dual Universe.
 ## Does the DUOpenMarket Client violate NovaQuark's TOS?
 Simply put, NO. DUOpenMarket is perfectly legal to use and infact there are many tools that predate this one, which do similar things. The client only reads from log files which are created by Dual Universe. It does not read game files. It does not modify, update, move, or delete, any files other than its own. 
 
+## Where's the server code?
+That's the one piece of this project that isn't public. Having the code to your server freely accessible on the web is not generally a great idea, unless that code has hundreds of individuals meticulously scrutinizing its security. That hasn't happened yet, so, no server code. Sorry.
 
+You can, however, find the documentation to the API here; https://www.duopenmarket.com/documentation.php
+Which will allow you to interact with the server directly, as long as you follow the rules listed on that page.
 
 
 ## Planned features/improvements (In no particular order)
