@@ -22,7 +22,7 @@ Simply put, NO. DUOpenMarket is perfectly legal to use and infact there are many
 That's the one piece of this project that isn't public. Having the code to your server freely accessible on the web is not generally a great idea, unless that code has hundreds of individuals meticulously scrutinizing its security. That hasn't happened yet, so, no server code. Sorry.
 
 You can, however, find the documentation to the API here; https://www.duopenmarket.com/documentation.php
-Which will allow you to interact with the server directly, as long as you follow the rules listed on that page.
+Which will allow you to interact with the server directly, as long as you follow the rules listed on that page (Specifically the Considerate Use section)
 
 
 ## Planned features/improvements (In no particular order)
