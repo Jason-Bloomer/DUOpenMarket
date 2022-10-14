@@ -64,7 +64,7 @@ Partial Class AboutForm
         Me.Label22.ForeColor = System.Drawing.Color.DarkGray
         Me.Label22.Location = New System.Drawing.Point(39, 10)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(147, 16)
+        Me.Label22.Size = New System.Drawing.Size(146, 16)
         Me.Label22.TabIndex = 20
         Me.Label22.Text = "DUOpenMarket - About"
         '
@@ -174,7 +174,7 @@ Partial Class AboutForm
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(213, 28)
         Me.Button2.TabIndex = 21
-        Me.Button2.Text = "DUOpenMarket.XYZ"
+        Me.Button2.Text = "DUOpenMarket.com"
         Me.Button2.UseVisualStyleBackColor = False
         '
         'Label4

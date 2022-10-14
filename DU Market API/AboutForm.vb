@@ -2,6 +2,8 @@
     Dim Go As Boolean
     Dim LeftSet As Boolean
     Dim TopSet As Boolean
+    Dim deltaX As Integer
+    Dim deltaY As Integer
     Dim HoldLeft As Integer
     Dim HoldTop As Integer
     Dim OffLeft As Integer
@@ -14,7 +16,7 @@
     End Sub
 
     Public Sub UpdateThemeState()
-        If Form1.ThemeState = 0 Then
+        If Form1.Setting_ThemeState = 0 Then
             Me.BackColor = Color.FromArgb(255, 30, 36, 42)
             Panel1.BackgroundImage = My.Resources.loginbg
             Panel1.BackColor = Color.FromArgb(255, 30, 36, 42)
@@ -30,7 +32,7 @@
             Button1.ForeColor = Color.FromArgb(255, 224, 224, 224)
             Button2.ForeColor = Color.FromArgb(255, 224, 224, 224)
         End If
-        If Form1.ThemeState = 1 Then
+        If Form1.Setting_ThemeState = 1 Then
             Me.BackColor = Color.FromArgb(255, 224, 224, 224)
             Panel1.BackgroundImage = My.Resources.loginbgneg
             Panel1.BackColor = Color.FromArgb(255, 224, 224, 224)
@@ -49,7 +51,7 @@
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Process.Start("http://duopenmarket.xyz")
+        Process.Start("https://duopenmarket.com")
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -68,25 +70,24 @@
 
     Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles AboutTitleBar.MouseDown
         Go = True
+        HoldLeft = (Control.MousePosition.X - Me.Location.X)
+        HoldTop = (Control.MousePosition.Y - Me.Location.Y)
     End Sub
 
     Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles AboutTitleBar.MouseMove
         If Go = True Then
-            HoldLeft = (Control.MousePosition.X)
-            HoldTop = (Control.MousePosition.Y)
-            If TopSet = False Then
-                OffTop = HoldTop - sender.Parent.Location.Y
-                TopSet = True
-            End If
-            If LeftSet = False Then
-                OffLeft = HoldLeft - sender.Parent.Location.X
-                LeftSet = True
-            End If
+            deltaX = Control.MousePosition.X - HoldLeft
+            deltaY = Control.MousePosition.Y - HoldTop
+
+            OffLeft = deltaX
+            OffTop = deltaY
+
             Dim newpoint As New Point
-            newpoint.X = HoldLeft - OffLeft
-            newpoint.Y = HoldTop - OffTop
-            sender.Parent.Location = newpoint
-            sender.Parent.Refresh()
+            newpoint.X = OffLeft
+            newpoint.Y = OffTop
+
+            Me.Location = newpoint
+            Me.Refresh()
         End If
     End Sub
 End Class

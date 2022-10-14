@@ -13,6 +13,8 @@ Public Class Form1
     Dim Go As Boolean
     Dim LeftSet As Boolean
     Dim TopSet As Boolean
+    Dim deltaX As Integer
+    Dim deltaY As Integer
     Dim HoldLeft As Integer
     Dim HoldTop As Integer
     Dim OffLeft As Integer
@@ -29,13 +31,10 @@ Public Class Form1
     Dim WindowSavedBoundsX As Integer = 1280
     Dim WindowSavedBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
-    Public ThemeState As Integer = 0
 
-    Dim API_Client_Version As String = "0.50.1"
+    Dim API_Client_Version As String = "1.61.1"
     Dim API_Available_Version As String
     Dim API_Connected As Boolean = False
-    Dim API_Username As String = ""
-    Dim API_Password As String = ""
     Dim API_LogfileDirectory As String = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
     Dim API_LogFile As String = ""
     Dim API_Access_Token As String = ""
@@ -64,6 +63,7 @@ Public Class Form1
     Dim NumberOfReads As Integer = 0
     Dim NumberOfUpdates As Integer = 0
     Dim NumberOfDeletes As Integer = 0
+    Dim NumberOfHistories As Integer = 0
     Dim ShowRawData As Boolean = False
     Private Shared OperationTimerLocker As Object = New Object()
 
@@ -80,6 +80,7 @@ Public Class Form1
     Dim FilterQuantityMax As Long
     Dim FilterMarketList As New List(Of FilterMarketListStructure)
     Dim FilterItemList As New List(Of FilterItemListStructure)
+    Dim CenterUXPanelMode As Integer = 1
     Dim ShowBookmarks As Boolean = False
     Dim Bookmarks As New List(Of String)
 
@@ -93,6 +94,7 @@ Public Class Form1
 
     Dim TempResponse As String
 
+    Public Setting_ThemeState As Integer = 0
     Public Setting_SaveWindowLoc As String = "True"
     Public Setting_SaveWindowSz As String = "True"
     Public Setting_SaveGridLayout As String = "True"
@@ -109,6 +111,64 @@ Public Class Form1
     Dim savedBuyOrdrGridCol3W As String
     Dim savedBuyOrdrGridCol4W As String
     Dim savedBuyOrdrGridCol5W As String
+
+    Dim HistEntries As Integer = 8
+
+    Dim EconomyStat_Buy_High As Double = 0
+    Dim EconomyStat_Buy_Avg As Double = 0
+    Dim EconomyStat_Buy_Low As Double = 0
+    Dim EconomyStat_Buy_Vol As Double = 0
+    Dim EconomyStat_Buy_Total As Double = 0
+
+    Dim EconomyStat_Sell_High As Double = 0
+    Dim EconomyStat_Sell_Avg As Double = 0
+    Dim EconomyStat_Sell_Low As Double = 0
+    Dim EconomyStat_Sell_Vol As Double = 0
+    Dim EconomyStat_Sell_Total As Double = 0
+
+    'Theme Default Values
+    Public BackgroundColor1 As Color = Color.FromArgb(255, 30, 36, 42)
+    Public BackgroundColor2 As Color = Color.FromArgb(255, 50, 56, 62)
+    Public BackgroundColor3 As Color = Color.FromArgb(255, 26, 28, 32)
+
+    Public ForegroundColor1 As Color = Color.FromArgb(255, 224, 224, 224)
+    Public ForegroundColor2 As Color = Color.FromArgb(255, 165, 165, 165)
+    Public ForegroundColor3 As Color = Color.FromArgb(255, 125, 125, 125)
+
+    Public GridColor1 As Color = Color.FromArgb(255, 125, 125, 125)
+    Public GridBGColor1 As Color = Color.FromArgb(255, 26, 28, 32)
+    Public GridBGColor2 As Color = Color.FromArgb(255, 26, 38, 42)
+    Public GridSelectColor1 As Color = Color.FromArgb(255, 28, 74, 92)
+
+    Public HistGridColor As Color = Color.FromArgb(255, 255, 255, 255)
+    Public HistBuyColor1 As Color = Color.FromArgb(128, 0, 32, 85)
+    Public HistBuyColor2 As Color = Color.FromArgb(128, 0, 128, 188)
+    Public HistBuyColor3 As Color = Color.FromArgb(255, 0, 32, 128)
+    Public HistSellColor1 As Color = Color.FromArgb(128, 148, 148, 148)
+    Public HistSellColor2 As Color = Color.FromArgb(128, 215, 215, 215)
+    Public HistSellColor3 As Color = Color.FromArgb(255, 255, 255, 255)
+
+
+    Public CustomBackgroundColor1 As Color = Color.FromArgb(255, 30, 36, 42)
+    Public CustomBackgroundColor2 As Color = Color.FromArgb(255, 50, 56, 62)
+    Public CustomBackgroundColor3 As Color = Color.FromArgb(255, 26, 28, 32)
+
+    Public CustomForegroundColor1 As Color = Color.FromArgb(255, 224, 224, 224)
+    Public CustomForegroundColor2 As Color = Color.FromArgb(255, 165, 165, 165)
+    Public CustomForegroundColor3 As Color = Color.FromArgb(255, 125, 125, 125)
+
+    Public CustomGridColor1 As Color = Color.FromArgb(255, 125, 125, 125)
+    Public CustomGridBGColor1 As Color = Color.FromArgb(255, 26, 28, 32)
+    Public CustomGridBGColor2 As Color = Color.FromArgb(255, 26, 38, 42)
+    Public CustomGridSelectColor1 As Color = Color.FromArgb(255, 28, 74, 92)
+
+    Public CustomHistGridColor As Color = Color.FromArgb(255, 255, 255, 255)
+    Public CustomHistBuyColor1 As Color = Color.FromArgb(128, 0, 32, 85)
+    Public CustomHistBuyColor2 As Color = Color.FromArgb(128, 0, 128, 188)
+    Public CustomHistBuyColor3 As Color = Color.FromArgb(255, 0, 32, 128)
+    Public CustomHistSellColor1 As Color = Color.FromArgb(128, 148, 148, 148)
+    Public CustomHistSellColor2 As Color = Color.FromArgb(128, 215, 215, 215)
+    Public CustomHistSellColor3 As Color = Color.FromArgb(255, 255, 255, 255)
 
     '############################## - Structure Definitions - ##############################
     Structure LogInfoStructure
@@ -174,89 +234,100 @@ Public Class Form1
     End Function
 
     Public Sub LoadPrefsFromIni()
-        Dim savedWindowState As String
-        Dim savedWindowLocX As String
-        Dim savedWindowLocY As String
-        Dim savedWindowSizeW As String
-        Dim savedWindowSizeH As String
-        Dim savedAbtWindowLocX As String
-        Dim savedAbtWindowLocY As String
-        Dim savedSetWindowLocX As String
-        Dim savedSetWindowLocY As String
-        Setting_SaveWindowSz = GetIniValue("Application", "SaveWindowSz", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        Setting_SaveWindowLoc = GetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        Setting_SaveGridLayout = GetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        If Setting_SaveWindowLoc = "True" Then
-            savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedAbtWindowLocX = GetIniValue("Application", "AbtWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedAbtWindowLocY = GetIniValue("Application", "AbtWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSetWindowLocX = GetIniValue("Application", "SetWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSetWindowLocY = GetIniValue("Application", "SetWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            If savedWindowLocX IsNot "" And savedWindowLocX IsNot Nothing Then
-                If savedWindowLocY IsNot "" And savedWindowLocY IsNot Nothing Then
-                    Dim newpoint As New Point
-                    newpoint.X = CInt(savedWindowLocX)
-                    newpoint.Y = CInt(savedWindowLocY)
-                    Me.Location = newpoint
+        If File.Exists(My.Application.Info.DirectoryPath & "\DUOMsettings.ini") = True Then
+            Dim savedWindowState As String
+            Dim savedWindowLocX As String
+            Dim savedWindowLocY As String
+            Dim savedWindowSizeW As String
+            Dim savedWindowSizeH As String
+            Dim savedAbtWindowLocX As String
+            Dim savedAbtWindowLocY As String
+            Dim savedSetWindowLocX As String
+            Dim savedSetWindowLocY As String
+            Setting_SaveWindowSz = GetIniValue("Application", "SaveWindowSz", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            Setting_SaveWindowLoc = GetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            Setting_SaveGridLayout = GetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            Setting_Processinbatch = GetIniValue("Application", "BatchProcessing", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            If Setting_SaveWindowLoc = "True" Then
+                savedWindowLocX = GetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedWindowLocY = GetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedAbtWindowLocX = GetIniValue("Application", "AbtWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedAbtWindowLocY = GetIniValue("Application", "AbtWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSetWindowLocX = GetIniValue("Application", "SetWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSetWindowLocY = GetIniValue("Application", "SetWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                If savedWindowLocX IsNot "" And savedWindowLocX IsNot Nothing Then
+                    If savedWindowLocY IsNot "" And savedWindowLocY IsNot Nothing Then
+                        Dim newpoint As New Point
+                        newpoint.X = CInt(savedWindowLocX)
+                        newpoint.Y = CInt(savedWindowLocY)
+                        Me.Location = newpoint
+                    End If
+                End If
+                If savedAbtWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
+                    If savedAbtWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
+                        Dim newpoint As New Point
+                        newpoint.X = CInt(savedAbtWindowLocX)
+                        newpoint.Y = CInt(savedAbtWindowLocY)
+                        AboutForm.Location = newpoint
+                    End If
+                End If
+                If savedSetWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
+                    If savedSetWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
+                        Dim newpoint As New Point
+                        newpoint.X = CInt(savedSetWindowLocX)
+                        newpoint.Y = CInt(savedSetWindowLocY)
+                        SettingsForm.Location = newpoint
+                    End If
                 End If
             End If
-            If savedAbtWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
-                If savedAbtWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
-                    Dim newpoint As New Point
-                    newpoint.X = CInt(savedAbtWindowLocX)
-                    newpoint.Y = CInt(savedAbtWindowLocY)
-                    AboutForm.Location = newpoint
+            If Setting_SaveWindowSz = "True" Then
+                savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                If savedWindowState IsNot "" And savedWindowState IsNot Nothing Then
+                    WindowMaximizedState = CBool(savedWindowState)
+                End If
+                savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                If savedWindowSizeW IsNot "" And savedWindowSizeW IsNot Nothing Then
+                    If savedWindowSizeH IsNot "" And savedWindowSizeH IsNot Nothing Then
+                        Dim newbnds As Size = New Size()
+                        newbnds.Width = CInt(savedWindowSizeW)
+                        newbnds.Height = CInt(savedWindowSizeH)
+                        Me.Size = newbnds
+                        WindowSavedBoundsX = savedWindowSizeW
+                        WindowSavedBoundsY = savedWindowSizeH
+                    End If
                 End If
             End If
-            If savedSetWindowLocX IsNot "" And savedSetWindowLocX IsNot Nothing Then
-                If savedSetWindowLocY IsNot "" And savedAbtWindowLocY IsNot Nothing Then
-                    Dim newpoint As New Point
-                    newpoint.X = CInt(savedSetWindowLocX)
-                    newpoint.Y = CInt(savedSetWindowLocY)
-                    SettingsForm.Location = newpoint
+            If Setting_SaveGridLayout = "True" Then
+                savedSellOrdrGridCol1W = GetIniValue("Application", "SellOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSellOrdrGridCol2W = GetIniValue("Application", "SellOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSellOrdrGridCol3W = GetIniValue("Application", "SellOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSellOrdrGridCol4W = GetIniValue("Application", "SellOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedSellOrdrGridCol5W = GetIniValue("Application", "SellOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedBuyOrdrGridCol1W = GetIniValue("Application", "BuyOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedBuyOrdrGridCol2W = GetIniValue("Application", "BuyOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedBuyOrdrGridCol3W = GetIniValue("Application", "BuyOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedBuyOrdrGridCol4W = GetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+                savedBuyOrdrGridCol5W = GetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            End If
+            Dim themetest As String = GetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            If themetest IsNot "" And themetest IsNot Nothing Then
+                If CInt(themetest) = 0 Then
+                    Setting_ThemeState = CInt(themetest)
+                    SetDarkTheme()
+                ElseIf CInt(themetest) = 1 Then
+                    Setting_ThemeState = CInt(themetest)
+                    SetLightTheme()
                 End If
             End If
-        End If
-        If Setting_SaveWindowSz = "True" Then
-            savedWindowState = GetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            If savedWindowState IsNot "" And savedWindowState IsNot Nothing Then
-                WindowMaximizedState = CBool(savedWindowState)
+            Dim logchecksettingtest As String = GetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            If logchecksettingtest IsNot "" And logchecksettingtest IsNot Nothing Then
+                Setting_LogCheckTimer = logchecksettingtest
+                LogFileCheckTimer.Interval = CInt(Setting_LogCheckTimer)
+                SettingsForm.NumericUpDown1.Value = CInt(Setting_LogCheckTimer)
             End If
-            savedWindowSizeW = GetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedWindowSizeH = GetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            If savedWindowSizeW IsNot "" And savedWindowSizeW IsNot Nothing Then
-                If savedWindowSizeH IsNot "" And savedWindowSizeH IsNot Nothing Then
-                    Dim newbnds As Size = New Size()
-                    newbnds.Width = CInt(savedWindowSizeW)
-                    newbnds.Height = CInt(savedWindowSizeH)
-                    Me.Size = newbnds
-                    WindowSavedBoundsX = savedWindowSizeW
-                    WindowSavedBoundsY = savedWindowSizeH
-                End If
-            End If
-        End If
-        If Setting_SaveGridLayout = "True" Then
-            savedSellOrdrGridCol1W = GetIniValue("Application", "SellOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSellOrdrGridCol2W = GetIniValue("Application", "SellOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSellOrdrGridCol3W = GetIniValue("Application", "SellOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSellOrdrGridCol4W = GetIniValue("Application", "SellOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedSellOrdrGridCol5W = GetIniValue("Application", "SellOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedBuyOrdrGridCol1W = GetIniValue("Application", "BuyOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedBuyOrdrGridCol2W = GetIniValue("Application", "BuyOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedBuyOrdrGridCol3W = GetIniValue("Application", "BuyOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedBuyOrdrGridCol4W = GetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-            savedBuyOrdrGridCol5W = GetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        End If
-        Dim themetest As String = GetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        If themetest IsNot "" And themetest IsNot Nothing Then
-            If CInt(themetest) > 0 And CInt(themetest) < 3 Then
-                ThemeState = CInt(themetest)
-            End If
-        End If
-        Dim logchecksettingtest As String = GetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
-        If logchecksettingtest IsNot "" And logchecksettingtest IsNot Nothing Then
-            Setting_LogCheckTimer = logchecksettingtest
+        Else
+            SavePrefsToIni()
         End If
     End Sub
 
@@ -264,6 +335,7 @@ Public Class Form1
         SetIniValue("Application", "SaveWindowSz", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
         SetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
         SetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveGridLayout))
+        SetIniValue("Application", "BatchProcessing", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_Processinbatch))
         If Setting_SaveWindowLoc = "True" Then
             SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
             SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
@@ -289,19 +361,159 @@ Public Class Form1
             SetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(3).Width))
             SetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(BuyOrderGridViewRaw.Columns(4).Width))
         End If
-        SetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(ThemeState))
+        SetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_ThemeState))
         SetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_LogCheckTimer))
+    End Sub
+
+    Public Sub SaveCustomTheme()
+        SetIniValue("BackgroundColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor1.R))
+        SetIniValue("BackgroundColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor1.G))
+        SetIniValue("BackgroundColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor1.B))
+
+        SetIniValue("BackgroundColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor2.R))
+        SetIniValue("BackgroundColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor2.G))
+        SetIniValue("BackgroundColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor2.B))
+
+        SetIniValue("BackgroundColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor3.R))
+        SetIniValue("BackgroundColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor3.G))
+        SetIniValue("BackgroundColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomBackgroundColor3.B))
+
+        SetIniValue("ForegroundColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor1.R))
+        SetIniValue("ForegroundColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor1.G))
+        SetIniValue("ForegroundColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor1.B))
+
+        SetIniValue("ForegroundColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor2.R))
+        SetIniValue("ForegroundColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor2.G))
+        SetIniValue("ForegroundColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor2.B))
+
+        SetIniValue("ForegroundColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor3.R))
+        SetIniValue("ForegroundColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor3.G))
+        SetIniValue("ForegroundColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomForegroundColor3.B))
+
+        SetIniValue("CustomGridColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridColor1.R))
+        SetIniValue("CustomGridColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridColor1.G))
+        SetIniValue("CustomGridColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridColor1.B))
+
+        SetIniValue("CustomGridBGColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor1.R))
+        SetIniValue("CustomGridBGColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor1.G))
+        SetIniValue("CustomGridBGColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor1.B))
+
+        SetIniValue("CustomGridBGColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor2.R))
+        SetIniValue("CustomGridBGColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor2.G))
+        SetIniValue("CustomGridBGColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridBGColor2.B))
+
+        SetIniValue("CustomGridSelectColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridSelectColor1.R))
+        SetIniValue("CustomGridSelectColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridSelectColor1.G))
+        SetIniValue("CustomGridSelectColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomGridSelectColor1.B))
+
+        SetIniValue("CustomHistGridColor", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistGridColor.R))
+        SetIniValue("CustomHistGridColor", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistGridColor.G))
+        SetIniValue("CustomHistGridColor", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistGridColor.B))
+
+        SetIniValue("CustomHistBuyColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor1.R))
+        SetIniValue("CustomHistBuyColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor1.G))
+        SetIniValue("CustomHistBuyColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor1.B))
+
+        SetIniValue("CustomHistBuyColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor2.R))
+        SetIniValue("CustomHistBuyColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor2.G))
+        SetIniValue("CustomHistBuyColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor2.B))
+
+        SetIniValue("CustomHistBuyColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor3.R))
+        SetIniValue("CustomHistBuyColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor3.G))
+        SetIniValue("CustomHistBuyColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistBuyColor3.B))
+
+        SetIniValue("CustomHistSellColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor1.R))
+        SetIniValue("CustomHistSellColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor1.G))
+        SetIniValue("CustomHistSellColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor1.B))
+
+        SetIniValue("CustomHistSellColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor2.R))
+        SetIniValue("CustomHistSellColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor2.G))
+        SetIniValue("CustomHistSellColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor2.B))
+
+        SetIniValue("CustomHistSellColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor3.R))
+        SetIniValue("CustomHistSellColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor3.G))
+        SetIniValue("CustomHistSellColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini", CStr(CustomHistSellColor3.B))
+    End Sub
+
+    Public Sub LoadCustomTheme()
+        If File.Exists(My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini") = True Then
+            CustomBackgroundColor1 = Color.FromArgb(255, GetIniValue("BackgroundColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"), GetIniValue("BackgroundColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"), GetIniValue("BackgroundColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomBackgroundColor2 = Color.FromArgb(255, GetIniValue("BackgroundColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("BackgroundColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("BackgroundColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomBackgroundColor3 = Color.FromArgb(255, GetIniValue("BackgroundColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("BackgroundColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("BackgroundColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomForegroundColor1 = Color.FromArgb(255, GetIniValue("ForegroundColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomForegroundColor2 = Color.FromArgb(255, GetIniValue("ForegroundColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomForegroundColor3 = Color.FromArgb(255, GetIniValue("ForegroundColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("ForegroundColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomGridColor1 = Color.FromArgb(255, GetIniValue("CustomGridColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomGridBGColor1 = Color.FromArgb(255, GetIniValue("CustomGridBGColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridBGColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridBGColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomGridBGColor2 = Color.FromArgb(255, GetIniValue("CustomGridBGColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridBGColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridBGColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomGridSelectColor1 = Color.FromArgb(255, GetIniValue("CustomGridSelectColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridSelectColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomGridSelectColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistGridColor = Color.FromArgb(255, GetIniValue("CustomHistGridColor", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistGridColor", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistGridColor", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistBuyColor1 = Color.FromArgb(255, GetIniValue("CustomHistBuyColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistBuyColor2 = Color.FromArgb(255, GetIniValue("CustomHistBuyColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistBuyColor3 = Color.FromArgb(255, GetIniValue("CustomHistBuyColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistBuyColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistSellColor1 = Color.FromArgb(255, GetIniValue("CustomHistSellColor1", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor1", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor1", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistSellColor2 = Color.FromArgb(255, GetIniValue("CustomHistSellColor2", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor2", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor2", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+
+            CustomHistSellColor3 = Color.FromArgb(255, GetIniValue("CustomHistSellColor3", "R", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor3", "G", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"),
+            GetIniValue("CustomHistSellColor3", "B", My.Application.Info.DirectoryPath & "\DUOMcustomTheme.ini"))
+        Else
+            SaveCustomTheme()
+        End If
     End Sub
 
     '############################## - Form Load - ##############################
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CheckForUpdates()
         TimeStampInt()
+        LoadCustomTheme()
         LoadPrefsFromIni()
         CenterLoginElements()
-        API_LogfileDirectory = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
-        FileSystemWatcher1.IncludeSubdirectories = False
-        FileSystemWatcher1.EnableRaisingEvents = False
+        CheckForUpdates()
         InitDataTables()
         InitItemList()
         SetupGridViewStyling()
@@ -315,112 +527,120 @@ Public Class Form1
         SortDataTable(API_Buy_Orders_UI, BuyOrderGridViewRaw)
     End Sub
 
-    Private Sub SortDataTable(ByRef dt As DataTable, ByVal gridref As DataGridView)
-        Dim newDT As DataTable = dt.Clone
-        Dim rowCount As Integer = dt.Rows.Count
-        Dim sortColumn As DataGridViewColumn = gridref.CurrentCell.OwningColumn
-        Dim oldsortColumn As DataGridViewColumn = Nothing
-        Dim sortDirection As System.ComponentModel.ListSortDirection
-        If gridref Is BuyOrderGridViewRaw Then
-            oldsortColumn = gridref.Columns(SortedColumnIndex1)
-        End If
-        If gridref Is SellOrderGridViewRaw Then
-            oldsortColumn = gridref.Columns(SortedColumnIndex2)
-        End If
-        If (Not (oldsortColumn) Is Nothing) Then
-            ' Sort the same column again, reversing the SortOrder.
-            If (oldsortColumn Is sortColumn) AndAlso (gridref.SortOrder = SortOrder.Ascending) Then
-                sortDirection = System.ComponentModel.ListSortDirection.Descending
-            Else
-                ' Sort a new column and remove the old SortGlyph.
-                sortDirection = System.ComponentModel.ListSortDirection.Ascending
-                oldsortColumn.HeaderCell.SortGlyphDirection = SortOrder.None
-            End If
-        Else
-            sortDirection = System.ComponentModel.ListSortDirection.Ascending
-        End If
-        If (sortColumn Is Nothing) Then
-            NewEventMsg("Select a single column and try again.")
-        Else
-            If sortColumn.Index = 0 Or sortColumn.Index = 3 Or sortColumn.Index = 4 Then
-                'string alphabetical sort
-                gridref.Sort(sortColumn, sortDirection)
-            End If
-            If sortColumn.Index = 1 Or sortColumn.Index = 2 Then
-                'reset string sorting, it conflicts with the way we custom-sort doubles
-                If gridref Is BuyOrderGridViewRaw Then
-                    If SortedColumnIndex1 < 1 Or SortedColumnIndex1 > 2 Then
-                        dt.DefaultView.Sort = Nothing
-                    End If
-                End If
-                If gridref Is SellOrderGridViewRaw Then
-                    If SortedColumnIndex2 < 1 Or SortedColumnIndex2 > 2 Then
-                        dt.DefaultView.Sort = Nothing
-                    End If
-                End If
-                'custom numerical sort
-                'For quantity and price, we need to sort numerically. The values are stored as strings, and include decimal places.
-                'we'll need to cast them to Doubles in order to interpret / compare them properly.
-                For sorta As Integer = 1 To rowCount
-                    Dim HighestCellValue As Double = 0
-                    Dim HighestCellIndex As Integer = 0
-
-                    For sortb As Integer = 1 To dt.Rows.Count
-                        If HighestCellValue = Nothing Then
-                            If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
-                                HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
-                            Else
-                                HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
-                            End If
-                        Else
-                            If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
-                                Dim valuetemp1 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
-                                If HighestCellValue >= valuetemp1 Then
-                                    'skip
-                                Else
-                                    HighestCellValue = valuetemp1
-                                    HighestCellIndex = sortb - 1
-                                End If
-                            Else
-                                Dim valuetemp2 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
-                                If HighestCellValue >= valuetemp2 Then
-                                    'skip
-                                Else
-                                    HighestCellValue = valuetemp2
-                                    HighestCellIndex = sortb - 1
-                                End If
-                            End If
-                        End If
-                    Next sortb
-                    Dim new_data_row As DataRow = newDT.NewRow
-                    new_data_row.ItemArray = dt.Rows(HighestCellIndex).ItemArray
-                    newDT.Rows.Add(new_data_row)
-                    dt.Rows(HighestCellIndex).Delete()
-                Next sorta
-                For sortc As Integer = 1 To newDT.Rows.Count
-                    Dim new_data_row2 As DataRow = dt.NewRow
-                    new_data_row2.ItemArray = newDT.Rows(sortc - 1).ItemArray
-                    dt.Rows.Add(new_data_row2)
-                Next sortc
-            End If
-            sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending
-            If sortDirection = System.ComponentModel.ListSortDirection.Ascending Then
-                sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending
-            Else
-                sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Descending
-            End If
-        End If
-        If gridref Is BuyOrderGridViewRaw Then
-            SortedColumnIndex1 = sortColumn.Index
-        End If
-        If gridref Is SellOrderGridViewRaw Then
-            SortedColumnIndex2 = sortColumn.Index
-        End If
-        newDT = Nothing
-    End Sub
-
     Private Sub SellOrderSortButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles SellOrderSortButton.Click
         SortDataTable(API_Sell_Orders_UI, SellOrderGridViewRaw)
+    End Sub
+
+    Private Sub SortDataTable(ByRef dt As DataTable, ByVal gridref As DataGridView)
+        Try
+            If gridref.SelectedCells.Count > 0 Then
+                Dim newDT As DataTable = dt.Clone
+                Dim rowCount As Integer = dt.Rows.Count
+                Dim sortColumn As DataGridViewColumn = gridref.CurrentCell.OwningColumn
+                Dim oldsortColumn As DataGridViewColumn = Nothing
+                Dim sortDirection As System.ComponentModel.ListSortDirection
+                If gridref Is BuyOrderGridViewRaw Then
+                    oldsortColumn = gridref.Columns(SortedColumnIndex1)
+                End If
+                If gridref Is SellOrderGridViewRaw Then
+                    oldsortColumn = gridref.Columns(SortedColumnIndex2)
+                End If
+                If (Not (oldsortColumn) Is Nothing) Then
+                    ' Sort the same column again, reversing the SortOrder.
+                    If (oldsortColumn Is sortColumn) AndAlso (gridref.SortOrder = SortOrder.Ascending) Then
+                        sortDirection = System.ComponentModel.ListSortDirection.Descending
+                    Else
+                        ' Sort a new column and remove the old SortGlyph.
+                        sortDirection = System.ComponentModel.ListSortDirection.Ascending
+                        oldsortColumn.HeaderCell.SortGlyphDirection = SortOrder.None
+                    End If
+                Else
+                    sortDirection = System.ComponentModel.ListSortDirection.Ascending
+                End If
+                If (sortColumn Is Nothing) Then
+                    NewEventMsg("Select a single column and try again.")
+                Else
+                    If sortColumn.Index = 0 Or sortColumn.Index = 3 Or sortColumn.Index = 4 Then
+                        'string alphabetical sort
+                        gridref.Sort(sortColumn, sortDirection)
+                    End If
+                    If sortColumn.Index = 1 Or sortColumn.Index = 2 Then
+                        'reset string sorting, it conflicts with the way we custom-sort doubles
+                        If gridref Is BuyOrderGridViewRaw Then
+                            If SortedColumnIndex1 < 1 Or SortedColumnIndex1 > 2 Then
+                                dt.DefaultView.Sort = Nothing
+                            End If
+                        End If
+                        If gridref Is SellOrderGridViewRaw Then
+                            If SortedColumnIndex2 < 1 Or SortedColumnIndex2 > 2 Then
+                                dt.DefaultView.Sort = Nothing
+                            End If
+                        End If
+                        'custom numerical sort
+                        'For quantity and price, we need to sort numerically. The values are stored as strings, and include decimal places.
+                        'we'll need to cast them to Doubles in order to interpret / compare them properly.
+                        For sorta As Integer = 1 To rowCount
+                            Dim HighestCellValue As Double = 0
+                            Dim HighestCellIndex As Integer = 0
+
+                            For sortb As Integer = 1 To dt.Rows.Count
+                                If HighestCellValue = Nothing Then
+                                    If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                        HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
+                                    Else
+                                        HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
+                                    End If
+                                Else
+                                    If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                        Dim valuetemp1 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
+                                        If HighestCellValue >= valuetemp1 Then
+                                            'skip
+                                        Else
+                                            HighestCellValue = valuetemp1
+                                            HighestCellIndex = sortb - 1
+                                        End If
+                                    Else
+                                        Dim valuetemp2 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
+                                        If HighestCellValue >= valuetemp2 Then
+                                            'skip
+                                        Else
+                                            HighestCellValue = valuetemp2
+                                            HighestCellIndex = sortb - 1
+                                        End If
+                                    End If
+                                End If
+                            Next sortb
+                            Dim new_data_row As DataRow = newDT.NewRow
+                            new_data_row.ItemArray = dt.Rows(HighestCellIndex).ItemArray
+                            newDT.Rows.Add(new_data_row)
+                            dt.Rows(HighestCellIndex).Delete()
+                        Next sorta
+                        For sortc As Integer = 1 To newDT.Rows.Count
+                            Dim new_data_row2 As DataRow = dt.NewRow
+                            new_data_row2.ItemArray = newDT.Rows(sortc - 1).ItemArray
+                            dt.Rows.Add(new_data_row2)
+                        Next sortc
+                    End If
+                    sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending
+                    If sortDirection = System.ComponentModel.ListSortDirection.Ascending Then
+                        sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending
+                    Else
+                        sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Descending
+                    End If
+                End If
+                If gridref Is BuyOrderGridViewRaw Then
+                    SortedColumnIndex1 = sortColumn.Index
+                End If
+                If gridref Is SellOrderGridViewRaw Then
+                    SortedColumnIndex2 = sortColumn.Index
+                End If
+                newDT = Nothing
+            Else
+                NewEventMsg("Sort Error: No column selected to sort by.")
+            End If
+        Catch ex As Exception
+            NewEventMsg("Sort Error: " & ex.Message)
+        End Try
     End Sub
 
     '############################## - API Request Constructor - ##############################
@@ -428,26 +648,30 @@ Public Class Form1
         Try
             Dim requestUrl As String = Nothing
             If reqtype = "create" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/create?" & addr
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/" & API_Discord_Auth_Code & "/create?" & addr
                 NumberOfCreates = NumberOfCreates + 1
             End If
             If reqtype = "read" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/read?" & addr
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/" & API_Discord_Auth_Code & "/read?" & addr
                 NumberOfReads = NumberOfReads + 1
             End If
             If reqtype = "update" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/update?" & addr
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/" & API_Discord_Auth_Code & "/update?" & addr
                 NumberOfUpdates = NumberOfUpdates + 1
             End If
             If reqtype = "delete" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/" & API_Discord_Auth_Code & "/delete?" & addr
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/" & API_Discord_Auth_Code & "/delete?" & addr
                 NumberOfDeletes = NumberOfDeletes + 1
             End If
+            If reqtype = "history" Then
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/" & API_Discord_Auth_Code & "/history?" & addr
+                NumberOfHistories = NumberOfHistories + 1
+            End If
             If reqtype = "ver" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/version?"
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/version?"
             End If
             If reqtype = "minver" Then
-                requestUrl = "https://duopenmarket.xyz/openmarketapi.php/minversion?"
+                requestUrl = "https://duopenmarket.com/openmarketapi.php/minversion?"
             End If
             Dim request As WebRequest = WebRequest.Create(requestUrl)
             Dim response As WebResponse = request.GetResponse()
@@ -571,312 +795,213 @@ Public Class Form1
     Private Sub InitMarketTable()
         API_Market_Table.Columns.Add("id", GetType(Integer))
         API_Market_Table.Columns.Add("name", GetType(String))
-        API_Market_Table.Rows.Add(1662, "Market Talemai 6")
-        API_Market_Table.Rows.Add(1617, "Market Alioth District 01")
-        API_Market_Table.Rows.Add(1752, "Market Ion Moon I 2")
-        API_Market_Table.Rows.Add(1623, "Market Alioth District 06")
-        API_Market_Table.Rows.Add(1755, "Market Sanctuary 01")
-        API_Market_Table.Rows.Add(1753, "Market Ion Moon II 1")
-        API_Market_Table.Rows.Add(1893, "Market Sanctuary 06")
-        API_Market_Table.Rows.Add(35747, "Small Market")
-        API_Market_Table.Rows.Add(1618, "Market Alioth District 10")
-        API_Market_Table.Rows.Add(1754, "Market Ion Moon II 2")
-        API_Market_Table.Rows.Add(1619, "Market Alioth District 02")
-        API_Market_Table.Rows.Add(1620, "Market Alioth District 03")
-        API_Market_Table.Rows.Add(1621, "Market Alioth District 04")
-        API_Market_Table.Rows.Add(1756, "Market Sanctuary 10")
-        API_Market_Table.Rows.Add(1889, "Market Sanctuary 02")
-        API_Market_Table.Rows.Add(1890, "Market Sanctuary 03")
-        API_Market_Table.Rows.Add(1891, "Market Sanctuary 04")
-        API_Market_Table.Rows.Add(1892, "Market Sanctuary 05")
-        API_Market_Table.Rows.Add(1894, "Market Sanctuary 07")
-        API_Market_Table.Rows.Add(1895, "Market Sanctuary 08")
-        API_Market_Table.Rows.Add(1622, "Market Alioth District 05")
-        API_Market_Table.Rows.Add(1624, "Market Alioth District 07")
-        API_Market_Table.Rows.Add(1896, "Market Sanctuary 09")
-        API_Market_Table.Rows.Add(1633, "Market Alioth District 08")
-        API_Market_Table.Rows.Add(1634, "Market Alioth District 09")
-        API_Market_Table.Rows.Add(1635, "Market Madis 1")
-        API_Market_Table.Rows.Add(1636, "Market Madis 2")
-        API_Market_Table.Rows.Add(1745, "Market Ion 1")
-        API_Market_Table.Rows.Add(1746, "Market Ion 2")
-        API_Market_Table.Rows.Add(1747, "Market Ion 3")
-        API_Market_Table.Rows.Add(1748, "Market Ion 4")
-        API_Market_Table.Rows.Add(1749, "Market Ion 5")
-        API_Market_Table.Rows.Add(1750, "Market Ion 6")
-        API_Market_Table.Rows.Add(1751, "Market Ion Moon I 1")
-        API_Market_Table.Rows.Add(1639, "Market Madis 5")
-        API_Market_Table.Rows.Add(1637, "Market Madis 3")
-        API_Market_Table.Rows.Add(1640, "Market Madis 6")
-        API_Market_Table.Rows.Add(1641, "Market Alioth 20")
-        API_Market_Table.Rows.Add(1642, "Market Alioth 11")
-        API_Market_Table.Rows.Add(1643, "Market Alioth 12")
-        API_Market_Table.Rows.Add(1644, "Market Alioth 13")
-        API_Market_Table.Rows.Add(1645, "Market Alioth 14 ")
-        API_Market_Table.Rows.Add(17559, "Market Alioth 15")
-        API_Market_Table.Rows.Add(1647, "Market Alioth 16")
-        API_Market_Table.Rows.Add(1648, "Market Alioth 17")
-        API_Market_Table.Rows.Add(1649, "Market Alioth 18")
-        API_Market_Table.Rows.Add(1650, "Market Alioth 19")
-        API_Market_Table.Rows.Add(1651, "Market Thades 1")
-        API_Market_Table.Rows.Add(1652, "Market Thades 2")
-        API_Market_Table.Rows.Add(1653, "Market Thades 3")
-        API_Market_Table.Rows.Add(1654, "Market Thades 4")
-        API_Market_Table.Rows.Add(1655, "Market Thades 5")
-        API_Market_Table.Rows.Add(1656, "Market Thades 6")
-        API_Market_Table.Rows.Add(1657, "Market Talemai 1")
-        API_Market_Table.Rows.Add(1658, "Market Talemai 2")
-        API_Market_Table.Rows.Add(1659, "Market Talemai 3")
-        API_Market_Table.Rows.Add(1660, "Market Talemai 4")
-        API_Market_Table.Rows.Add(1661, "Market Talemai 5")
-        API_Market_Table.Rows.Add(1663, "Market Feli 1")
-        API_Market_Table.Rows.Add(1664, "Market Feli 2")
-        API_Market_Table.Rows.Add(1665, "Market Feli 3")
-        API_Market_Table.Rows.Add(1666, "Market Feli 4")
-        API_Market_Table.Rows.Add(1667, "Market Feli 5")
-        API_Market_Table.Rows.Add(1668, "Market Feli 6")
-        API_Market_Table.Rows.Add(1669, "Market Sicari 1")
-        API_Market_Table.Rows.Add(1670, "Market Sicari 2")
-        API_Market_Table.Rows.Add(1671, "Market Sicari 3")
-        API_Market_Table.Rows.Add(1672, "Market Sicari 4")
-        API_Market_Table.Rows.Add(1673, "Market Sicari 5")
-        API_Market_Table.Rows.Add(1674, "Market Sicari 6")
-        API_Market_Table.Rows.Add(1675, "Market Sinnen 1")
-        API_Market_Table.Rows.Add(1676, "Market Sinnen 2")
-        API_Market_Table.Rows.Add(1677, "Market Sinnen 3")
-        API_Market_Table.Rows.Add(1678, "Market Sinnen 4")
-        API_Market_Table.Rows.Add(1679, "Market Sinnen 5")
-        API_Market_Table.Rows.Add(1680, "Market Sinnen 6")
-        API_Market_Table.Rows.Add(1681, "Market Teoma 1")
-        API_Market_Table.Rows.Add(1682, "Market Teoma 2")
-        API_Market_Table.Rows.Add(1683, "Market Teoma 3")
-        API_Market_Table.Rows.Add(1684, "Market Teoma 4")
-        API_Market_Table.Rows.Add(1685, "Market Teoma 5")
-        API_Market_Table.Rows.Add(1686, "Market Teoma 6")
-        API_Market_Table.Rows.Add(1687, "Market Jago 1")
-        API_Market_Table.Rows.Add(1688, "Market Jago 2")
-        API_Market_Table.Rows.Add(1689, "Market Jago 3")
-        API_Market_Table.Rows.Add(1690, "Market Jago 4")
-        API_Market_Table.Rows.Add(1691, "Market Jago 5")
-        API_Market_Table.Rows.Add(1692, "Market Jago 6")
-        API_Market_Table.Rows.Add(1693, "Market Madis Moon I 1")
-        API_Market_Table.Rows.Add(1694, "Market Madis Moon I 2")
-        API_Market_Table.Rows.Add(1695, "Market Madis Moon II 1")
-        API_Market_Table.Rows.Add(1696, "Market Madis Moon II 2")
-        API_Market_Table.Rows.Add(1697, "Market Madis Moon III 1")
-        API_Market_Table.Rows.Add(1638, "Market Madis 4")
-        API_Market_Table.Rows.Add(1698, "Market Madis Moon III 2")
-        API_Market_Table.Rows.Add(1705, "Market Sanctuary 12")
-        API_Market_Table.Rows.Add(1706, "Market Sanctuary 13")
-        API_Market_Table.Rows.Add(1699, "Market Alioth Moon I 1")
-        API_Market_Table.Rows.Add(1707, "Market Sanctuary 14")
-        API_Market_Table.Rows.Add(1700, "Market Alioth Moon I 2")
-        API_Market_Table.Rows.Add(1712, "Market Sanctuary 19")
-        API_Market_Table.Rows.Add(1713, "Market Thades Moon I 1")
-        API_Market_Table.Rows.Add(1714, "Market Thades Moon I 2")
-        API_Market_Table.Rows.Add(1715, "Market Thades Moon II 1")
-        API_Market_Table.Rows.Add(1716, "Market Thades Moon II 2")
-        API_Market_Table.Rows.Add(1717, "Market Talemai Moon II 1")
-        API_Market_Table.Rows.Add(1719, "Market Talemai Moon III 1")
-        API_Market_Table.Rows.Add(1720, "Market Talemai Moon III 2")
-        API_Market_Table.Rows.Add(1721, "Market Talemai Moon I 1")
-        API_Market_Table.Rows.Add(1722, "Market Talemai Moon I 2")
-        API_Market_Table.Rows.Add(1723, "Market Feli Moon I 1")
-        API_Market_Table.Rows.Add(1724, "Market Feli Moon I 2")
-        API_Market_Table.Rows.Add(1725, "Market Sinnen Moon I 1")
-        API_Market_Table.Rows.Add(1726, "Market Sinnen Moon I 2")
-        API_Market_Table.Rows.Add(1727, "Market Lacobus 1")
-        API_Market_Table.Rows.Add(1728, "Market Lacobus 2")
-        API_Market_Table.Rows.Add(1729, "Market Lacobus 3")
-        API_Market_Table.Rows.Add(1730, "Market Lacobus 4")
-        API_Market_Table.Rows.Add(1731, "Market Lacobus 5")
-        API_Market_Table.Rows.Add(1732, "Market Lacobus 6")
-        API_Market_Table.Rows.Add(1733, "Market Lacobus Moon III 1")
-        API_Market_Table.Rows.Add(1734, "Market Lacobus Moon III 2")
-        API_Market_Table.Rows.Add(1735, "Market Lacobus Moon I 1")
-        API_Market_Table.Rows.Add(1736, "Market Lacobus Moon I 2")
-        API_Market_Table.Rows.Add(1737, "Market Lacobus Moon II 1")
-        API_Market_Table.Rows.Add(1738, "Market Lacobus Moon II 2")
-        API_Market_Table.Rows.Add(1739, "Market Symeon 1")
-        API_Market_Table.Rows.Add(1740, "Market Symeon 2")
-        API_Market_Table.Rows.Add(1741, "Market Symeon 3")
-        API_Market_Table.Rows.Add(1742, "Market Symeon 4")
-        API_Market_Table.Rows.Add(1743, "Market Symeon 5")
-        API_Market_Table.Rows.Add(1744, "Market Symeon 6")
-        API_Market_Table.Rows.Add(1701, "Market Alioth Moon IV 1")
-        API_Market_Table.Rows.Add(1702, "Market Alioth Moon IV 2")
-        API_Market_Table.Rows.Add(1703, "Market Sanctuary 20")
-        API_Market_Table.Rows.Add(1704, "Market Sanctuary 11")
-        API_Market_Table.Rows.Add(1708, "Market Sanctuary 15")
-        API_Market_Table.Rows.Add(1709, "Market Sanctuary 16")
-        API_Market_Table.Rows.Add(1710, "Market Sanctuary 17")
-        API_Market_Table.Rows.Add(1711, "Market Sanctuary 18")
-        API_Market_Table.Rows.Add(1718, "Market Talemai Moon II 2")
-        API_Market_Table.Rows.Add(44188, "Market Haven 01")
-        API_Market_Table.Rows.Add(44180, "Market Haven 02")
-        API_Market_Table.Rows.Add(44181, "Market Haven 03")
-        API_Market_Table.Rows.Add(44184, "Market Haven 04")
-        API_Market_Table.Rows.Add(44182, "Market Haven 05")
-        API_Market_Table.Rows.Add(44183, "Haven 06") ' Thanks for the consistency NQ...
-        API_Market_Table.Rows.Add(44185, "Market Haven 07")
-        API_Market_Table.Rows.Add(44186, "Market Haven 08")
-        API_Market_Table.Rows.Add(44187, "Market Haven 09")
-        API_Market_Table.Rows.Add(44189, "Market Haven 10")
-        API_Market_Table.Rows.Add(44243, "Market Haven 11")
-        API_Market_Table.Rows.Add(44221, "Market Haven 12")
-        API_Market_Table.Rows.Add(44230, "Market Haven 13")
-        API_Market_Table.Rows.Add(44279, "Market Haven 14")
-        API_Market_Table.Rows.Add(44244, "Market Haven 15")
-        API_Market_Table.Rows.Add(44196, "Market Haven 16")
-        API_Market_Table.Rows.Add(44248, "Market Haven 17")
-        API_Market_Table.Rows.Add(44194, "Market Haven 18")
-        API_Market_Table.Rows.Add(44269, "Market Haven 19")
-        API_Market_Table.Rows.Add(44236, "Market Haven 20")
-        API_Market_Table.Rows.Add(44328, "Aegis Space Market")
+        API_Market_Table.Rows.Add(52854, "Tuto Market")
+        API_Market_Table.Rows.Add(46130, "Market Haven 01")
+        API_Market_Table.Rows.Add(46128, "Market Alioth District 01")
+        API_Market_Table.Rows.Add(46129, "Market Alioth District 06")
+        API_Market_Table.Rows.Add(46131, "Market Haven 06")
+        API_Market_Table.Rows.Add(46132, "Market Alioth 16")
+        API_Market_Table.Rows.Add(46133, "Market Sanctuary 01")
+        API_Market_Table.Rows.Add(46134, "Market Sanctuary 06")
+        API_Market_Table.Rows.Add(46135, "Market Alioth District 10")
+        API_Market_Table.Rows.Add(46136, "Aegis Space Market")
+        API_Market_Table.Rows.Add(46137, "Market Alioth District 02")
+        API_Market_Table.Rows.Add(46138, "Market Alioth District 03")
+        API_Market_Table.Rows.Add(46139, "Market Alioth District 04")
+        API_Market_Table.Rows.Add(46140, "Market Alioth District 05")
+        API_Market_Table.Rows.Add(46141, "Market Alioth District 07")
+        API_Market_Table.Rows.Add(46142, "Market Alioth District 08")
+        API_Market_Table.Rows.Add(46143, "Market Alioth District 09")
+        API_Market_Table.Rows.Add(46144, "Market Haven 10")
+        API_Market_Table.Rows.Add(46145, "Market Haven 02")
+        API_Market_Table.Rows.Add(46146, "Market Haven 03")
+        API_Market_Table.Rows.Add(46147, "Market Haven 04")
+        API_Market_Table.Rows.Add(46148, "Market Haven 05")
+        API_Market_Table.Rows.Add(46149, "Market Haven 08")
+        API_Market_Table.Rows.Add(46150, "Market Haven 09")
+        API_Market_Table.Rows.Add(46151, "Market Haven 07")
+        API_Market_Table.Rows.Add(46152, "Market Sanctuary 13")
+        API_Market_Table.Rows.Add(46153, "Market Madis Moon II 1")
+        API_Market_Table.Rows.Add(52846, "Tuto Market")
+        API_Market_Table.Rows.Add(46154, "Market Thades 4")
+        API_Market_Table.Rows.Add(46155, "Market Madis Moon III 2")
+        API_Market_Table.Rows.Add(46156, "Market Teoma 1")
+        API_Market_Table.Rows.Add(46157, "Market Teoma 6")
+        API_Market_Table.Rows.Add(46158, "Market Alioth 15")
+        API_Market_Table.Rows.Add(46159, "Market Alioth 18")
+        API_Market_Table.Rows.Add(46160, "Market Alioth 14")
+        API_Market_Table.Rows.Add(46161, "Market Madis 5")
+        API_Market_Table.Rows.Add(46162, "Market Teoma 5")
+        API_Market_Table.Rows.Add(46163, "Market Haven 11")
+        API_Market_Table.Rows.Add(46164, "Market Haven 12")
+        API_Market_Table.Rows.Add(46165, "Market Teoma 2")
+        API_Market_Table.Rows.Add(46166, "Market Madis Moon I 2")
+        API_Market_Table.Rows.Add(46167, "Market Madis 4")
+        API_Market_Table.Rows.Add(46168, "Market Alioth Moon IV 1")
+        API_Market_Table.Rows.Add(46169, "Market Sanctuary 19")
+        API_Market_Table.Rows.Add(46170, "Market Thades 1")
+        API_Market_Table.Rows.Add(46171, "Market Haven 14")
+        API_Market_Table.Rows.Add(46172, "Market Sanctuary 20")
+        API_Market_Table.Rows.Add(46173, "Market Madis Moon II 2")
+        API_Market_Table.Rows.Add(46174, "Market Alioth 12")
+        API_Market_Table.Rows.Add(46175, "Market Madis 6")
+        API_Market_Table.Rows.Add(46176, "Market Alioth 17")
+        API_Market_Table.Rows.Add(46177, "Market Alioth Moon I 1")
+        API_Market_Table.Rows.Add(46178, "Market Alioth 19")
+        API_Market_Table.Rows.Add(46179, "Market Haven 16")
+        API_Market_Table.Rows.Add(46180, "Market Alioth Moon IV 2")
+        API_Market_Table.Rows.Add(46181, "Market Jago 3")
+        API_Market_Table.Rows.Add(46182, "Market Madis 3")
+        API_Market_Table.Rows.Add(46183, "Market Haven 17")
+        API_Market_Table.Rows.Add(46184, "Market Sanctuary 11")
+        API_Market_Table.Rows.Add(46185, "Market Sanctuary 14")
+        API_Market_Table.Rows.Add(46186, "Market Thades 6")
+        API_Market_Table.Rows.Add(46187, "Market Alioth 11")
+        API_Market_Table.Rows.Add(46188, "Market Jago 6")
+        API_Market_Table.Rows.Add(46189, "Market Sanctuary 18")
+        API_Market_Table.Rows.Add(46190, "Market Alioth 13")
+        API_Market_Table.Rows.Add(46191, "Market Thades 2")
+        API_Market_Table.Rows.Add(46192, "Market Jago 2")
+        API_Market_Table.Rows.Add(46193, "Market Sanctuary 16")
+        API_Market_Table.Rows.Add(46194, "Market Thades Moon I 2")
+        API_Market_Table.Rows.Add(46195, "Market Teoma 3")
+        API_Market_Table.Rows.Add(46196, "Market Jago 4")
+        API_Market_Table.Rows.Add(46197, "Market Sanctuary 17")
+        API_Market_Table.Rows.Add(46198, "Market Haven 13")
+        API_Market_Table.Rows.Add(46199, "Market Madis Moon III 1")
+        API_Market_Table.Rows.Add(46200, "Market Madis Moon I 1")
+        API_Market_Table.Rows.Add(46201, "Market Sanctuary 15")
+        API_Market_Table.Rows.Add(46202, "Market Alioth 20")
+        API_Market_Table.Rows.Add(46203, "Market Thades Moon I 1")
+        API_Market_Table.Rows.Add(46204, "Market Haven 15")
+        API_Market_Table.Rows.Add(46205, "Market Thades 5")
+        API_Market_Table.Rows.Add(46206, "Market Thades 3")
+        API_Market_Table.Rows.Add(46207, "Market Haven 18")
+        API_Market_Table.Rows.Add(46208, "Market Madis 1")
+        API_Market_Table.Rows.Add(46209, "Market Thades Moon II 1")
+        API_Market_Table.Rows.Add(46210, "Market Madis 2")
+        API_Market_Table.Rows.Add(46211, "Market Jago 1")
+        API_Market_Table.Rows.Add(46212, "Market Jago 5")
+        API_Market_Table.Rows.Add(46213, "Market Sanctuary 12")
+        API_Market_Table.Rows.Add(46214, "Market Thades Moon II 2")
+        API_Market_Table.Rows.Add(46215, "Market Alioth Moon I 2")
+        API_Market_Table.Rows.Add(46216, "Market Haven 20")
+        API_Market_Table.Rows.Add(46217, "Market Haven 19")
+        API_Market_Table.Rows.Add(46218, "Market Teoma 4")
+        API_Market_Table.Rows.Add(46219, "Market Sanctuary 10")
+        API_Market_Table.Rows.Add(46220, "Market Sanctuary 02")
+        API_Market_Table.Rows.Add(46221, "Market Sanctuary 03")
+        API_Market_Table.Rows.Add(46222, "Market Sanctuary 04")
+        API_Market_Table.Rows.Add(46223, "Market Sanctuary 05")
+        API_Market_Table.Rows.Add(46224, "Market Sanctuary 07")
+        API_Market_Table.Rows.Add(46225, "Market Sanctuary 08")
+        API_Market_Table.Rows.Add(46226, "Market Sanctuary 09")
+        API_Market_Table.Rows.Add(52853, "Tuto Market")
     End Sub
 
     Private Sub InitAdvMarketTree()
-        AdvMarketTreeView.Nodes.Add("1623", "Market Alioth District 06")
-        AdvMarketTreeView.Nodes.Add("1617", "Market Alioth District 01")
-        AdvMarketTreeView.Nodes.Add("1619", "Market Alioth District 02")
-        AdvMarketTreeView.Nodes.Add("1620", "Market Alioth District 03")
-        AdvMarketTreeView.Nodes.Add("1621", "Market Alioth District 04")
-        AdvMarketTreeView.Nodes.Add("1622", "Market Alioth District 05")
-        AdvMarketTreeView.Nodes.Add("1624", "Market Alioth District 07")
-        AdvMarketTreeView.Nodes.Add("1633", "Market Alioth District 08")
-        AdvMarketTreeView.Nodes.Add("1634", "Market Alioth District 09")
-        AdvMarketTreeView.Nodes.Add("1618", "Market Alioth District 10")
-        AdvMarketTreeView.Nodes.Add("1642", "Market Alioth 11")
-        AdvMarketTreeView.Nodes.Add("1643", "Market Alioth 12")
-        AdvMarketTreeView.Nodes.Add("1644", "Market Alioth 13")
-        AdvMarketTreeView.Nodes.Add("1645", "Market Alioth 14")
-        AdvMarketTreeView.Nodes.Add("17559", "Market Alioth 15")
-        AdvMarketTreeView.Nodes.Add("1647", "Market Alioth 16")
-        AdvMarketTreeView.Nodes.Add("1648", "Market Alioth 17")
-        AdvMarketTreeView.Nodes.Add("1649", "Market Alioth 18")
-        AdvMarketTreeView.Nodes.Add("1650", "Market Alioth 19")
-        AdvMarketTreeView.Nodes.Add("1641", "Market Alioth 20")
-        AdvMarketTreeView.Nodes.Add("1755", "Market Sanctuary 01")
-        AdvMarketTreeView.Nodes.Add("1889", "Market Sanctuary 02")
-        AdvMarketTreeView.Nodes.Add("1890", "Market Sanctuary 03")
-        AdvMarketTreeView.Nodes.Add("1891", "Market Sanctuary 04")
-        AdvMarketTreeView.Nodes.Add("1892", "Market Sanctuary 05")
-        AdvMarketTreeView.Nodes.Add("1893", "Market Sanctuary 06")
-        AdvMarketTreeView.Nodes.Add("1894", "Market Sanctuary 07")
-        AdvMarketTreeView.Nodes.Add("1895", "Market Sanctuary 08")
-        AdvMarketTreeView.Nodes.Add("1896", "Market Sanctuary 09")
-        AdvMarketTreeView.Nodes.Add("1756", "Market Sanctuary 10")
-        AdvMarketTreeView.Nodes.Add("1704", "Market Sanctuary 11")
-        AdvMarketTreeView.Nodes.Add("1705", "Market Sanctuary 12")
-        AdvMarketTreeView.Nodes.Add("1706", "Market Sanctuary 13")
-        AdvMarketTreeView.Nodes.Add("1707", "Market Sanctuary 14")
-        AdvMarketTreeView.Nodes.Add("1708", "Market Sanctuary 15")
-        AdvMarketTreeView.Nodes.Add("1709", "Market Sanctuary 16")
-        AdvMarketTreeView.Nodes.Add("1710", "Market Sanctuary 17")
-        AdvMarketTreeView.Nodes.Add("1711", "Market Sanctuary 18")
-        AdvMarketTreeView.Nodes.Add("1712", "Market Sanctuary 19")
-        AdvMarketTreeView.Nodes.Add("1703", "Market Sanctuary 20")
-        AdvMarketTreeView.Nodes.Add("1699", "Market Alioth Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1700", "Market Alioth Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1701", "Market Alioth Moon IV 1")
-        AdvMarketTreeView.Nodes.Add("1702", "Market Alioth Moon IV 2")
-        AdvMarketTreeView.Nodes.Add("1635", "Market Madis 1")
-        AdvMarketTreeView.Nodes.Add("1636", "Market Madis 2")
-        AdvMarketTreeView.Nodes.Add("1637", "Market Madis 3")
-        AdvMarketTreeView.Nodes.Add("1638", "Market Madis 4")
-        AdvMarketTreeView.Nodes.Add("1639", "Market Madis 5")
-        AdvMarketTreeView.Nodes.Add("1640", "Market Madis 6")
-        AdvMarketTreeView.Nodes.Add("1693", "Market Madis Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1694", "Market Madis Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1695", "Market Madis Moon II 1")
-        AdvMarketTreeView.Nodes.Add("1696", "Market Madis Moon II 2")
-        AdvMarketTreeView.Nodes.Add("1697", "Market Madis Moon III 1")
-        AdvMarketTreeView.Nodes.Add("1698", "Market Madis Moon III 2")
-        AdvMarketTreeView.Nodes.Add("1651", "Market Thades 1")
-        AdvMarketTreeView.Nodes.Add("1652", "Market Thades 2")
-        AdvMarketTreeView.Nodes.Add("1653", "Market Thades 3")
-        AdvMarketTreeView.Nodes.Add("1654", "Market Thades 4")
-        AdvMarketTreeView.Nodes.Add("1655", "Market Thades 5")
-        AdvMarketTreeView.Nodes.Add("1656", "Market Thades 6")
-        AdvMarketTreeView.Nodes.Add("1713", "Market Thades Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1714", "Market Thades Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1715", "Market Thades Moon II 1")
-        AdvMarketTreeView.Nodes.Add("1716", "Market Thades Moon II 2")
-        'AdvMarketTreeView.Nodes.Add("35747", "Small Market") -- Location unknown. It's in the market list, coords of 0,0,0. Maybe a dev-only object? Or just something that doesnt actually exist.
-        AdvMarketTreeView.Nodes.Add("1745", "Market Ion 1")
-        AdvMarketTreeView.Nodes.Add("1746", "Market Ion 2")
-        AdvMarketTreeView.Nodes.Add("1747", "Market Ion 3")
-        AdvMarketTreeView.Nodes.Add("1748", "Market Ion 4")
-        AdvMarketTreeView.Nodes.Add("1749", "Market Ion 5")
-        AdvMarketTreeView.Nodes.Add("1750", "Market Ion 6")
-        AdvMarketTreeView.Nodes.Add("1751", "Market Ion Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1752", "Market Ion Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1753", "Market Ion Moon II 1")
-        AdvMarketTreeView.Nodes.Add("1754", "Market Ion Moon II 2")
-        AdvMarketTreeView.Nodes.Add("1657", "Market Talemai 1")
-        AdvMarketTreeView.Nodes.Add("1658", "Market Talemai 2")
-        AdvMarketTreeView.Nodes.Add("1659", "Market Talemai 3")
-        AdvMarketTreeView.Nodes.Add("1660", "Market Talemai 4")
-        AdvMarketTreeView.Nodes.Add("1661", "Market Talemai 5")
-        AdvMarketTreeView.Nodes.Add("1662", "Market Talemai 6")
-        AdvMarketTreeView.Nodes.Add("1721", "Market Talemai Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1722", "Market Talemai Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1717", "Market Talemai Moon II 1")
-        AdvMarketTreeView.Nodes.Add("1718", "Market Talemai Moon II 2")
-        AdvMarketTreeView.Nodes.Add("1719", "Market Talemai Moon III 1")
-        AdvMarketTreeView.Nodes.Add("1720", "Market Talemai Moon III 2")
-        AdvMarketTreeView.Nodes.Add("1663", "Market Feli 1")
-        AdvMarketTreeView.Nodes.Add("1664", "Market Feli 2")
-        AdvMarketTreeView.Nodes.Add("1665", "Market Feli 3")
-        AdvMarketTreeView.Nodes.Add("1666", "Market Feli 4")
-        AdvMarketTreeView.Nodes.Add("1667", "Market Feli 5")
-        AdvMarketTreeView.Nodes.Add("1668", "Market Feli 6")
-        AdvMarketTreeView.Nodes.Add("1723", "Market Feli Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1724", "Market Feli Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1669", "Market Sicari 1")
-        AdvMarketTreeView.Nodes.Add("1670", "Market Sicari 2")
-        AdvMarketTreeView.Nodes.Add("1671", "Market Sicari 3")
-        AdvMarketTreeView.Nodes.Add("1672", "Market Sicari 4")
-        AdvMarketTreeView.Nodes.Add("1673", "Market Sicari 5")
-        AdvMarketTreeView.Nodes.Add("1674", "Market Sicari 6")
-        AdvMarketTreeView.Nodes.Add("1675", "Market Sinnen 1")
-        AdvMarketTreeView.Nodes.Add("1676", "Market Sinnen 2")
-        AdvMarketTreeView.Nodes.Add("1677", "Market Sinnen 3")
-        AdvMarketTreeView.Nodes.Add("1678", "Market Sinnen 4")
-        AdvMarketTreeView.Nodes.Add("1679", "Market Sinnen 5")
-        AdvMarketTreeView.Nodes.Add("1680", "Market Sinnen 6")
-        AdvMarketTreeView.Nodes.Add("1681", "Market Teoma 1")
-        AdvMarketTreeView.Nodes.Add("1682", "Market Teoma 2")
-        AdvMarketTreeView.Nodes.Add("1683", "Market Teoma 3")
-        AdvMarketTreeView.Nodes.Add("1684", "Market Teoma 4")
-        AdvMarketTreeView.Nodes.Add("1685", "Market Teoma 5")
-        AdvMarketTreeView.Nodes.Add("1686", "Market Teoma 6")
-        AdvMarketTreeView.Nodes.Add("1687", "Market Jago 1")
-        AdvMarketTreeView.Nodes.Add("1688", "Market Jago 2")
-        AdvMarketTreeView.Nodes.Add("1689", "Market Jago 3")
-        AdvMarketTreeView.Nodes.Add("1690", "Market Jago 4")
-        AdvMarketTreeView.Nodes.Add("1691", "Market Jago 5")
-        AdvMarketTreeView.Nodes.Add("1692", "Market Jago 6")
-        AdvMarketTreeView.Nodes.Add("1725", "Market Sinnen Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1726", "Market Sinnen Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1727", "Market Lacobus 1")
-        AdvMarketTreeView.Nodes.Add("1728", "Market Lacobus 2")
-        AdvMarketTreeView.Nodes.Add("1729", "Market Lacobus 3")
-        AdvMarketTreeView.Nodes.Add("1730", "Market Lacobus 4")
-        AdvMarketTreeView.Nodes.Add("1731", "Market Lacobus 5")
-        AdvMarketTreeView.Nodes.Add("1732", "Market Lacobus 6")
-        AdvMarketTreeView.Nodes.Add("1735", "Market Lacobus Moon I 1")
-        AdvMarketTreeView.Nodes.Add("1736", "Market Lacobus Moon I 2")
-        AdvMarketTreeView.Nodes.Add("1737", "Market Lacobus Moon II 1")
-        AdvMarketTreeView.Nodes.Add("1738", "Market Lacobus Moon II 2")
-        AdvMarketTreeView.Nodes.Add("1733", "Market Lacobus Moon III 1")
-        AdvMarketTreeView.Nodes.Add("1734", "Market Lacobus Moon III 2")
-        AdvMarketTreeView.Nodes.Add("1739", "Market Symeon 1")
-        AdvMarketTreeView.Nodes.Add("1740", "Market Symeon 2")
-        AdvMarketTreeView.Nodes.Add("1741", "Market Symeon 3")
-        AdvMarketTreeView.Nodes.Add("1742", "Market Symeon 4")
-        AdvMarketTreeView.Nodes.Add("1743", "Market Symeon 5")
-        AdvMarketTreeView.Nodes.Add("1744", "Market Symeon 6")
+        'AdvMarketTreeView.Nodes.Add("52854", "Tuto Market")
+        'AdvMarketTreeView.Nodes.Add("52846", "Tuto Market")
+        'AdvMarketTreeView.Nodes.Add("52853", "Tuto Market")
+        AdvMarketTreeView.Nodes.Add("46136", "Aegis Space Market")
+        AdvMarketTreeView.Nodes.Add("46128", "Market Alioth District 01")
+        AdvMarketTreeView.Nodes.Add("46137", "Market Alioth District 02")
+        AdvMarketTreeView.Nodes.Add("46138", "Market Alioth District 03")
+        AdvMarketTreeView.Nodes.Add("46139", "Market Alioth District 04")
+        AdvMarketTreeView.Nodes.Add("46140", "Market Alioth District 05")
+        AdvMarketTreeView.Nodes.Add("46129", "Market Alioth District 06")
+        AdvMarketTreeView.Nodes.Add("46141", "Market Alioth District 07")
+        AdvMarketTreeView.Nodes.Add("46142", "Market Alioth District 08")
+        AdvMarketTreeView.Nodes.Add("46143", "Market Alioth District 09")
+        AdvMarketTreeView.Nodes.Add("46135", "Market Alioth District 10")
+        AdvMarketTreeView.Nodes.Add("46187", "Market Alioth 11")
+        AdvMarketTreeView.Nodes.Add("46174", "Market Alioth 12")
+        AdvMarketTreeView.Nodes.Add("46190", "Market Alioth 13")
+        AdvMarketTreeView.Nodes.Add("46160", "Market Alioth 14")
+        AdvMarketTreeView.Nodes.Add("46158", "Market Alioth 15")
+        AdvMarketTreeView.Nodes.Add("46132", "Market Alioth 16")
+        AdvMarketTreeView.Nodes.Add("46176", "Market Alioth 17")
+        AdvMarketTreeView.Nodes.Add("46159", "Market Alioth 18")
+        AdvMarketTreeView.Nodes.Add("46178", "Market Alioth 19")
+        AdvMarketTreeView.Nodes.Add("46202", "Market Alioth 20")
+        AdvMarketTreeView.Nodes.Add("46130", "Market Haven 01")
+        AdvMarketTreeView.Nodes.Add("46145", "Market Haven 02")
+        AdvMarketTreeView.Nodes.Add("46146", "Market Haven 03")
+        AdvMarketTreeView.Nodes.Add("46147", "Market Haven 04")
+        AdvMarketTreeView.Nodes.Add("46148", "Market Haven 05")
+        AdvMarketTreeView.Nodes.Add("46131", "Market Haven 06")
+        AdvMarketTreeView.Nodes.Add("46151", "Market Haven 07")
+        AdvMarketTreeView.Nodes.Add("46149", "Market Haven 08")
+        AdvMarketTreeView.Nodes.Add("46150", "Market Haven 09")
+        AdvMarketTreeView.Nodes.Add("46144", "Market Haven 10")
+        AdvMarketTreeView.Nodes.Add("46163", "Market Haven 11")
+        AdvMarketTreeView.Nodes.Add("46164", "Market Haven 12")
+        AdvMarketTreeView.Nodes.Add("46198", "Market Haven 13")
+        AdvMarketTreeView.Nodes.Add("46171", "Market Haven 14")
+        AdvMarketTreeView.Nodes.Add("46204", "Market Haven 15")
+        AdvMarketTreeView.Nodes.Add("46179", "Market Haven 16")
+        AdvMarketTreeView.Nodes.Add("46183", "Market Haven 17")
+        AdvMarketTreeView.Nodes.Add("46207", "Market Haven 18")
+        AdvMarketTreeView.Nodes.Add("46217", "Market Haven 19")
+        AdvMarketTreeView.Nodes.Add("46216", "Market Haven 20")
+        AdvMarketTreeView.Nodes.Add("46133", "Market Sanctuary 01")
+        AdvMarketTreeView.Nodes.Add("46220", "Market Sanctuary 02")
+        AdvMarketTreeView.Nodes.Add("46221", "Market Sanctuary 03")
+        AdvMarketTreeView.Nodes.Add("46222", "Market Sanctuary 04")
+        AdvMarketTreeView.Nodes.Add("46223", "Market Sanctuary 05")
+        AdvMarketTreeView.Nodes.Add("46134", "Market Sanctuary 06")
+        AdvMarketTreeView.Nodes.Add("46224", "Market Sanctuary 07")
+        AdvMarketTreeView.Nodes.Add("46225", "Market Sanctuary 08")
+        AdvMarketTreeView.Nodes.Add("46226", "Market Sanctuary 09")
+        AdvMarketTreeView.Nodes.Add("46219", "Market Sanctuary 10")
+        AdvMarketTreeView.Nodes.Add("46184", "Market Sanctuary 11")
+        AdvMarketTreeView.Nodes.Add("46213", "Market Sanctuary 12")
+        AdvMarketTreeView.Nodes.Add("46152", "Market Sanctuary 13")
+        AdvMarketTreeView.Nodes.Add("46185", "Market Sanctuary 14")
+        AdvMarketTreeView.Nodes.Add("46201", "Market Sanctuary 15")
+        AdvMarketTreeView.Nodes.Add("46193", "Market Sanctuary 16")
+        AdvMarketTreeView.Nodes.Add("46197", "Market Sanctuary 17")
+        AdvMarketTreeView.Nodes.Add("46189", "Market Sanctuary 18")
+        AdvMarketTreeView.Nodes.Add("46169", "Market Sanctuary 19")
+        AdvMarketTreeView.Nodes.Add("46172", "Market Sanctuary 20")
+        AdvMarketTreeView.Nodes.Add("46177", "Market Alioth Moon I 1")
+        AdvMarketTreeView.Nodes.Add("46215", "Market Alioth Moon I 2")
+        AdvMarketTreeView.Nodes.Add("46168", "Market Alioth Moon IV 1")
+        AdvMarketTreeView.Nodes.Add("46180", "Market Alioth Moon IV 2")
+        AdvMarketTreeView.Nodes.Add("46211", "Market Jago 1")
+        AdvMarketTreeView.Nodes.Add("46192", "Market Jago 2")
+        AdvMarketTreeView.Nodes.Add("46181", "Market Jago 3")
+        AdvMarketTreeView.Nodes.Add("46196", "Market Jago 4")
+        AdvMarketTreeView.Nodes.Add("46212", "Market Jago 5")
+        AdvMarketTreeView.Nodes.Add("46188", "Market Jago 6")
+        AdvMarketTreeView.Nodes.Add("46208", "Market Madis 1")
+        AdvMarketTreeView.Nodes.Add("46210", "Market Madis 2")
+        AdvMarketTreeView.Nodes.Add("46182", "Market Madis 3")
+        AdvMarketTreeView.Nodes.Add("46167", "Market Madis 4")
+        AdvMarketTreeView.Nodes.Add("46161", "Market Madis 5")
+        AdvMarketTreeView.Nodes.Add("46175", "Market Madis 6")
+        AdvMarketTreeView.Nodes.Add("46200", "Market Madis Moon I 1")
+        AdvMarketTreeView.Nodes.Add("46166", "Market Madis Moon I 2")
+        AdvMarketTreeView.Nodes.Add("46153", "Market Madis Moon II 1")
+        AdvMarketTreeView.Nodes.Add("46173", "Market Madis Moon II 2")
+        AdvMarketTreeView.Nodes.Add("46199", "Market Madis Moon III 1")
+        AdvMarketTreeView.Nodes.Add("46155", "Market Madis Moon III 2")
+        AdvMarketTreeView.Nodes.Add("46156", "Market Teoma 1")
+        AdvMarketTreeView.Nodes.Add("46165", "Market Teoma 2")
+        AdvMarketTreeView.Nodes.Add("46195", "Market Teoma 3")
+        AdvMarketTreeView.Nodes.Add("46218", "Market Teoma 4")
+        AdvMarketTreeView.Nodes.Add("46162", "Market Teoma 5")
+        AdvMarketTreeView.Nodes.Add("46157", "Market Teoma 6")
+        AdvMarketTreeView.Nodes.Add("46170", "Market Thades 1")
+        AdvMarketTreeView.Nodes.Add("46191", "Market Thades 2")
+        AdvMarketTreeView.Nodes.Add("46206", "Market Thades 3")
+        AdvMarketTreeView.Nodes.Add("46154", "Market Thades 4")
+        AdvMarketTreeView.Nodes.Add("46205", "Market Thades 5")
+        AdvMarketTreeView.Nodes.Add("46186", "Market Thades 6")
+        AdvMarketTreeView.Nodes.Add("46203", "Market Thades Moon I 1")
+        AdvMarketTreeView.Nodes.Add("46194", "Market Thades Moon I 2")
+        AdvMarketTreeView.Nodes.Add("46209", "Market Thades Moon II 1")
+        AdvMarketTreeView.Nodes.Add("46214", "Market Thades Moon II 2")
     End Sub
 
     Private Function GetMarketName(ByVal input As Integer)
@@ -1225,29 +1350,83 @@ Public Class Form1
         Dim categorynode25 As TreeNode = categorynode2.Nodes.Add("node24", "Warp Cell")
         categorynode25.Nodes.Add("item1339253011", "Warp Cell")
 
-        'Dim categorynode3 As TreeNode = ItemTree.Nodes.Add("node3", "Data Item")
-        'Dim categorynode31 As TreeNode = categorynode3.Nodes.Add("node31", "Schematics")
-        'Dim categorynode311 As TreeNode = categorynode31.Nodes.Add("node311", "Consumables")
+        Dim categorynode3 As TreeNode = ItemTree.Nodes.Add("node3", "Data Item")
+        Dim categorynode31 As TreeNode = categorynode3.Nodes.Add("node31", "Schematic Copies")
+        categorynode31.Nodes.Add("3077761447","Atmospheric Fuel Schematic Copy")
+        categorynode31.Nodes.Add("674258992", "Bonsai Schematic Copy")
+        categorynode31.Nodes.Add("1477134528", "Construct Support  XS Schematic Copy")
+        categorynode31.Nodes.Add("784932973", "Construct Support L Schematic Copy")
+        categorynode31.Nodes.Add("1861676811", "Construct Support M Schematic Copy")
+        categorynode31.Nodes.Add("1224468838", "Construct Support S Schematic Copy")
+        categorynode31.Nodes.Add("1202149588", "Core Unit L Schematic Copy")
+        categorynode31.Nodes.Add("1417495315", "Core Unit M Schematic Copy")
+        categorynode31.Nodes.Add("1213081642", "Core Unit S Schematic Copy")
+        categorynode31.Nodes.Add("120427296", "Core Unit XS Schematic Copy")
+        categorynode31.Nodes.Add("3992802706", "Rocket Fuels Schematic Copy")
+        categorynode31.Nodes.Add("1917988879", "Space Fuels Schematic Copy")
+        categorynode31.Nodes.Add("318308564", "Territory Unit Schematic Copy")
+        categorynode31.Nodes.Add("2068774589", "Tier 1 L Element Schematic Copy")
+        categorynode31.Nodes.Add("2066101218", "Tier 1 M Element Schematic Copy")
+        categorynode31.Nodes.Add("2479827059", "Tier 1 Product Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("690638651", "Tier 1 Product Material Schematic Copy")
+        categorynode31.Nodes.Add("4148773283", "Tier 1 S Element Schematic Copy")
+        categorynode31.Nodes.Add("304578197", "Tier 1 XL Element Schematic Copy")
+        categorynode31.Nodes.Add("1910482623", "Tier 1 XS Element Schematic Copy")
+        categorynode31.Nodes.Add("512435856", "Tier 2 Ammo L Schematic Copy")
+        categorynode31.Nodes.Add("399761377", "Tier 2 Ammo M Schematic Copy")
+        categorynode31.Nodes.Add("3336558558", "Tier 2 Ammo S Schematic Copy")
+        categorynode31.Nodes.Add("326757369", "Tier 2 Ammo XS Schematic Copy")
+        categorynode31.Nodes.Add("616601802", "Tier 2 L Element Schematic Copy")
+        categorynode31.Nodes.Add("2726927301", "Tier 2 M Element Schematic Copy")
+        categorynode31.Nodes.Add("632722426", "Tier 2 Product Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("4073976374", "Tier 2 Product Material Schematic Copy")
+        categorynode31.Nodes.Add("625377458", "Tier 2 Pure Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("3332597852", "Tier 2 Pure Material Schematic Copy")
+        categorynode31.Nodes.Add("1752968727", "Tier 2 S Element Schematic Copy")
+        categorynode31.Nodes.Add("1952035274", "Tier 2 Scrap Schematic Copy")
+        categorynode31.Nodes.Add("3677281424", "Tier 2 XL Element Schematic Copy")
+        categorynode31.Nodes.Add("2096799848", "Tier 2 XS Element Schematic Copy")
+        categorynode31.Nodes.Add("2913149958", "Tier 3 Ammo L Schematic Copy")
+        categorynode31.Nodes.Add("3125069948", "Tier 3 Ammo M Schematic Copy")
+        categorynode31.Nodes.Add("1705420479", "Tier 3 Ammo S Schematic Copy")
+        categorynode31.Nodes.Add("2413250793", "Tier 3 Ammo XS Schematic Copy")
+        categorynode31.Nodes.Add("1427639881", "Tier 3 L Element Schematic Copy")
+        categorynode31.Nodes.Add("3713463144", "Tier 3 M Element Schematic Copy")
+        categorynode31.Nodes.Add("2343247971", "Tier 3 Product Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("3707339625", "Tier 3 Product Material Schematic Copy")
+        categorynode31.Nodes.Add("4221430495", "Tier 3 Pure Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("2003602752", "Tier 3 Pure Material Schematic Copy")
+        categorynode31.Nodes.Add("425872842", "Tier 3 S Element Schematic Copy")
+        categorynode31.Nodes.Add("2566982373", "Tier 3 Scrap Schematic Copy")
+        categorynode31.Nodes.Add("109515712", "Tier 3 XL Element Schematic Copy")
+        categorynode31.Nodes.Add("787727253", "Tier 3 XS Element Schematic Copy")
+        categorynode31.Nodes.Add("2557110259", "Tier 4 Ammo L Schematic Copy")
+        categorynode31.Nodes.Add("3847207511", "Tier 4 Ammo M Schematic Copy")
+        categorynode31.Nodes.Add("3636126848", "Tier 4 Ammo S Schematic Copy")
+        categorynode31.Nodes.Add("2293088862", "Tier 4 Ammo XS Schematic Copy")
+        categorynode31.Nodes.Add("1614573474", "Tier 4 L Element Schematic Copy")
+        categorynode31.Nodes.Add("3881438643", "Tier 4 M Element Schematic Copy")
+        categorynode31.Nodes.Add("3743434922", "Tier 4 Product Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("2485530515", "Tier 4 Product Material Schematic Copy")
+        categorynode31.Nodes.Add("99491659", "Tier 4 Pure Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("2326433413", "Tier 4 Pure Material Schematic Copy")
+        categorynode31.Nodes.Add("3890840920", "Tier 4 S Element Schematic Copy")
+        categorynode31.Nodes.Add("1045229911", "Tier 4 Scrap Schematic Copy")
+        categorynode31.Nodes.Add("1974208697", "Tier 4 XL Element Schematic Copy")
+        categorynode31.Nodes.Add("210052275", "Tier 4 XS Element Schematic Copy")
+        categorynode31.Nodes.Add("86717297", "Tier 5 L Element Schematic Copy")
+        categorynode31.Nodes.Add("3672319913", "Tier 5 M Element Schematic Copy")
+        categorynode31.Nodes.Add("1885016266", "Tier 5 Product Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("2752973532", "Tier 5 Product Material Schematic Copy")
+        categorynode31.Nodes.Add("3303272691", "Tier 5 Pure Honeycomb Schematic Copy")
+        categorynode31.Nodes.Add("1681671893", "Tier 5 Pure Material Schematic Copy")
+        categorynode31.Nodes.Add("880043901", "Tier 5 S Element Schematic Copy")
+        categorynode31.Nodes.Add("2702634486", "Tier 5 Scrap Schematic Copy")
+        categorynode31.Nodes.Add("1320378000", "Tier 5 XL Element Schematic Copy")
+        categorynode31.Nodes.Add("1513927457", "Tier 5 XS Element Schematic Copy")
+        categorynode31.Nodes.Add("3437488324", "Warp Beacon Schematic Copy")
+        categorynode31.Nodes.Add("363077945", "Warp Cell Schematic Copy")
 
-        'Dim categorynode312 As TreeNode = categorynode31.Nodes.Add("node312", "Elements")
-        'Dim categorynode3121 As TreeNode = categorynode312.Nodes.Add("node3121", "Combat & Defense Elements")
-        'Dim categorynode3122 As TreeNode = categorynode312.Nodes.Add("node3122", "Furniture & Appliances")
-        'Dim categorynode3123 As TreeNode = categorynode312.Nodes.Add("node3123", "Industry & Infrastructure Elements")
-        'Dim categorynode3124 As TreeNode = categorynode312.Nodes.Add("node3124", "Planet Elements")
-        'Dim categorynode3125 As TreeNode = categorynode312.Nodes.Add("node3125", "Systems")
-        'Dim categorynode3126 As TreeNode = categorynode312.Nodes.Add("node3126", "Transportation Elements")
-
-        'Dim categorynode313 As TreeNode = categorynode31.Nodes.Add("node313", "Materials")
-        'Dim categorynode3131 As TreeNode = categorynode313.Nodes.Add("node3131", "Fuels")
-        'Dim categorynode3132 As TreeNode = categorynode313.Nodes.Add("node3132", "Honeycomb Materials")
-        'Dim categorynode3133 As TreeNode = categorynode313.Nodes.Add("node3133", "Refined Materials")
-
-        'Dim categorynode314 As TreeNode = categorynode31.Nodes.Add("node314", "Parts")
-        'Dim categorynode3141 As TreeNode = categorynode314.Nodes.Add("node3141", "Complex Parts")
-        'Dim categorynode3142 As TreeNode = categorynode314.Nodes.Add("node3142", "Exceptional Parts")
-        'Dim categorynode3143 As TreeNode = categorynode314.Nodes.Add("node3143", "Functional Parts")
-        'Dim categorynode3144 As TreeNode = categorynode314.Nodes.Add("node3144", "Intermediary Parts")
-        'Dim categorynode3145 As TreeNode = categorynode314.Nodes.Add("node3145", "Structural Parts")
 
         Dim categorynode4 As TreeNode = ItemTree.Nodes.Add("node4", "Elements")
         Dim categorynode41 As TreeNode = categorynode4.Nodes.Add("node41", "Combat & Defense Elements")
@@ -4840,65 +5019,31 @@ Public Class Form1
 
     Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles TitleBarPanel.MouseDown
         Go = True
+        HoldLeft = (Control.MousePosition.X - Me.Location.X)
+        HoldTop = (Control.MousePosition.Y - Me.Location.Y)
     End Sub
 
     Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles TitleBarPanel.MouseMove
         If Go = True Then
-            Dim newbnds As Size = New Size()
-            newbnds.Height = WindowSavedBoundsY
-            newbnds.Width = WindowSavedBoundsX
             If WindowMaximizedState = True Then
                 WindowMaximizedState = False
                 'reset size if maximized, to whatever size we were before maximizing
+                Dim newbnds As Size = New Size()
+                newbnds.Height = WindowSavedBoundsY
+                newbnds.Width = WindowSavedBoundsX
                 Me.Size = newbnds
             End If
 
-            HoldLeft = (Control.MousePosition.X)
-            HoldTop = (Control.MousePosition.Y)
-            If TopSet = False Then
-                OffTop = HoldTop - Me.Location.Y
-                TopSet = True
-            End If
-            If LeftSet = False Then
-                OffLeft = HoldLeft - Me.Location.X
-                LeftSet = True
-            End If
+            deltaX = Control.MousePosition.X - HoldLeft
+            deltaY = Control.MousePosition.Y - HoldTop
 
-            'define where the window has been dragged to
+            OffLeft = deltaX
+            OffTop = deltaY
+
             Dim newpoint As New Point
-            newpoint.X = HoldLeft - OffLeft
-            newpoint.Y = HoldTop - OffTop
-            Dim AllScreens() As Screen = Screen.AllScreens
-            Dim XwithinBounds As Boolean = False
-            Dim YwithinBounds As Boolean = False
-            Dim WwithinBounds As Boolean = False
-            Dim HwithinBounds As Boolean = False
-            For Each displayScreen As Screen In AllScreens
-                'check if that point would put any part of the window off screen, and if so, correct
-                If newpoint.X > displayScreen.WorkingArea.X Then
-                    XwithinBounds = True
-                End If
-                If (newpoint.X + newbnds.Width) < (displayScreen.WorkingArea.X + displayScreen.WorkingArea.Width) Then
-                    WwithinBounds = True
-                End If
-                If newpoint.Y > displayScreen.WorkingArea.Y Then
-                    YwithinBounds = True
-                End If
-                If (newpoint.Y + newbnds.Height) < (displayScreen.WorkingArea.Y + displayScreen.WorkingArea.Height) Then
-                    HwithinBounds = True
-                End If
-            Next displayScreen
-            If XwithinBounds = True And WwithinBounds = True Then
-                newpoint.X = HoldLeft - OffLeft
-            Else
-                newpoint.X = Me.Location.X
-            End If
+            newpoint.X = OffLeft
+            newpoint.Y = OffTop
 
-            If YwithinBounds = True And HwithinBounds = True Then
-                newpoint.Y = HoldTop - OffTop
-            Else
-                newpoint.Y = Me.Location.Y
-            End If
             Me.Location = newpoint
             Me.Refresh()
             CenterLoginElements()
@@ -4988,7 +5133,7 @@ Public Class Form1
             NewEventMsg("WindowMaximizedState = " & CStr(WindowMaximizedState))
             NewEventMsg("WindowNormalBoundsX = " & CStr(WindowNormalBoundsX))
             NewEventMsg("WindowNormalBoundsY = " & CStr(WindowNormalBoundsY))
-            NewEventMsg("Theme State = " & CStr(ThemeState))
+            NewEventMsg("Theme State = " & CStr(Setting_ThemeState))
             NewEventMsg("Showing Raw Data = " & CStr(ShowRawData))
             NewEventMsg("API Read Requests Sent = " & CStr(NumberOfReads))
             NewEventMsg("API Update Requests Sent = " & CStr(NumberOfUpdates))
@@ -5063,89 +5208,39 @@ Public Class Form1
         End If
     End Sub
 
+    '########## Economy Statistics ##########
+    Private Sub ResetEconomyStatLabels()
+        EconStatLabel_Buy_High.Text = "0"
+        EconStatLabel_Buy_Avg.Text = "0"
+        EconStatLabel_Buy_Low.Text = "0"
+        EconStatLabel_Buy_Total.Text = "0"
+        EconStatLabel_Buy_Volume.Text = "0"
+        EconStatLabel_Sell_High.Text = "0"
+        EconStatLabel_Sell_Avg.Text = "0"
+        EconStatLabel_Sell_Low.Text = "0"
+        EconStatLabel_Sell_Total.Text = "0"
+        EconStatLabel_Sell_Volume.Text = "0"
+    End Sub
+
+    Private Sub SetEconomyStatLabels()
+        EconStatLabel_Buy_High.Text = EconomyStat_Buy_High.ToString()
+        EconStatLabel_Buy_Avg.Text = EconomyStat_Buy_Avg.ToString()
+        EconStatLabel_Buy_Low.Text = EconomyStat_Buy_Low.ToString()
+        EconStatLabel_Buy_Total.Text = EconomyStat_Buy_Total.ToString()
+        EconStatLabel_Buy_Volume.Text = EconomyStat_Buy_Vol.ToString()
+        EconStatLabel_Sell_High.Text = EconomyStat_Sell_High.ToString()
+        EconStatLabel_Sell_Avg.Text = EconomyStat_Sell_Avg.ToString()
+        EconStatLabel_Sell_Low.Text = EconomyStat_Sell_Low.ToString()
+        EconStatLabel_Sell_Total.Text = EconomyStat_Sell_Total.ToString()
+        EconStatLabel_Sell_Volume.Text = EconomyStat_Sell_Vol.ToString()
+    End Sub
+
     '########## Item Tree select ##########
     Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles ItemTree.AfterSelect, ItemTreeSearch.AfterSelect
-        If API_Connected = True Then
-            Dim queryitemid As String = e.Node.Name.Remove(0, 4)
-            NewEventMsg("Sending Read request for: " & e.Node.Text & " - ID: " & queryitemid)
-            If e.Node.Name IsNot "" Then
-                If e.Node.Name.StartsWith("item") Then
-                    If e.Node.Name = "itemnil" Then
-                        NewEventMsg("Unknown ID for item: " & e.Node.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
-                    Else
-                        Dim TempResponse4 As String = API_Request("read", "itemid=" & queryitemid)
-                        If TempResponse4 Is Nothing Then
-                            NewEventMsg("Request failed!")
-                        Else
-                            If TempResponse4.StartsWith("The remote server returned an error") Then
-                                NewEventMsg(TempResponse4)
-                            Else
-                                ClearDataTables()
-                                UpdateSelectedItem(e.Node.Text)
-                                If TempResponse4 = "false" Then
-                                    NewEventMsg("Server returned no data for item.")
-                                Else
-                                    Dim first As Boolean = True
-                                    While TempResponse4.Length > 48
-                                        Dim orderid3 As String
-                                        If first = True Then
-                                            orderid3 = TempResponse4.Remove(0, 2)
-                                            orderid3 = orderid3.Remove(orderid3.IndexOf(""":"))
-                                            first = False
-                                        Else
-                                            orderid3 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
-                                            orderid3 = orderid3.Remove(orderid3.IndexOf(""""))
-                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
-                                        End If
-                                        Dim marketid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        marketid3 = marketid3.Remove(marketid3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim itemid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        itemid3 = itemid3.Remove(itemid3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim quantity3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        quantity3 = quantity3.Remove(quantity3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim ordertype3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        ordertype3 = ordertype3.Remove(ordertype3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim expdate3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        expdate3 = expdate3.Remove(expdate3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim lastupdated3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        lastupdated3 = lastupdated3.Remove(lastupdated3.IndexOf(""","""))
-                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
-                                        Dim price3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
-                                        price3 = price3.Remove(price3.IndexOf(""","""))
-                                        'Price values that come in from logs or the API, need to be divided by 100. EG 327189 is actually 3271.89, and should be displayed that way
-                                        Dim price3String As String
-                                        If price3.Length > 2 Then
-                                            Dim price3temp As String = price3.Remove(0, price3.Length - 2)
-                                            price3String = price3.Remove(price3.Length - 2, 2) & "." & price3temp
-                                        Else
-                                            price3String = "." & price3
-                                        End If
-                                        If ordertype3 = 1 Then
-                                            API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
-                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                        End If
-                                        If ordertype3 = 2 Then
-                                            If quantity3.StartsWith("-") Then
-                                                quantity3 = quantity3.Remove(0, 1)
-                                            End If
-                                            API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
-                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                        End If
-                                    End While
-                                    ResetDataTables()
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-            End If
-        Else
-            NewEventMsg("Cannot send Read Request - Not logged in.")
+        If CenterUXPanelMode = 1 Then
+            OrderSearch(e)
+        ElseIf CenterUXPanelMode = 2 Then
+            GenerateHistogram()
         End If
     End Sub
 
@@ -5343,6 +5438,119 @@ Public Class Form1
         ItemSearchTextBox.Text = ""
     End Sub
 
+    Private Sub OrderSearch(e As TreeViewEventArgs)
+        If API_Connected = True Then
+            Dim queryitemid As String = e.Node.Name.Remove(0, 4)
+            If e.Node.Name IsNot "" Then
+                If e.Node.Name.StartsWith("item") Then
+                    If e.Node.Name = "itemnil" Then
+                        NewEventMsg("Unknown ID for item: " & e.Node.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
+                    Else
+                        NewEventMsg("Sending Read request for: " & e.Node.Text & " - ID: " & queryitemid)
+                        ResetEconomyStatLabels()
+                        Dim TempResponse4 As String = API_Request("read", "itemid=" & queryitemid)
+                        If TempResponse4 Is Nothing Then
+                            NewEventMsg("Request failed!")
+                        Else
+                            If TempResponse4.StartsWith("The remote server returned an error") Then
+                                NewEventMsg(TempResponse4)
+                            Else
+                                ClearDataTables()
+                                UpdateSelectedItem(e.Node.Text)
+                                If TempResponse4 = "false" Then
+                                    NewEventMsg("Server returned no data for item.")
+                                Else
+                                    Dim first As Boolean = True
+                                    While TempResponse4.Length > 48
+                                        Dim orderid3 As String
+                                        If first = True Then
+                                            orderid3 = TempResponse4.Remove(0, 2)
+                                            orderid3 = orderid3.Remove(orderid3.IndexOf(""":"))
+                                            first = False
+                                        Else
+                                            orderid3 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                            orderid3 = orderid3.Remove(orderid3.IndexOf(""""))
+                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                        End If
+                                        Dim marketid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        marketid3 = marketid3.Remove(marketid3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim itemid3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        itemid3 = itemid3.Remove(itemid3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim quantity3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        quantity3 = quantity3.Remove(quantity3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim ordertype3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        ordertype3 = ordertype3.Remove(ordertype3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim expdate3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        expdate3 = expdate3.Remove(expdate3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim lastupdated3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        lastupdated3 = lastupdated3.Remove(lastupdated3.IndexOf(""","""))
+                                        TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                        Dim price3 As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                        price3 = price3.Remove(price3.IndexOf(""","""))
+                                        'Price values that come in from logs or the API, need to be divided by 100. EG 327189 is actually 3271.89, and should be displayed that way
+                                        Dim price3String As String
+                                        If price3.Length > 2 Then
+                                            Dim price3temp As String = price3.Remove(0, price3.Length - 2)
+                                            price3String = price3.Remove(price3.Length - 2, 2) & "." & price3temp
+                                        Else
+                                            price3String = "." & price3
+                                        End If
+                                        If ordertype3 = 1 Then
+                                            API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
+                                            API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
+                                            EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
+                                            If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
+                                                EconomyStat_Buy_High = (CInt(price3) * 0.01)
+                                            End If
+                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            If EconomyStat_Buy_Low = 0 Then
+                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
+                                        End If
+                                        If ordertype3 = 2 Then
+                                            If quantity3.StartsWith("-") Then
+                                                quantity3 = quantity3.Remove(0, 1)
+                                            End If
+                                            API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
+                                            API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
+                                            EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
+                                            If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
+                                                EconomyStat_Sell_High = (CInt(price3) * 0.01)
+                                            End If
+                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            If EconomyStat_Sell_Low = 0 Then
+                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
+
+                                        End If
+                                        Application.DoEvents()
+                                    End While
+                                    ResetDataTables()
+                                    SetEconomyStatLabels()
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        Else
+            NewEventMsg("Cannot send Read Request - Not logged in.")
+        End If
+    End Sub
+
     '########## Advanced Item Search filtering ##########
     Private Sub AdvFilteringToggleButton_Click(sender As Object, e As EventArgs) Handles AdvFilteringToggleButton.Click
         If ShowFilters = False Then
@@ -5377,6 +5585,14 @@ Public Class Form1
     End Sub
 
     Private Sub FilterOrdersButton_Click(sender As Object, e As EventArgs) Handles FilterOrdersButton.Click
+        If CenterUXPanelMode = 1 Then
+            AdvOrderSearch()
+        ElseIf CenterUXPanelMode = 2 Then
+            GenerateHistogram()
+        End If
+    End Sub
+
+    Private Sub AdvOrderSearch()
         ResetAdvFilters()
         UpdateSelectedItem("")
         If FilterPriceMinBox.Text IsNot "" And FilterPriceMinBox.Text IsNot Nothing Then
@@ -5408,17 +5624,24 @@ Public Class Form1
             End If
         Next selectedItemNode
         ClearDataTables()
+        Dim tempfirst As Boolean = True
         For Each filterItem As FilterItemListStructure In FilterItemList
-            UpdateSelectedItem(SelectedItemLabel.Text & ", " & filterItem.Text)
+            If tempfirst = True Then
+                UpdateSelectedItem(filterItem.Text)
+                tempfirst = False
+            Else
+                UpdateSelectedItem(SelectedItemLabel.Text & ", " & filterItem.Text)
+            End If
             For Each filterMarket As FilterMarketListStructure In FilterMarketList
                 If API_Connected = True Then
                     Dim queryitemid As String = filterItem.Name.Remove(0, 4)
-                    NewEventMsg("Sending Read request for: " & filterItem.Text & " - ID: " & queryitemid)
                     If filterItem.Name IsNot "" Then
                         If filterItem.Name.StartsWith("item") Then
                             If filterItem.Name = "itemnil" Then
                                 NewEventMsg("Unknown ID for item: " & filterItem.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
                             Else
+                                NewEventMsg("Sending Read request for: " & filterItem.Text & " - ID: " & queryitemid)
+                                ResetEconomyStatLabels()
                                 Dim TempResponse4 As String = API_Request("read", "itemid=" & queryitemid & "&marketid=" & filterMarket.Name) ' & filterstring
                                 If TempResponse4 Is Nothing Then
                                     NewEventMsg("Request failed!")
@@ -5494,6 +5717,18 @@ Public Class Form1
                                                     If pass = True Then
                                                         API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                                         API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), filterItem.Text)
+                                                        EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                                        EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
+                                                        If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
+                                                            EconomyStat_Buy_High = (CInt(price3) * 0.01)
+                                                        End If
+                                                        If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                            EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                                        End If
+                                                        If EconomyStat_Buy_Low = 0 Then
+                                                            EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                                        End If
+                                                        EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
                                                     End If
                                                 End If
                                                 If ordertype3 = 2 Then
@@ -5524,8 +5759,22 @@ Public Class Form1
                                                     If pass = True Then
                                                         API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                                         API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), filterItem.Text)
+                                                        EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                                        EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
+                                                        If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
+                                                            EconomyStat_Sell_High = (CInt(price3) * 0.01)
+                                                        End If
+                                                        If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                            EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                                        End If
+                                                        If EconomyStat_Sell_Low = 0 Then
+                                                            EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                                        End If
+                                                        EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
                                                     End If
                                                 End If
+                                                Application.DoEvents()
+                                                SetEconomyStatLabels()
                                             End While
                                         End If
                                     End If
@@ -5566,6 +5815,138 @@ Public Class Form1
         For Each selectedItemNode2 As TreeNode In AdvItemTreeView.Nodes
             selectedItemNode2.Checked = False
         Next selectedItemNode2
+    End Sub
+
+    '########## Histogram Generation ##########
+    Private Sub GenerateHistogram()
+        ResetAdvFilters()
+        UpdateSelectedItem("")
+        For Each selectedMarketNode As TreeNode In AdvMarketTreeView.Nodes
+            If selectedMarketNode.Checked = True Then
+                Dim NewItem2 As FilterMarketListStructure
+                NewItem2.Name = selectedMarketNode.Name
+                NewItem2.Text = selectedMarketNode.Text
+                FilterMarketList.Add(NewItem2)
+            End If
+        Next selectedMarketNode
+        For Each selectedItemNode As TreeNode In AdvItemTreeView.Nodes
+            If selectedItemNode.Checked = True Then
+                Dim NewItem3 As FilterItemListStructure
+                NewItem3.Name = selectedItemNode.Name
+                NewItem3.Text = selectedItemNode.Text
+                FilterItemList.Add(NewItem3)
+            End If
+        Next selectedItemNode
+        If FilterMarketList.Count = 1 Then
+            If FilterMarketList.Count = 1 Then
+                Dim tempfirst As Boolean = True
+                For Each filterItem As FilterItemListStructure In FilterItemList
+                    If tempfirst = True Then
+                        UpdateSelectedItem(filterItem.Text)
+                        tempfirst = False
+                    Else
+                        UpdateSelectedItem(SelectedItemLabel.Text & ", " & filterItem.Text)
+                    End If
+                    For Each filterMarket As FilterMarketListStructure In FilterMarketList
+                        If API_Connected = True Then
+                            Dim queryitemid As String = filterItem.Name.Remove(0, 4)
+                            If filterItem.Name IsNot "" Then
+                                If filterItem.Name.StartsWith("item") Then
+                                    If filterItem.Name = "itemnil" Then
+                                        NewEventMsg("Unknown ID for item: " & filterItem.Text & "! - You can help us find it by placing a buy or sell order for one, and uploading the log via the client.")
+                                    Else
+                                        NewEventMsg("Sending History request for: " & filterItem.Text & " (ID: " & queryitemid & ")")
+                                        Dim TempResponse4 As String = API_Request("history", "itemid=" & queryitemid & "&marketid=" & filterMarket.Name & "&entries=" & HistEntries) '& queryitemid)
+                                        If TempResponse4 Is Nothing Then
+                                            NewEventMsg("Request failed!")
+                                        Else
+                                            Try
+                                                If TempResponse4.StartsWith("The remote server returned an error") Then
+                                                    NewEventMsg(TempResponse4)
+                                                Else
+                                                    UpdateSelectedItem(filterItem.Text)
+                                                    If TempResponse4 = "false" Then
+                                                        NewEventMsg("Server returned no data for item.")
+                                                    Else
+                                                        Me.HistogramChart.Series("Sell Orders").Points.Clear()
+                                                        Me.HistogramChart.Series("Buy Orders").Points.Clear()
+                                                        Dim first As Boolean = True
+                                                        While TempResponse4.Length > 48
+                                                            Dim historderid As String
+                                                            If first = True Then
+                                                                historderid = TempResponse4.Remove(0, 2)
+                                                                historderid = historderid.Remove(historderid.IndexOf(""":"))
+                                                                first = False
+                                                            Else
+                                                                historderid = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                                                historderid = historderid.Remove(historderid.IndexOf(""""))
+                                                                TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf("},""") + 3)
+                                                            End If
+                                                            Dim histdate As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histdate = histdate.Remove(histdate.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histmarketid As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histmarketid = histmarketid.Remove(histmarketid.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histbuyvolume As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histbuyvolume = histbuyvolume.Remove(histbuyvolume.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histsellvolume As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histsellvolume = histsellvolume.Remove(histsellvolume.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histbuytotal As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histbuytotal = histbuytotal.Remove(histbuytotal.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histselltotal As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histselltotal = histselltotal.Remove(histselltotal.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histbuymax As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histbuymax = histbuymax.Remove(histbuymax.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histbuyavg As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histbuyavg = histbuyavg.Remove(histbuyavg.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histbuymin As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histbuymin = histbuymin.Remove(histbuymin.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histsellmax As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histsellmax = histsellmax.Remove(histsellmax.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histsellavg As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histsellavg = histsellavg.Remove(histsellavg.IndexOf(""","""))
+                                                            TempResponse4 = TempResponse4.Remove(0, TempResponse4.IndexOf(""",""") + 3)
+                                                            Dim histsellmin As String = TempResponse4.Remove(0, TempResponse4.IndexOf(""":""") + 3)
+                                                            histsellmin = histsellmin.Remove(histsellmin.IndexOf(""""))
+                                                            'ignore average values for now, but we will draw them in later
+                                                            If histbuymax.Length > 2 Then
+
+                                                            End If
+                                                            Me.HistogramChart.Series("Buy Orders").Points.AddXY(histdate, CInt(histbuymax) * 0.01, CInt(histbuymin) * 0.01)
+                                                            Me.HistogramChart.Series("Sell Orders").Points.AddXY(histdate, CInt(histsellmax) * 0.01, CInt(histsellmin) * 0.01)
+                                                            Application.DoEvents()
+                                                        End While
+                                                        NewEventMsg("Loaded history for " & filterItem.Text & " (ID: " & queryitemid & ")")
+                                                    End If
+                                                End If
+                                            Catch ex As Exception
+                                                NewEventMsg(ex.Message)
+                                                NewEventMsg("SERVER RESPONSE: " & TempResponse4)
+                                            End Try
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        Else
+                            NewEventMsg("Cannot send Read Request - Not logged in.")
+                        End If
+                    Next filterMarket
+                Next filterItem
+            Else
+                NewEventMsg("Only a single item selection is currently supported in Graphing Mode.")
+            End If
+        Else
+            NewEventMsg("Only a single market selection is currently supported in Graphing Mode.")
+        End If
     End Sub
 
     '########## Search Bookmarks Panel ##########
@@ -5878,6 +6259,7 @@ Public Class Form1
             APIUpdatesLabel.Text = CStr(NumberOfUpdates)
             APICreatesLabel.Text = CStr(NumberOfCreates)
             APIDeletesLabel.Text = CStr(NumberOfDeletes)
+            APIHistoriesLabel.Text = CStr(NumberOfHistories)
         Finally
             If hasLock Then
                 Monitor.[Exit](OperationTimerLocker)
@@ -5913,7 +6295,7 @@ Public Class Form1
         Dim TempResponse2 As String = API_Request("read", "orderid=" & API_Log_Queue(0).orderid)
         If TempResponse2 = "false" Then
             'if the server doesnt have this order, then we create it. what could go wrong?
-            Dim TempResponse3 As String = API_Request("create", "orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price & "&creator=" & API_Username)
+            Dim TempResponse3 As String = API_Request("create", "orderid=" & API_Log_Queue(0).orderid & "&marketid=" & API_Log_Queue(0).marketid & "&itemid=" & API_Log_Queue(0).itemtype & "&quantity=" & API_Log_Queue(0).quantity & "&ordertype=" & OrderType & "&expiration=" & API_Log_Queue(0).expdate & "&lastupdated=" & API_Log_Queue(0).lastupdate & "&price=" & API_Log_Queue(0).price)
         Else
             If TempResponse2 Is Nothing Then
                 NewEventMsg("TempResponse2 was null!")
@@ -5982,6 +6364,7 @@ Public Class Form1
             NewEventMsg("Sending batch-Read request for ID: " & API_Log_Queue(0).itemtype)
             If API_Log_Queue(0).itemtype IsNot "" Then
                 Dim TempResponse6 As String = API_Request("read", "itemid=" & queryitemid)
+                'Dim TempResponse6Original As String = API_Request("read", "itemid=" & queryitemid) -- debug
                 If TempResponse6 Is Nothing Then
                     NewEventMsg("Request failed!")
                 Else
@@ -5993,7 +6376,7 @@ Public Class Form1
                             NewEventMsg("Server returned no data for item.")
                         Else
                             Dim first As Boolean = True
-                            While TempResponse6.Length > 48
+                            While TempResponse6.Length > 128
                                 Dim orderid3 As String
                                 If first = True Then
                                     orderid3 = TempResponse6.Remove(0, 2)
@@ -6253,305 +6636,265 @@ Public Class Form1
     End Sub
 
     '############################## - Theme Skinning - ##############################
-    Private Sub ThemeToggleButton_Click(sender As Object, e As EventArgs) Handles ThemeToggleButton.Click
-        If ThemeState = 0 Then
-            ThemeState = 1
-            SetLightTheme()
-        ElseIf ThemeState = 1 Then
-            ThemeState = 0
-            SetDarkTheme()
-        End If
-        SettingsForm.UpdateThemeState()
-        AboutForm.UpdateThemeState()
-    End Sub
+    Public Sub SetDarkTheme()
+        BackgroundColor1 = Color.FromArgb(255, 30, 36, 42)
+        BackgroundColor2 = Color.FromArgb(255, 50, 56, 62)
+        BackgroundColor3 = Color.FromArgb(255, 26, 28, 32)
 
-    Private Sub SetLightTheme()
-        Me.BackColor = Color.FromArgb(255, 224, 224, 224)
-        LoginPanel.BackColor = Color.FromArgb(255, 224, 224, 224)
-        LoginPanel.BackgroundImage = My.Resources.loginbgneg
-        MarketPanel.BackColor = Color.FromArgb(255, 224, 224, 224)
-        MarketPanel.BackgroundImage = My.Resources.loginbgneg
-        ResourcePanel.BackColor = Color.FromArgb(255, 224, 224, 224)
-        ResourcePanel.BackgroundImage = My.Resources.loginbgneg
-        MainPanel.BackColor = Color.FromArgb(255, 224, 224, 224)
+        ForegroundColor1 = Color.FromArgb(255, 224, 224, 224)
+        ForegroundColor2 = Color.FromArgb(255, 165, 165, 165)
+        ForegroundColor3 = Color.FromArgb(255, 125, 125, 125)
 
-        Label22.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ThemeToggleButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ThemeToggleButton.Text = "☼"
-        ThemeToggleButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        TitlebarSettingsButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        TitlebarSettingsButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        TitlebarAboutButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        TitlebarAboutButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        TitlebarMinButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        TitlebarMinButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        TitlebarMaxButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        TitlebarMaxButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        TitlebarCloseButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        TitlebarCloseButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
+        GridColor1 = Color.FromArgb(255, 125, 125, 125)
+        GridBGColor1 = Color.FromArgb(255, 26, 28, 32)
+        GridBGColor2 = Color.FromArgb(255, 26, 38, 42)
+        GridSelectColor1 = Color.FromArgb(255, 28, 74, 92)
 
-        LoginLabel1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        LoginLabel2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        LoginLabel3.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        DiscordLoginButton2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        DiscordLoginButton2.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        ResizeGrabber.BackgroundImage = My.Resources.grabberneg
-        ResizeGrabber2.BackgroundImage = My.Resources.grabberneg
+        HistGridColor = Color.FromArgb(255, 255, 255, 255)
+        HistBuyColor1 = Color.FromArgb(128, 0, 32, 85)
+        HistBuyColor2 = Color.FromArgb(128, 0, 128, 188)
+        HistBuyColor3 = Color.FromArgb(255, 0, 32, 128)
+        HistSellColor1 = Color.FromArgb(128, 148, 148, 148)
+        HistSellColor2 = Color.FromArgb(128, 215, 215, 215)
+        HistSellColor3 = Color.FromArgb(255, 255, 255, 255)
 
-        UpdateButton1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        UpdateButton1.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        UpdateButton2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        UpdateButton2.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-
-        ItemSearchTextBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ItemSearchTextBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ItemTree.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ItemTree.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ItemTreeSearch.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ItemTreeSearch.ForeColor = Color.FromArgb(255, 30, 36, 42)
-
-        AdvFilteringToggleButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        AdvFilteringToggleButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        GroupBox2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        GroupBox3.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label15.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label16.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterPriceMinBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterPriceMinBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        FilterPriceMaxBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterPriceMaxBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        FilterQuantityMinBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterQuantityMinBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        FilterQuantityMaxBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterQuantityMaxBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        Label17.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label18.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        AdvMarketTreeView.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        AdvMarketTreeView.BackColor = Color.FromArgb(255, 185, 185, 185)
-        AdvItemTreeView.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        AdvItemTreeView.BackColor = Color.FromArgb(255, 185, 185, 185)
-        FilterResetButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterResetButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        FilterOrdersButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        FilterOrdersButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-
-        BookmarkButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        BookmarkButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        AddBookmarkButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        AddBookmarkButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        BookmarkPanel.BackColor = Color.FromArgb(255, 224, 224, 224)
-        BookmarkPanel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        BookmarkLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ItemTreeBookmarks.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ItemTreeBookmarks.ForeColor = Color.FromArgb(255, 30, 36, 42)
-
-        StatsPanel.BackColor = Color.FromArgb(255, 185, 185, 185)
-        Label2.ForeColor = Color.FromArgb(255, 50, 56, 62)
-        Label6.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label3.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label4.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        LogBufferLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        StatLabelQue.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        StatLabelProc.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        GroupBox1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label7.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label8.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label9.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label10.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        APIReadsLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        APIUpdatesLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        APICreatesLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        APIDeletesLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-
-        ConsoleTextBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ConsoleTextBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ConsoleInputBox.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ConsoleInputBox.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ConsoleSubmitButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-
-        MarketOrdersButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        MarketOrdersButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        ResourceManagerButton.BackColor = Color.FromArgb(255, 185, 185, 185)
-        ResourceManagerButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Button3.BackColor = Color.FromArgb(255, 185, 185, 185)
-        Button3.ForeColor = Color.FromArgb(255, 80, 86, 92)
-
-        SelectedItemLabel.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        Label5.ForeColor = Color.FromArgb(255, 30, 36, 42)
-
-        BuyOrderGridViewRaw.BackgroundColor = Color.FromArgb(255, 185, 185, 185)
-        BuyOrderGridViewRaw.GridColor = Color.FromArgb(255, 30, 36, 42)
-        SellOrderGridViewRaw.BackgroundColor = Color.FromArgb(255, 185, 185, 185)
-        SellOrderGridViewRaw.GridColor = Color.FromArgb(255, 30, 36, 42)
-
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.BackColor = Color.FromArgb(255, 185, 185, 185)
-        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 205, 205, 205)
-
-        SellOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.BackColor = Color.FromArgb(255, 185, 185, 185)
-        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 205, 205, 205)
-
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(255, 50, 56, 62)
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 235, 225, 185)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(255, 50, 56, 62)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 235, 225, 185)
-
-
-        BuyOrderSortButton.BackColor = Color.FromArgb(0, 0, 0, 0)
-        BuyOrderSortButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        BuyOrderSortButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-        SellOrderSortButton.BackColor = Color.FromArgb(0, 0, 0, 0)
-        SellOrderSortButton.ForeColor = Color.FromArgb(255, 30, 36, 42)
-        SellOrderSortButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(64, 20, 46, 62)
-    End Sub
-
-    Private Sub SetDarkTheme()
-        Me.BackColor = Color.FromArgb(255, 30, 36, 42)
-        LoginPanel.BackColor = Color.FromArgb(255, 30, 36, 42)
         LoginPanel.BackgroundImage = My.Resources.loginbg
-        MarketPanel.BackColor = Color.FromArgb(255, 30, 36, 42)
         MarketPanel.BackgroundImage = My.Resources.loginbg
-        ResourcePanel.BackColor = Color.FromArgb(255, 30, 36, 42)
         ResourcePanel.BackgroundImage = My.Resources.loginbg
-        MainPanel.BackColor = Color.FromArgb(255, 30, 36, 42)
-
-        Label22.ForeColor = Color.FromArgb(255, 165, 165, 165)
-        ThemeToggleButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        ThemeToggleButton.Text = "☪"
-        ThemeToggleButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        TitlebarSettingsButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        TitlebarSettingsButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        TitlebarAboutButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        TitlebarAboutButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        TitlebarMinButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        TitlebarMinButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        TitlebarMaxButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        TitlebarMaxButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        TitlebarCloseButton.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        TitlebarCloseButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-
-        LoginLabel1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        LoginLabel2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        LoginLabel3.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        DiscordLoginButton2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        DiscordLoginButton2.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
         ResizeGrabber.BackgroundImage = My.Resources.grabber
         ResizeGrabber2.BackgroundImage = My.Resources.grabber
 
-        UpdateButton1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        UpdateButton1.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        UpdateButton2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        UpdateButton2.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
+        SetApplicationTheme()
+    End Sub
 
-        ItemSearchTextBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ItemSearchTextBox.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        ItemTree.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ItemTree.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        ItemTreeSearch.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ItemTreeSearch.ForeColor = Color.FromArgb(255, 224, 224, 224)
+    Public Sub SetLightTheme()
+        BackgroundColor1 = Color.FromArgb(255, 224, 224, 224)
+        BackgroundColor2 = Color.FromArgb(64, 20, 46, 62)
+        BackgroundColor3 = Color.FromArgb(255, 185, 185, 185)
 
-        AdvFilteringToggleButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        AdvFilteringToggleButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        GroupBox2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        GroupBox3.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label15.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label16.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterPriceMinBox.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterPriceMinBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        FilterPriceMaxBox.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterPriceMaxBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        FilterQuantityMinBox.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterQuantityMinBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        FilterQuantityMaxBox.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterQuantityMaxBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        Label17.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label18.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        AdvMarketTreeView.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        AdvMarketTreeView.BackColor = Color.FromArgb(255, 26, 28, 32)
-        AdvItemTreeView.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        AdvItemTreeView.BackColor = Color.FromArgb(255, 26, 28, 32)
-        FilterResetButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterResetButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        FilterOrdersButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        FilterOrdersButton.BackColor = Color.FromArgb(255, 26, 28, 32)
+        ForegroundColor1 = Color.FromArgb(255, 30, 36, 42)
+        ForegroundColor2 = Color.FromArgb(255, 50, 56, 62)
+        ForegroundColor3 = Color.FromArgb(255, 80, 86, 92)
 
-        BookmarkButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        BookmarkButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        AddBookmarkButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        AddBookmarkButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        BookmarkPanel.BackColor = Color.FromArgb(255, 26, 28, 32)
-        BookmarkPanel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        BookmarkLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        ItemTreeBookmarks.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ItemTreeBookmarks.ForeColor = Color.FromArgb(255, 224, 224, 224)
+        GridColor1 = Color.FromArgb(255, 30, 36, 42)
+        GridBGColor1 = Color.FromArgb(255, 185, 185, 185)
+        GridBGColor2 = Color.FromArgb(255, 205, 205, 205)
+        GridSelectColor1 = Color.FromArgb(255, 235, 225, 185)
 
-        StatsPanel.BackColor = Color.FromArgb(255, 26, 28, 32)
-        Label2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label6.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label3.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label4.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        LogBufferLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        StatLabelQue.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        StatLabelProc.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        GroupBox1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label7.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label8.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label9.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label10.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        APIReadsLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        APIUpdatesLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        APICreatesLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        APIDeletesLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
+        HistGridColor = Color.FromArgb(255, 0, 0, 0)
+        HistBuyColor1 = Color.FromArgb(128, 0, 8, 42)
+        HistBuyColor2 = Color.FromArgb(128, 0, 32, 85)
+        HistBuyColor3 = Color.FromArgb(128, 0, 32, 85)
+        HistSellColor1 = Color.FromArgb(128, 32, 74, 128)
+        HistSellColor2 = Color.FromArgb(128, 64, 148, 255)
+        HistSellColor3 = Color.FromArgb(255, 64, 148, 255)
+
+        LoginPanel.BackgroundImage = My.Resources.loginbgneg
+        MarketPanel.BackgroundImage = My.Resources.loginbgneg
+        ResourcePanel.BackgroundImage = My.Resources.loginbgneg
+        ResizeGrabber.BackgroundImage = My.Resources.grabberneg
+        ResizeGrabber2.BackgroundImage = My.Resources.grabberneg
+
+        SetApplicationTheme()
+    End Sub
+
+    Public Sub SetCustomTheme()
+        BackgroundColor1 = CustomBackgroundColor1
+        BackgroundColor2 = BackgroundColor2
+        BackgroundColor3 = BackgroundColor3
+
+        ForegroundColor1 = ForegroundColor1
+        ForegroundColor2 = ForegroundColor2
+        ForegroundColor3 = ForegroundColor3
+
+        GridColor1 = GridColor1
+        GridBGColor1 = GridBGColor1
+        GridBGColor2 = GridBGColor2
+        GridSelectColor1 = GridSelectColor1
+
+        HistGridColor = HistGridColor
+        HistBuyColor1 = HistBuyColor1
+        HistBuyColor2 = HistBuyColor2
+        HistBuyColor3 = HistBuyColor3
+        HistSellColor1 = HistSellColor1
+        HistSellColor2 = HistSellColor2
+        HistSellColor3 = HistSellColor3
+
+        LoginPanel.BackgroundImage = Nothing
+        MarketPanel.BackgroundImage = Nothing
+        ResourcePanel.BackgroundImage = Nothing
+        ResizeGrabber.BackgroundImage = My.Resources.grabberneg
+        ResizeGrabber2.BackgroundImage = My.Resources.grabberneg
+
+        SetApplicationTheme()
+    End Sub
+
+    Public Sub SetApplicationTheme()
+        Me.BackColor = BackgroundColor1
+        LoginPanel.BackColor = BackgroundColor1
+        MarketPanel.BackColor = BackgroundColor1
+        ResourcePanel.BackColor = BackgroundColor1
+        MainPanel.BackColor = BackgroundColor1
+
+        Label22.ForeColor = ForegroundColor2
+        AboutForm.UpdateThemeState()
+        TitlebarSettingsButton.ForeColor = ForegroundColor3
+        TitlebarSettingsButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        TitlebarAboutButton.ForeColor = ForegroundColor3
+        TitlebarAboutButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        TitlebarMinButton.ForeColor = ForegroundColor3
+        TitlebarMinButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        TitlebarMaxButton.ForeColor = ForegroundColor3
+        TitlebarMaxButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        TitlebarCloseButton.ForeColor = ForegroundColor3
+        TitlebarCloseButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+
+        LoginLabel1.ForeColor = ForegroundColor1
+        LoginLabel2.ForeColor = ForegroundColor1
+        LoginLabel3.ForeColor = ForegroundColor1
+        DiscordLoginButton2.ForeColor = ForegroundColor1
+        DiscordLoginButton2.FlatAppearance.MouseOverBackColor = BackgroundColor2
+
+        UpdateButton1.ForeColor = ForegroundColor1
+        UpdateButton1.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        UpdateButton2.ForeColor = ForegroundColor1
+        UpdateButton2.FlatAppearance.MouseOverBackColor = BackgroundColor2
+
+        ItemSearchTextBox.BackColor = BackgroundColor3
+        ItemSearchTextBox.ForeColor = ForegroundColor1
+        ItemTree.BackColor = BackgroundColor3
+        ItemTree.ForeColor = ForegroundColor1
+        ItemTreeSearch.BackColor = BackgroundColor3
+        ItemTreeSearch.ForeColor = ForegroundColor1
+
+        AdvFilteringToggleButton.BackColor = BackgroundColor3
+        AdvFilteringToggleButton.ForeColor = ForegroundColor1
+        GroupBox2.ForeColor = ForegroundColor1
+        GroupBox3.ForeColor = ForegroundColor1
+        Label15.ForeColor = ForegroundColor1
+        Label16.ForeColor = ForegroundColor1
+        FilterPriceMinBox.ForeColor = ForegroundColor1
+        FilterPriceMinBox.BackColor = BackgroundColor3
+        FilterPriceMaxBox.ForeColor = ForegroundColor1
+        FilterPriceMaxBox.BackColor = BackgroundColor3
+        FilterQuantityMinBox.ForeColor = ForegroundColor1
+        FilterQuantityMinBox.BackColor = BackgroundColor3
+        FilterQuantityMaxBox.ForeColor = ForegroundColor1
+        FilterQuantityMaxBox.BackColor = BackgroundColor3
+        Label17.ForeColor = ForegroundColor1
+        Label18.ForeColor = ForegroundColor1
+        AdvMarketTreeView.ForeColor = ForegroundColor1
+        AdvMarketTreeView.BackColor = BackgroundColor3
+        AdvItemTreeView.ForeColor = ForegroundColor1
+        AdvItemTreeView.BackColor = BackgroundColor3
+        FilterResetButton.ForeColor = ForegroundColor1
+        FilterResetButton.BackColor = BackgroundColor3
+        FilterOrdersButton.ForeColor = ForegroundColor1
+        FilterOrdersButton.BackColor = BackgroundColor3
+
+        BookmarkButton.BackColor = BackgroundColor3
+        BookmarkButton.ForeColor = ForegroundColor1
+        AddBookmarkButton.BackColor = BackgroundColor3
+        AddBookmarkButton.ForeColor = ForegroundColor1
+        BookmarkPanel.BackColor = BackgroundColor3
+        BookmarkPanel.ForeColor = ForegroundColor1
+        BookmarkLabel.ForeColor = ForegroundColor1
+        ItemTreeBookmarks.BackColor = BackgroundColor3
+        ItemTreeBookmarks.ForeColor = ForegroundColor1
+
+        StatsPanel.BackColor = BackgroundColor3
+        Label2.ForeColor = ForegroundColor1
+        Label6.ForeColor = ForegroundColor1
+        Label3.ForeColor = ForegroundColor1
+        Label4.ForeColor = ForegroundColor1
+        LogBufferLabel.ForeColor = ForegroundColor1
+        StatLabelQue.ForeColor = ForegroundColor1
+        StatLabelProc.ForeColor = ForegroundColor1
+        GroupBox1.ForeColor = ForegroundColor1
+        Label7.ForeColor = ForegroundColor1
+        Label8.ForeColor = ForegroundColor1
+        Label9.ForeColor = ForegroundColor1
+        Label10.ForeColor = ForegroundColor1
+        APIReadsLabel.ForeColor = ForegroundColor1
+        APIUpdatesLabel.ForeColor = ForegroundColor1
+        APICreatesLabel.ForeColor = ForegroundColor1
+        APIDeletesLabel.ForeColor = ForegroundColor1
 
 
-        ConsoleTextBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ConsoleTextBox.ForeColor = Color.FromArgb(255, 125, 125, 125)
-        ConsoleInputBox.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ConsoleInputBox.ForeColor = Color.FromArgb(255, 165, 165, 165)
-        ConsoleSubmitButton.ForeColor = Color.FromArgb(255, 165, 165, 165)
+        Button7.ForeColor = ForegroundColor1
+        Button7.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        Button7.BackColor = BackgroundColor3
+        Button1.ForeColor = ForegroundColor1
+        Button1.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        Button1.BackColor = BackgroundColor3
+        ComboBox1.BackColor = BackgroundColor3
+        ComboBox1.ForeColor = ForegroundColor1
+        Label28.ForeColor = ForegroundColor1
 
-        MarketOrdersButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        MarketOrdersButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        ResourceManagerButton.BackColor = Color.FromArgb(255, 26, 28, 32)
-        ResourceManagerButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Button3.BackColor = Color.FromArgb(255, 26, 28, 32)
-        Button3.ForeColor = Color.FromArgb(255, 125, 125, 125)
+        ConsoleTextBox.BackColor = BackgroundColor3
+        ConsoleTextBox.ForeColor = ForegroundColor3
+        ConsoleInputBox.BackColor = BackgroundColor3
+        ConsoleInputBox.ForeColor = ForegroundColor2
+        ConsoleSubmitButton.ForeColor = ForegroundColor2
 
-        SelectedItemLabel.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        Label5.ForeColor = Color.FromArgb(255, 224, 224, 224)
+        MarketOrdersButton.BackColor = BackgroundColor3
+        MarketOrdersButton.ForeColor = ForegroundColor1
+        ResourceManagerButton.BackColor = BackgroundColor3
+        ResourceManagerButton.ForeColor = ForegroundColor1
+        Button3.BackColor = BackgroundColor3
+        Button3.ForeColor = ForegroundColor3
+
+        SelectedItemLabel.ForeColor = ForegroundColor1
+        Label1.ForeColor = ForegroundColor1
+        Label5.ForeColor = ForegroundColor1
 
 
-        BuyOrderGridViewRaw.BackgroundColor = Color.FromArgb(255, 26, 28, 32)
-        BuyOrderGridViewRaw.GridColor = Color.Gray
-        SellOrderGridViewRaw.BackgroundColor = Color.FromArgb(255, 26, 28, 32)
-        SellOrderGridViewRaw.GridColor = Color.Gray
+        BuyOrderGridViewRaw.BackgroundColor = BackgroundColor3
+        BuyOrderGridViewRaw.GridColor = GridColor1
+        SellOrderGridViewRaw.BackgroundColor = BackgroundColor3
+        SellOrderGridViewRaw.GridColor = GridColor1
 
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.BackColor = Color.FromArgb(255, 26, 28, 32)
-        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 26, 38, 42)
+        BuyOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = ForegroundColor1
+        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = ForegroundColor1
+        BuyOrderGridViewRaw.RowsDefaultCellStyle.BackColor = GridBGColor1
+        BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = GridBGColor2
+        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = ForegroundColor1
+        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = GridSelectColor1
 
-        SellOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.BackColor = Color.FromArgb(255, 26, 28, 32)
-        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(255, 26, 38, 42)
+        SellOrderGridViewRaw.RowsDefaultCellStyle.ForeColor = ForegroundColor1
+        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.ForeColor = ForegroundColor1
+        SellOrderGridViewRaw.RowsDefaultCellStyle.BackColor = GridBGColor1
+        SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle.BackColor = GridBGColor2
+        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = ForegroundColor1
+        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = GridSelectColor1
 
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(255, 224, 224, 224)
-        BuyOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 28, 74, 92)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = Color.FromArgb(255, 224, 224, 224)
-        SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 28, 74, 92)
+        BuyOrderSortButton.BackColor = BackgroundColor1
+        BuyOrderSortButton.ForeColor = ForegroundColor1
+        BuyOrderSortButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
+        SellOrderSortButton.BackColor = BackgroundColor1
+        SellOrderSortButton.ForeColor = ForegroundColor1
+        SellOrderSortButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
 
-        BuyOrderSortButton.BackColor = Color.FromArgb(0, 0, 0, 0)
-        BuyOrderSortButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        BuyOrderSortButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
-        SellOrderSortButton.BackColor = Color.FromArgb(0, 0, 0, 0)
-        SellOrderSortButton.ForeColor = Color.FromArgb(255, 224, 224, 224)
-        SellOrderSortButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 50, 56, 62)
+        HistogramChart.BackColor = BackgroundColor1
+        HistogramChart.ChartAreas("ChartArea1").BackColor = BackgroundColor3
+        HistogramChart.ChartAreas("ChartArea1").AxisX.TitleForeColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisX.LabelStyle.ForeColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisX.LineColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisX.MajorGrid.LineColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisX.MajorTickMark.LineColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisY.TitleForeColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisY.LabelStyle.ForeColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisY.LineColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisY.MajorGrid.LineColor = HistGridColor
+        HistogramChart.ChartAreas("ChartArea1").AxisY.MajorTickMark.LineColor = HistGridColor
+
+        HistogramChart.Series("Sell Orders").Color = HistSellColor1
+        HistogramChart.Series("Sell Orders").BackSecondaryColor = HistSellColor2
+        HistogramChart.Series("Sell Orders").BorderColor = HistSellColor3
+
+        HistogramChart.Series("Buy Orders").Color = HistBuyColor1
+        HistogramChart.Series("Buy Orders").BackSecondaryColor = HistBuyColor2
+        HistogramChart.Series("Buy Orders").BorderColor = HistBuyColor3
     End Sub
 
 
@@ -6577,5 +6920,64 @@ Public Class Form1
         MarketPanel.Visible = True
         ResourcePanel.Visible = False
         MarketPanel.BringToFront()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        GraphingControlsPanel.Visible = True
+        HistogramPanel.Visible = True
+        RawOrderTable.Visible = False
+        OrderTablePanel.Visible = False
+        CenterUXPanelMode = 2
+        'disable advanced searching for this might make this work eventually but for now, easiest to disable it.
+        If ShowFilters = False Then
+            AdvFilteringToggleButton.Text = "Hide Advanced Filtering"
+            ItemTree.Visible = False
+            ItemTree.Enabled = False
+            ItemTreeSearch.Visible = False
+            ItemTreeSearch.Enabled = False
+            FilterOrdersButton.Visible = True
+            FilterResetButton.Visible = True
+            FilterPanel.Visible = True
+            FilterPanel.BringToFront()
+            ShowFilters = True
+            If ShowBookmarks = True Then
+                LoadBookmarks()
+            End If
+        End If
+        GroupBox2.Visible = False
+        GroupBox3.Visible = False
+        AdvFilteringToggleButton.Enabled = False
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        GraphingControlsPanel.Visible = False
+        HistogramPanel.Visible = False
+        RawOrderTable.Visible = True
+        OrderTablePanel.Visible = True
+        CenterUXPanelMode = 1
+        GroupBox2.Visible = True
+        GroupBox3.Visible = True
+        AdvFilteringToggleButton.Enabled = True
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        If ComboBox1.SelectedIndex = 0 Then
+            HistEntries = 8
+        End If
+        If ComboBox1.SelectedIndex = 1 Then
+            HistEntries = 17
+        End If
+        If ComboBox1.SelectedIndex = 2 Then
+            HistEntries = 31
+        End If
+        If ComboBox1.SelectedIndex = 3 Then
+            HistEntries = 91
+        End If
+        If ComboBox1.SelectedIndex = 4 Then
+            HistEntries = 181
+        End If
+        If ComboBox1.SelectedIndex = 5 Then
+            HistEntries = 366
+        End If
     End Sub
 End Class

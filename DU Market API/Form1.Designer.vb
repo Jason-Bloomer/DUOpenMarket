@@ -23,22 +23,25 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainPanel = New System.Windows.Forms.Panel()
         Me.TitleBarPanel = New System.Windows.Forms.Panel()
-        Me.ThemeToggleButton = New System.Windows.Forms.Button()
         Me.TitlebarSettingsButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label22 = New System.Windows.Forms.Label()
@@ -51,23 +54,30 @@ Partial Class Form1
         Me.MarketOrdersButton = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.MarketPanel = New System.Windows.Forms.Panel()
-        Me.SellOrderSortButton = New System.Windows.Forms.Button()
-        Me.BuyOrderSortButton = New System.Windows.Forms.Button()
         Me.BookmarkButton = New System.Windows.Forms.Button()
         Me.ResizeGrabber = New System.Windows.Forms.PictureBox()
         Me.SelectedItemLabel = New System.Windows.Forms.Label()
         Me.AdvFilteringToggleButton = New System.Windows.Forms.Button()
         Me.RawOrderTable = New System.Windows.Forms.TableLayoutPanel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.SellOrderGridViewRaw = New System.Windows.Forms.DataGridView()
+        Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
+        Me.SellOrderSortButton = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.SellOrderGridViewRaw = New System.Windows.Forms.DataGridView()
         Me.BuyOrderGridViewRaw = New System.Windows.Forms.DataGridView()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.BuyOrderSortButton = New System.Windows.Forms.Button()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.ItemSearchTextBox = New System.Windows.Forms.TextBox()
         Me.ConsoleSubmitButton = New System.Windows.Forms.Button()
         Me.ConsoleTextBox = New System.Windows.Forms.TextBox()
         Me.StatsPanel = New System.Windows.Forms.Panel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.APIHistoriesLabel = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.APIDeletesLabel = New System.Windows.Forms.Label()
         Me.APICreatesLabel = New System.Windows.Forms.Label()
         Me.APIUpdatesLabel = New System.Windows.Forms.Label()
@@ -107,6 +117,34 @@ Partial Class Form1
         Me.AddBookmarkButton = New System.Windows.Forms.Button()
         Me.BookmarkLabel = New System.Windows.Forms.Label()
         Me.ItemTreeBookmarks = New System.Windows.Forms.TreeView()
+        Me.HistogramPanel = New System.Windows.Forms.Panel()
+        Me.HistogramChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.OrderTablePanel = New System.Windows.Forms.Panel()
+        Me.EconStatLabel_Sell_Volume = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Sell_Total = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Sell_Low = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Sell_Avg = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Sell_High = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Buy_Volume = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Buy_Total = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Buy_Low = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Buy_Avg = New System.Windows.Forms.Label()
+        Me.EconStatLabel_Buy_High = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.GraphingControlsPanel = New System.Windows.Forms.Panel()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.ResourcePanel = New System.Windows.Forms.Panel()
         Me.ResourcesToolPanel = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -132,8 +170,6 @@ Partial Class Form1
         Me.ConnectionTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SearchTimer = New System.Windows.Forms.Timer(Me.components)
         Me.LogFileCheckTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
         Me.MainPanel.SuspendLayout()
         Me.TitleBarPanel.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -141,8 +177,12 @@ Partial Class Form1
         Me.MarketPanel.SuspendLayout()
         CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RawOrderTable.SuspendLayout()
+        Me.TableLayoutPanel5.SuspendLayout()
         CType(Me.SellOrderGridViewRaw, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BuyOrderGridViewRaw, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel4.SuspendLayout()
+        Me.TableLayoutPanel3.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.StatsPanel.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.FilterPanel.SuspendLayout()
@@ -150,6 +190,10 @@ Partial Class Form1
         Me.GroupBox2.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.BookmarkPanel.SuspendLayout()
+        Me.HistogramPanel.SuspendLayout()
+        CType(Me.HistogramChart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.OrderTablePanel.SuspendLayout()
+        Me.GraphingControlsPanel.SuspendLayout()
         Me.ResourcePanel.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.LoginPanel.SuspendLayout()
@@ -157,8 +201,6 @@ Partial Class Form1
         CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel4.SuspendLayout()
-        Me.TableLayoutPanel5.SuspendLayout()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -192,7 +234,6 @@ Partial Class Form1
         Me.TitleBarPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitleBarPanel.BackColor = System.Drawing.Color.Transparent
-        Me.TitleBarPanel.Controls.Add(Me.ThemeToggleButton)
         Me.TitleBarPanel.Controls.Add(Me.TitlebarSettingsButton)
         Me.TitleBarPanel.Controls.Add(Me.PictureBox1)
         Me.TitleBarPanel.Controls.Add(Me.Label22)
@@ -205,26 +246,12 @@ Partial Class Form1
         Me.TitleBarPanel.Size = New System.Drawing.Size(1280, 34)
         Me.TitleBarPanel.TabIndex = 27
         '
-        'ThemeToggleButton
-        '
-        Me.ThemeToggleButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ThemeToggleButton.FlatAppearance.BorderSize = 0
-        Me.ThemeToggleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ThemeToggleButton.Font = New System.Drawing.Font("Wingdings", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ThemeToggleButton.ForeColor = System.Drawing.Color.Gray
-        Me.ThemeToggleButton.Location = New System.Drawing.Point(989, 1)
-        Me.ThemeToggleButton.Name = "ThemeToggleButton"
-        Me.ThemeToggleButton.Size = New System.Drawing.Size(52, 32)
-        Me.ThemeToggleButton.TabIndex = 20
-        Me.ThemeToggleButton.Text = "☪"
-        Me.ThemeToggleButton.UseVisualStyleBackColor = True
-        '
         'TitlebarSettingsButton
         '
         Me.TitlebarSettingsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitlebarSettingsButton.FlatAppearance.BorderSize = 0
         Me.TitlebarSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.TitlebarSettingsButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TitlebarSettingsButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.25!)
         Me.TitlebarSettingsButton.ForeColor = System.Drawing.Color.Gray
         Me.TitlebarSettingsButton.Location = New System.Drawing.Point(1047, 3)
         Me.TitlebarSettingsButton.Name = "TitlebarSettingsButton"
@@ -236,9 +263,9 @@ Partial Class Form1
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.PictureBox1.BackgroundImage = CType(resources.GetObject("PictureBox1.BackgroundImage"), System.Drawing.Image)
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.PictureBox1.InitialImage = CType(resources.GetObject("PictureBox1.InitialImage"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(30, 30)
@@ -248,11 +275,11 @@ Partial Class Form1
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!)
         Me.Label22.ForeColor = System.Drawing.Color.DarkGray
         Me.Label22.Location = New System.Drawing.Point(38, 9)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(216, 16)
+        Me.Label22.Size = New System.Drawing.Size(215, 16)
         Me.Label22.TabIndex = 1
         Me.Label22.Text = "DUOpenMarket API Desktop Client"
         '
@@ -261,7 +288,7 @@ Partial Class Form1
         Me.TitlebarAboutButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitlebarAboutButton.FlatAppearance.BorderSize = 0
         Me.TitlebarAboutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.TitlebarAboutButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TitlebarAboutButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.TitlebarAboutButton.ForeColor = System.Drawing.Color.Gray
         Me.TitlebarAboutButton.Location = New System.Drawing.Point(1093, 3)
         Me.TitlebarAboutButton.Name = "TitlebarAboutButton"
@@ -275,7 +302,7 @@ Partial Class Form1
         Me.TitlebarCloseButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitlebarCloseButton.FlatAppearance.BorderSize = 0
         Me.TitlebarCloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.TitlebarCloseButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TitlebarCloseButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.TitlebarCloseButton.ForeColor = System.Drawing.Color.Gray
         Me.TitlebarCloseButton.Location = New System.Drawing.Point(1235, 3)
         Me.TitlebarCloseButton.Name = "TitlebarCloseButton"
@@ -289,7 +316,7 @@ Partial Class Form1
         Me.TitlebarMaxButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitlebarMaxButton.FlatAppearance.BorderSize = 0
         Me.TitlebarMaxButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.TitlebarMaxButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TitlebarMaxButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.TitlebarMaxButton.ForeColor = System.Drawing.Color.Gray
         Me.TitlebarMaxButton.Location = New System.Drawing.Point(1188, 3)
         Me.TitlebarMaxButton.Name = "TitlebarMaxButton"
@@ -303,7 +330,7 @@ Partial Class Form1
         Me.TitlebarMinButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TitlebarMinButton.FlatAppearance.BorderSize = 0
         Me.TitlebarMinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.TitlebarMinButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TitlebarMinButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.TitlebarMinButton.ForeColor = System.Drawing.Color.Gray
         Me.TitlebarMinButton.Location = New System.Drawing.Point(1142, 3)
         Me.TitlebarMinButton.Name = "TitlebarMinButton"
@@ -339,7 +366,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ResourceManagerButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(20, Byte), Integer), CType(CType(26, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.ResourceManagerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ResourceManagerButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ResourceManagerButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.ResourceManagerButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.ResourceManagerButton.Location = New System.Drawing.Point(137, 3)
         Me.ResourceManagerButton.Name = "ResourceManagerButton"
@@ -347,6 +374,7 @@ Partial Class Form1
         Me.ResourceManagerButton.TabIndex = 18
         Me.ResourceManagerButton.Text = "Resource Manager"
         Me.ResourceManagerButton.UseVisualStyleBackColor = False
+        Me.ResourceManagerButton.Visible = False
         '
         'MarketOrdersButton
         '
@@ -355,7 +383,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MarketOrdersButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.MarketOrdersButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.MarketOrdersButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MarketOrdersButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.MarketOrdersButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.MarketOrdersButton.Location = New System.Drawing.Point(3, 3)
         Me.MarketOrdersButton.Name = "MarketOrdersButton"
@@ -371,7 +399,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button3.BackColor = System.Drawing.Color.FromArgb(CType(CType(20, Byte), Integer), CType(CType(26, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.Button3.ForeColor = System.Drawing.Color.Gray
         Me.Button3.Location = New System.Drawing.Point(303, 3)
         Me.Button3.Name = "Button3"
@@ -386,7 +414,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MarketPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
-        Me.MarketPanel.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.loginbg
+        Me.MarketPanel.BackgroundImage = CType(resources.GetObject("MarketPanel.BackgroundImage"), System.Drawing.Image)
         Me.MarketPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.MarketPanel.Controls.Add(Me.BookmarkButton)
         Me.MarketPanel.Controls.Add(Me.ResizeGrabber)
@@ -403,43 +431,20 @@ Partial Class Form1
         Me.MarketPanel.Controls.Add(Me.ItemTree)
         Me.MarketPanel.Controls.Add(Me.ItemTreeSearch)
         Me.MarketPanel.Controls.Add(Me.BookmarkPanel)
+        Me.MarketPanel.Controls.Add(Me.HistogramPanel)
+        Me.MarketPanel.Controls.Add(Me.OrderTablePanel)
+        Me.MarketPanel.Controls.Add(Me.GraphingControlsPanel)
         Me.MarketPanel.Location = New System.Drawing.Point(0, 76)
         Me.MarketPanel.Name = "MarketPanel"
         Me.MarketPanel.Size = New System.Drawing.Size(1280, 684)
         Me.MarketPanel.TabIndex = 0
         Me.MarketPanel.Visible = False
         '
-        'SellOrderSortButton
-        '
-        Me.SellOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SellOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.SellOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.SellOrderSortButton.Location = New System.Drawing.Point(711, 0)
-        Me.SellOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
-        Me.SellOrderSortButton.Name = "SellOrderSortButton"
-        Me.SellOrderSortButton.Size = New System.Drawing.Size(79, 21)
-        Me.SellOrderSortButton.TabIndex = 28
-        Me.SellOrderSortButton.Text = "Sort"
-        Me.SellOrderSortButton.UseVisualStyleBackColor = True
-        '
-        'BuyOrderSortButton
-        '
-        Me.BuyOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BuyOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BuyOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.BuyOrderSortButton.Location = New System.Drawing.Point(711, 0)
-        Me.BuyOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
-        Me.BuyOrderSortButton.Name = "BuyOrderSortButton"
-        Me.BuyOrderSortButton.Size = New System.Drawing.Size(79, 21)
-        Me.BuyOrderSortButton.TabIndex = 27
-        Me.BuyOrderSortButton.Text = "Sort"
-        Me.BuyOrderSortButton.UseVisualStyleBackColor = True
-        '
         'BookmarkButton
         '
         Me.BookmarkButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.BookmarkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BookmarkButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BookmarkButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.BookmarkButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.BookmarkButton.Location = New System.Drawing.Point(185, 33)
         Me.BookmarkButton.Name = "BookmarkButton"
@@ -451,10 +456,10 @@ Partial Class Form1
         'ResizeGrabber
         '
         Me.ResizeGrabber.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ResizeGrabber.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber.BackgroundImage = CType(resources.GetObject("ResizeGrabber.BackgroundImage"), System.Drawing.Image)
         Me.ResizeGrabber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ResizeGrabber.Cursor = System.Windows.Forms.Cursors.SizeNWSE
-        Me.ResizeGrabber.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber.InitialImage = CType(resources.GetObject("ResizeGrabber.InitialImage"), System.Drawing.Image)
         Me.ResizeGrabber.Location = New System.Drawing.Point(1264, 668)
         Me.ResizeGrabber.Name = "ResizeGrabber"
         Me.ResizeGrabber.Size = New System.Drawing.Size(16, 16)
@@ -466,7 +471,7 @@ Partial Class Form1
         Me.SelectedItemLabel.AutoEllipsis = True
         Me.SelectedItemLabel.AutoSize = True
         Me.SelectedItemLabel.BackColor = System.Drawing.Color.Transparent
-        Me.SelectedItemLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SelectedItemLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold)
         Me.SelectedItemLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.SelectedItemLabel.Location = New System.Drawing.Point(229, 7)
         Me.SelectedItemLabel.Name = "SelectedItemLabel"
@@ -479,7 +484,7 @@ Partial Class Form1
         '
         Me.AdvFilteringToggleButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.AdvFilteringToggleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AdvFilteringToggleButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AdvFilteringToggleButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.AdvFilteringToggleButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.AdvFilteringToggleButton.Location = New System.Drawing.Point(8, 33)
         Me.AdvFilteringToggleButton.Name = "AdvFilteringToggleButton"
@@ -511,75 +516,40 @@ Partial Class Form1
         Me.RawOrderTable.Size = New System.Drawing.Size(790, 431)
         Me.RawOrderTable.TabIndex = 21
         '
-        'Label1
+        'TableLayoutPanel5
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Silver
-        Me.Label1.Location = New System.Drawing.Point(3, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(705, 21)
-        Me.Label1.TabIndex = 15
-        Me.Label1.Text = "Buy Orders:"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.TableLayoutPanel5.ColumnCount = 2
+        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
+        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel5.Controls.Add(Me.SellOrderSortButton, 1, 0)
+        Me.TableLayoutPanel5.Controls.Add(Me.Label5, 0, 0)
+        Me.TableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel5.Location = New System.Drawing.Point(0, 214)
+        Me.TableLayoutPanel5.Margin = New System.Windows.Forms.Padding(0)
+        Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
+        Me.TableLayoutPanel5.RowCount = 1
+        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel5.Size = New System.Drawing.Size(790, 21)
+        Me.TableLayoutPanel5.TabIndex = 20
         '
-        'SellOrderGridViewRaw
+        'SellOrderSortButton
         '
-        Me.SellOrderGridViewRaw.AllowUserToAddRows = False
-        Me.SellOrderGridViewRaw.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Silver
-        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.SellOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SellOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        Me.SellOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
-        Me.SellOrderGridViewRaw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle3
-        Me.SellOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
-        Me.SellOrderGridViewRaw.Location = New System.Drawing.Point(3, 238)
-        Me.SellOrderGridViewRaw.Name = "SellOrderGridViewRaw"
-        Me.SellOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
-        Me.SellOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White
-        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle5
-        Me.SellOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.SellOrderGridViewRaw.Size = New System.Drawing.Size(784, 190)
-        Me.SellOrderGridViewRaw.TabIndex = 18
+        Me.SellOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SellOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.SellOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.SellOrderSortButton.Location = New System.Drawing.Point(711, 0)
+        Me.SellOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
+        Me.SellOrderSortButton.Name = "SellOrderSortButton"
+        Me.SellOrderSortButton.Size = New System.Drawing.Size(79, 21)
+        Me.SellOrderSortButton.TabIndex = 28
+        Me.SellOrderSortButton.Text = "Sort"
+        Me.SellOrderSortButton.UseVisualStyleBackColor = True
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.Label5.ForeColor = System.Drawing.Color.Silver
         Me.Label5.Location = New System.Drawing.Point(3, 0)
         Me.Label5.Name = "Label5"
@@ -588,71 +558,198 @@ Partial Class Form1
         Me.Label5.Text = "Sell Orders:"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
+        'SellOrderGridViewRaw
+        '
+        Me.SellOrderGridViewRaw.AllowUserToAddRows = False
+        Me.SellOrderGridViewRaw.AllowUserToDeleteRows = False
+        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.Silver
+        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
+        Me.SellOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SellOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.SellOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle12
+        Me.SellOrderGridViewRaw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle13
+        Me.SellOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
+        Me.SellOrderGridViewRaw.Location = New System.Drawing.Point(3, 238)
+        Me.SellOrderGridViewRaw.Name = "SellOrderGridViewRaw"
+        Me.SellOrderGridViewRaw.ReadOnly = True
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle14
+        Me.SellOrderGridViewRaw.RowHeadersVisible = False
+        DataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.White
+        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle15
+        Me.SellOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.SellOrderGridViewRaw.Size = New System.Drawing.Size(784, 190)
+        Me.SellOrderGridViewRaw.TabIndex = 18
+        '
         'BuyOrderGridViewRaw
         '
         Me.BuyOrderGridViewRaw.AllowUserToAddRows = False
         Me.BuyOrderGridViewRaw.AllowUserToDeleteRows = False
         Me.BuyOrderGridViewRaw.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Silver
-        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle16.ForeColor = System.Drawing.Color.Silver
+        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
         Me.BuyOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BuyOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.BuyOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle17.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle18
         Me.BuyOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
         Me.BuyOrderGridViewRaw.Location = New System.Drawing.Point(3, 24)
         Me.BuyOrderGridViewRaw.Name = "BuyOrderGridViewRaw"
         Me.BuyOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle19
         Me.BuyOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.White
-        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.White
+        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle20
         Me.BuyOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.BuyOrderGridViewRaw.Size = New System.Drawing.Size(784, 187)
         Me.BuyOrderGridViewRaw.TabIndex = 0
         '
+        'TableLayoutPanel4
+        '
+        Me.TableLayoutPanel4.ColumnCount = 2
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel4.Controls.Add(Me.Label1, 0, 0)
+        Me.TableLayoutPanel4.Controls.Add(Me.BuyOrderSortButton, 1, 0)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel4.Margin = New System.Windows.Forms.Padding(0)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 1
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21.0!))
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(790, 21)
+        Me.TableLayoutPanel4.TabIndex = 19
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
+        Me.Label1.ForeColor = System.Drawing.Color.Silver
+        Me.Label1.Location = New System.Drawing.Point(3, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(705, 21)
+        Me.Label1.TabIndex = 15
+        Me.Label1.Text = "Buy Orders:"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        '
+        'BuyOrderSortButton
+        '
+        Me.BuyOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.BuyOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BuyOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.BuyOrderSortButton.Location = New System.Drawing.Point(711, 0)
+        Me.BuyOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
+        Me.BuyOrderSortButton.Name = "BuyOrderSortButton"
+        Me.BuyOrderSortButton.Size = New System.Drawing.Size(79, 21)
+        Me.BuyOrderSortButton.TabIndex = 27
+        Me.BuyOrderSortButton.Text = "Sort"
+        Me.BuyOrderSortButton.UseVisualStyleBackColor = True
+        '
         'TableLayoutPanel3
         '
-        Me.TableLayoutPanel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.Panel2, 0, 0)
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(1023, 7)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
-        Me.TableLayoutPanel3.RowCount = 2
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.407407!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.59259!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 466)
+        Me.TableLayoutPanel3.RowCount = 1
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53.0!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 53)
         Me.TableLayoutPanel3.TabIndex = 20
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.Button7)
+        Me.Panel2.Controls.Add(Me.Button1)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel2.Location = New System.Drawing.Point(3, 3)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(242, 47)
+        Me.Panel2.TabIndex = 2
+        '
+        'Button7
+        '
+        Me.Button7.Dock = System.Windows.Forms.DockStyle.Left
+        Me.Button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Button7.Location = New System.Drawing.Point(0, 0)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(114, 47)
+        Me.Button7.TabIndex = 1
+        Me.Button7.Text = "Order Table"
+        Me.Button7.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Dock = System.Windows.Forms.DockStyle.Right
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Button1.Location = New System.Drawing.Point(120, 0)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(122, 47)
+        Me.Button1.TabIndex = 0
+        Me.Button1.Text = "Graphing"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'ItemSearchTextBox
         '
@@ -669,7 +766,7 @@ Partial Class Form1
         '
         Me.ConsoleSubmitButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ConsoleSubmitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ConsoleSubmitButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ConsoleSubmitButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.ConsoleSubmitButton.ForeColor = System.Drawing.Color.Silver
         Me.ConsoleSubmitButton.Location = New System.Drawing.Point(901, 656)
         Me.ConsoleSubmitButton.Margin = New System.Windows.Forms.Padding(0)
@@ -709,13 +806,15 @@ Partial Class Form1
         Me.StatsPanel.Controls.Add(Me.StatLabelQue)
         Me.StatsPanel.Controls.Add(Me.Label3)
         Me.StatsPanel.Controls.Add(Me.Label2)
-        Me.StatsPanel.Location = New System.Drawing.Point(1023, 479)
+        Me.StatsPanel.Location = New System.Drawing.Point(1023, 442)
         Me.StatsPanel.Name = "StatsPanel"
-        Me.StatsPanel.Size = New System.Drawing.Size(248, 197)
+        Me.StatsPanel.Size = New System.Drawing.Size(248, 234)
         Me.StatsPanel.TabIndex = 18
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.APIHistoriesLabel)
+        Me.GroupBox1.Controls.Add(Me.Label13)
         Me.GroupBox1.Controls.Add(Me.APIDeletesLabel)
         Me.GroupBox1.Controls.Add(Me.APICreatesLabel)
         Me.GroupBox1.Controls.Add(Me.APIUpdatesLabel)
@@ -726,12 +825,31 @@ Partial Class Form1
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox1.ForeColor = System.Drawing.Color.Silver
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 90)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 108)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(222, 96)
+        Me.GroupBox1.Size = New System.Drawing.Size(222, 111)
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "API Requests"
+        '
+        'APIHistoriesLabel
+        '
+        Me.APIHistoriesLabel.ForeColor = System.Drawing.Color.Silver
+        Me.APIHistoriesLabel.Location = New System.Drawing.Point(103, 88)
+        Me.APIHistoriesLabel.Name = "APIHistoriesLabel"
+        Me.APIHistoriesLabel.Size = New System.Drawing.Size(108, 13)
+        Me.APIHistoriesLabel.TabIndex = 13
+        Me.APIHistoriesLabel.Text = "0"
+        Me.APIHistoriesLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(7, 88)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(42, 13)
+        Me.Label13.TabIndex = 12
+        Me.Label13.Text = "History:"
         '
         'APIDeletesLabel
         '
@@ -814,7 +932,7 @@ Partial Class Form1
         Me.DiscordLoginButton.BackColor = System.Drawing.Color.Transparent
         Me.DiscordLoginButton.FlatAppearance.BorderSize = 2
         Me.DiscordLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DiscordLoginButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DiscordLoginButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.DiscordLoginButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(215, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(65, Byte), Integer))
         Me.DiscordLoginButton.Location = New System.Drawing.Point(108, 7)
         Me.DiscordLoginButton.Name = "DiscordLoginButton"
@@ -826,7 +944,7 @@ Partial Class Form1
         'LogBufferLabel
         '
         Me.LogBufferLabel.ForeColor = System.Drawing.Color.Silver
-        Me.LogBufferLabel.Location = New System.Drawing.Point(132, 39)
+        Me.LogBufferLabel.Location = New System.Drawing.Point(132, 46)
         Me.LogBufferLabel.Name = "LogBufferLabel"
         Me.LogBufferLabel.Size = New System.Drawing.Size(91, 13)
         Me.LogBufferLabel.TabIndex = 6
@@ -837,7 +955,7 @@ Partial Class Form1
         '
         Me.Label6.AutoSize = True
         Me.Label6.ForeColor = System.Drawing.Color.Silver
-        Me.Label6.Location = New System.Drawing.Point(18, 39)
+        Me.Label6.Location = New System.Drawing.Point(18, 46)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(78, 13)
         Me.Label6.TabIndex = 5
@@ -846,7 +964,7 @@ Partial Class Form1
         'StatLabelProc
         '
         Me.StatLabelProc.ForeColor = System.Drawing.Color.Silver
-        Me.StatLabelProc.Location = New System.Drawing.Point(132, 72)
+        Me.StatLabelProc.Location = New System.Drawing.Point(132, 80)
         Me.StatLabelProc.Name = "StatLabelProc"
         Me.StatLabelProc.Size = New System.Drawing.Size(91, 13)
         Me.StatLabelProc.TabIndex = 4
@@ -857,7 +975,7 @@ Partial Class Form1
         '
         Me.Label4.AutoSize = True
         Me.Label4.ForeColor = System.Drawing.Color.Silver
-        Me.Label4.Location = New System.Drawing.Point(18, 72)
+        Me.Label4.Location = New System.Drawing.Point(18, 80)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(115, 13)
         Me.Label4.TabIndex = 3
@@ -866,7 +984,7 @@ Partial Class Form1
         'StatLabelQue
         '
         Me.StatLabelQue.ForeColor = System.Drawing.Color.Silver
-        Me.StatLabelQue.Location = New System.Drawing.Point(132, 55)
+        Me.StatLabelQue.Location = New System.Drawing.Point(132, 63)
         Me.StatLabelQue.Name = "StatLabelQue"
         Me.StatLabelQue.Size = New System.Drawing.Size(91, 13)
         Me.StatLabelQue.TabIndex = 2
@@ -877,7 +995,7 @@ Partial Class Form1
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.Color.Silver
-        Me.Label3.Location = New System.Drawing.Point(19, 55)
+        Me.Label3.Location = New System.Drawing.Point(18, 63)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(103, 13)
         Me.Label3.TabIndex = 1
@@ -929,7 +1047,7 @@ Partial Class Form1
         Me.FilterOrdersButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.FilterOrdersButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.FilterOrdersButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.FilterOrdersButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FilterOrdersButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.FilterOrdersButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.FilterOrdersButton.Location = New System.Drawing.Point(76, 567)
         Me.FilterOrdersButton.Name = "FilterOrdersButton"
@@ -1106,7 +1224,7 @@ Partial Class Form1
         Me.FilterResetButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.FilterResetButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.FilterResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.FilterResetButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FilterResetButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.FilterResetButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.FilterResetButton.Location = New System.Drawing.Point(0, 567)
         Me.FilterResetButton.Name = "FilterResetButton"
@@ -1168,7 +1286,7 @@ Partial Class Form1
         '
         Me.AddBookmarkButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(46, Byte), Integer), CType(CType(52, Byte), Integer))
         Me.AddBookmarkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AddBookmarkButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddBookmarkButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.AddBookmarkButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.AddBookmarkButton.Location = New System.Drawing.Point(178, 6)
         Me.AddBookmarkButton.Name = "AddBookmarkButton"
@@ -1182,7 +1300,7 @@ Partial Class Form1
         Me.BookmarkLabel.AutoEllipsis = True
         Me.BookmarkLabel.AutoSize = True
         Me.BookmarkLabel.BackColor = System.Drawing.Color.Transparent
-        Me.BookmarkLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BookmarkLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle))
         Me.BookmarkLabel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.BookmarkLabel.Location = New System.Drawing.Point(7, 6)
         Me.BookmarkLabel.Name = "BookmarkLabel"
@@ -1208,13 +1326,414 @@ Partial Class Form1
         Me.ItemTreeBookmarks.Size = New System.Drawing.Size(261, 634)
         Me.ItemTreeBookmarks.TabIndex = 25
         '
+        'HistogramPanel
+        '
+        Me.HistogramPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HistogramPanel.Controls.Add(Me.HistogramChart)
+        Me.HistogramPanel.Location = New System.Drawing.Point(227, 39)
+        Me.HistogramPanel.Name = "HistogramPanel"
+        Me.HistogramPanel.Size = New System.Drawing.Size(790, 431)
+        Me.HistogramPanel.TabIndex = 27
+        Me.HistogramPanel.Visible = False
+        '
+        'HistogramChart
+        '
+        Me.HistogramChart.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HistogramChart.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
+        Me.HistogramChart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        ChartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White
+        ChartArea2.AxisX.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisX.MajorTickMark.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisX.Title = "Date (DD-MM-YYYY)"
+        ChartArea2.AxisX.TitleForeColor = System.Drawing.Color.White
+        ChartArea2.AxisY.IsLabelAutoFit = False
+        ChartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White
+        ChartArea2.AxisY.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisY.MajorTickMark.LineColor = System.Drawing.Color.White
+        ChartArea2.AxisY.Title = "Quanta"
+        ChartArea2.AxisY.TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 10.0!)
+        ChartArea2.AxisY.TitleForeColor = System.Drawing.Color.White
+        ChartArea2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        ChartArea2.BorderColor = System.Drawing.Color.White
+        ChartArea2.Name = "ChartArea1"
+        Me.HistogramChart.ChartAreas.Add(ChartArea2)
+        Legend2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        Legend2.ForeColor = System.Drawing.Color.White
+        Legend2.Name = "Legend1"
+        Me.HistogramChart.Legends.Add(Legend2)
+        Me.HistogramChart.Location = New System.Drawing.Point(3, 3)
+        Me.HistogramChart.Name = "HistogramChart"
+        Me.HistogramChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
+        Series3.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
+        Series3.BackImage = "G:\Files\Projects\DU Market API\test1.png"
+        Series3.BackImageTransparentColor = System.Drawing.Color.Transparent
+        Series3.BackSecondaryColor = System.Drawing.Color.Lime
+        Series3.BorderColor = System.Drawing.Color.Yellow
+        Series3.ChartArea = "ChartArea1"
+        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
+        Series3.Color = System.Drawing.Color.Green
+        Series3.LabelAngle = 90
+        Series3.LabelBackColor = System.Drawing.Color.White
+        Series3.LabelBorderColor = System.Drawing.Color.White
+        Series3.LabelForeColor = System.Drawing.Color.White
+        Series3.Legend = "Legend1"
+        Series3.Name = "Sell Orders"
+        Series3.YValuesPerPoint = 2
+        Series4.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
+        Series4.Legend = "Legend1"
+        Series4.Name = "Buy Orders"
+        Series4.YValuesPerPoint = 2
+        Me.HistogramChart.Series.Add(Series3)
+        Me.HistogramChart.Series.Add(Series4)
+        Me.HistogramChart.Size = New System.Drawing.Size(784, 425)
+        Me.HistogramChart.TabIndex = 0
+        Me.HistogramChart.Text = "Chart1"
+        '
+        'OrderTablePanel
+        '
+        Me.OrderTablePanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Sell_Volume)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Sell_Total)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Sell_Low)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Sell_Avg)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Sell_High)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Buy_Volume)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Buy_Total)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Buy_Low)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Buy_Avg)
+        Me.OrderTablePanel.Controls.Add(Me.EconStatLabel_Buy_High)
+        Me.OrderTablePanel.Controls.Add(Me.Label30)
+        Me.OrderTablePanel.Controls.Add(Me.Label29)
+        Me.OrderTablePanel.Controls.Add(Me.Label24)
+        Me.OrderTablePanel.Controls.Add(Me.Label25)
+        Me.OrderTablePanel.Controls.Add(Me.Label26)
+        Me.OrderTablePanel.Controls.Add(Me.Label27)
+        Me.OrderTablePanel.Controls.Add(Me.Label23)
+        Me.OrderTablePanel.Controls.Add(Me.Label21)
+        Me.OrderTablePanel.Controls.Add(Me.Label20)
+        Me.OrderTablePanel.Controls.Add(Me.Label19)
+        Me.OrderTablePanel.Controls.Add(Me.Label14)
+        Me.OrderTablePanel.Controls.Add(Me.Label12)
+        Me.OrderTablePanel.Location = New System.Drawing.Point(1026, 63)
+        Me.OrderTablePanel.Name = "OrderTablePanel"
+        Me.OrderTablePanel.Size = New System.Drawing.Size(242, 374)
+        Me.OrderTablePanel.TabIndex = 4
+        '
+        'EconStatLabel_Sell_Volume
+        '
+        Me.EconStatLabel_Sell_Volume.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Sell_Volume.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Sell_Volume.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Sell_Volume.Location = New System.Drawing.Point(83, 326)
+        Me.EconStatLabel_Sell_Volume.Name = "EconStatLabel_Sell_Volume"
+        Me.EconStatLabel_Sell_Volume.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Sell_Volume.TabIndex = 23
+        Me.EconStatLabel_Sell_Volume.Text = "0"
+        Me.EconStatLabel_Sell_Volume.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Sell_Total
+        '
+        Me.EconStatLabel_Sell_Total.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Sell_Total.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Sell_Total.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Sell_Total.Location = New System.Drawing.Point(83, 303)
+        Me.EconStatLabel_Sell_Total.Name = "EconStatLabel_Sell_Total"
+        Me.EconStatLabel_Sell_Total.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Sell_Total.TabIndex = 22
+        Me.EconStatLabel_Sell_Total.Text = "0"
+        Me.EconStatLabel_Sell_Total.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Sell_Low
+        '
+        Me.EconStatLabel_Sell_Low.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Sell_Low.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Sell_Low.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Sell_Low.Location = New System.Drawing.Point(83, 267)
+        Me.EconStatLabel_Sell_Low.Name = "EconStatLabel_Sell_Low"
+        Me.EconStatLabel_Sell_Low.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Sell_Low.TabIndex = 21
+        Me.EconStatLabel_Sell_Low.Text = "0"
+        Me.EconStatLabel_Sell_Low.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Sell_Avg
+        '
+        Me.EconStatLabel_Sell_Avg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Sell_Avg.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Sell_Avg.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Sell_Avg.Location = New System.Drawing.Point(83, 243)
+        Me.EconStatLabel_Sell_Avg.Name = "EconStatLabel_Sell_Avg"
+        Me.EconStatLabel_Sell_Avg.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Sell_Avg.TabIndex = 20
+        Me.EconStatLabel_Sell_Avg.Text = "0"
+        Me.EconStatLabel_Sell_Avg.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Sell_High
+        '
+        Me.EconStatLabel_Sell_High.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Sell_High.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Sell_High.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Sell_High.Location = New System.Drawing.Point(83, 219)
+        Me.EconStatLabel_Sell_High.Name = "EconStatLabel_Sell_High"
+        Me.EconStatLabel_Sell_High.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Sell_High.TabIndex = 19
+        Me.EconStatLabel_Sell_High.Text = "0"
+        Me.EconStatLabel_Sell_High.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Buy_Volume
+        '
+        Me.EconStatLabel_Buy_Volume.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Buy_Volume.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Buy_Volume.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Buy_Volume.Location = New System.Drawing.Point(83, 152)
+        Me.EconStatLabel_Buy_Volume.Name = "EconStatLabel_Buy_Volume"
+        Me.EconStatLabel_Buy_Volume.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Buy_Volume.TabIndex = 18
+        Me.EconStatLabel_Buy_Volume.Text = "0"
+        Me.EconStatLabel_Buy_Volume.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Buy_Total
+        '
+        Me.EconStatLabel_Buy_Total.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Buy_Total.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Buy_Total.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Buy_Total.Location = New System.Drawing.Point(83, 128)
+        Me.EconStatLabel_Buy_Total.Name = "EconStatLabel_Buy_Total"
+        Me.EconStatLabel_Buy_Total.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Buy_Total.TabIndex = 17
+        Me.EconStatLabel_Buy_Total.Text = "0"
+        Me.EconStatLabel_Buy_Total.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Buy_Low
+        '
+        Me.EconStatLabel_Buy_Low.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Buy_Low.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Buy_Low.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Buy_Low.Location = New System.Drawing.Point(83, 93)
+        Me.EconStatLabel_Buy_Low.Name = "EconStatLabel_Buy_Low"
+        Me.EconStatLabel_Buy_Low.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Buy_Low.TabIndex = 16
+        Me.EconStatLabel_Buy_Low.Text = "0"
+        Me.EconStatLabel_Buy_Low.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Buy_Avg
+        '
+        Me.EconStatLabel_Buy_Avg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Buy_Avg.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Buy_Avg.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Buy_Avg.Location = New System.Drawing.Point(83, 68)
+        Me.EconStatLabel_Buy_Avg.Name = "EconStatLabel_Buy_Avg"
+        Me.EconStatLabel_Buy_Avg.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Buy_Avg.TabIndex = 15
+        Me.EconStatLabel_Buy_Avg.Text = "0"
+        Me.EconStatLabel_Buy_Avg.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'EconStatLabel_Buy_High
+        '
+        Me.EconStatLabel_Buy_High.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.EconStatLabel_Buy_High.BackColor = System.Drawing.Color.Transparent
+        Me.EconStatLabel_Buy_High.ForeColor = System.Drawing.Color.Silver
+        Me.EconStatLabel_Buy_High.Location = New System.Drawing.Point(83, 44)
+        Me.EconStatLabel_Buy_High.Name = "EconStatLabel_Buy_High"
+        Me.EconStatLabel_Buy_High.Size = New System.Drawing.Size(152, 13)
+        Me.EconStatLabel_Buy_High.TabIndex = 14
+        Me.EconStatLabel_Buy_High.Text = "0"
+        Me.EconStatLabel_Buy_High.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.BackColor = System.Drawing.Color.Transparent
+        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label30.Location = New System.Drawing.Point(7, 303)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(40, 13)
+        Me.Label30.TabIndex = 11
+        Me.Label30.Text = "Total:"
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.BackColor = System.Drawing.Color.Transparent
+        Me.Label29.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label29.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label29.Location = New System.Drawing.Point(7, 128)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(40, 13)
+        Me.Label29.TabIndex = 10
+        Me.Label29.Text = "Total:"
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.BackColor = System.Drawing.Color.Transparent
+        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label24.Location = New System.Drawing.Point(7, 325)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(52, 13)
+        Me.Label24.TabIndex = 9
+        Me.Label24.Text = "Volume:"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.BackColor = System.Drawing.Color.Transparent
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label25.Location = New System.Drawing.Point(7, 267)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(34, 13)
+        Me.Label25.TabIndex = 8
+        Me.Label25.Text = "Low:"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.BackColor = System.Drawing.Color.Transparent
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label26.Location = New System.Drawing.Point(7, 243)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(37, 13)
+        Me.Label26.TabIndex = 7
+        Me.Label26.Text = "Avg.:"
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.BackColor = System.Drawing.Color.Transparent
+        Me.Label27.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label27.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label27.Location = New System.Drawing.Point(7, 219)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(37, 13)
+        Me.Label27.TabIndex = 6
+        Me.Label27.Text = "High:"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.BackColor = System.Drawing.Color.Transparent
+        Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label23.Location = New System.Drawing.Point(7, 152)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(52, 13)
+        Me.Label23.TabIndex = 5
+        Me.Label23.Text = "Volume:"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.BackColor = System.Drawing.Color.Transparent
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label21.Location = New System.Drawing.Point(7, 92)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(34, 13)
+        Me.Label21.TabIndex = 4
+        Me.Label21.Text = "Low:"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.BackColor = System.Drawing.Color.Transparent
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label20.Location = New System.Drawing.Point(7, 68)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(37, 13)
+        Me.Label20.TabIndex = 3
+        Me.Label20.Text = "Avg.:"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.BackColor = System.Drawing.Color.Transparent
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label19.Location = New System.Drawing.Point(7, 44)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(37, 13)
+        Me.Label19.TabIndex = 2
+        Me.Label19.Text = "High:"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.BackColor = System.Drawing.Color.Transparent
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label14.Location = New System.Drawing.Point(16, 190)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(95, 17)
+        Me.Label14.TabIndex = 1
+        Me.Label14.Text = "Sell Orders:"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.BackColor = System.Drawing.Color.Transparent
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label12.Location = New System.Drawing.Point(16, 17)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(95, 17)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "Buy Orders:"
+        '
+        'GraphingControlsPanel
+        '
+        Me.GraphingControlsPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GraphingControlsPanel.Controls.Add(Me.Label28)
+        Me.GraphingControlsPanel.Controls.Add(Me.ComboBox1)
+        Me.GraphingControlsPanel.Location = New System.Drawing.Point(1026, 62)
+        Me.GraphingControlsPanel.Name = "GraphingControlsPanel"
+        Me.GraphingControlsPanel.Size = New System.Drawing.Size(242, 374)
+        Me.GraphingControlsPanel.TabIndex = 3
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.BackColor = System.Drawing.Color.Transparent
+        Me.Label28.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.Label28.Location = New System.Drawing.Point(19, 21)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(74, 13)
+        Me.Label28.TabIndex = 1
+        Me.Label28.Text = "History period:"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.ComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ComboBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"7 Days", "14 Days", "30 Days", "90 Days", "180 Days", "365 Days"})
+        Me.ComboBox1.Location = New System.Drawing.Point(116, 18)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(105, 21)
+        Me.ComboBox1.TabIndex = 0
+        Me.ComboBox1.Text = "7 Days"
+        '
         'ResourcePanel
         '
         Me.ResourcePanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ResourcePanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
-        Me.ResourcePanel.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.loginbg
+        Me.ResourcePanel.BackgroundImage = CType(resources.GetObject("ResourcePanel.BackgroundImage"), System.Drawing.Image)
         Me.ResourcePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ResourcePanel.Controls.Add(Me.ResourcesToolPanel)
         Me.ResourcePanel.Controls.Add(Me.Panel1)
@@ -1254,7 +1773,7 @@ Partial Class Form1
         Me.Button5.BackColor = System.Drawing.Color.Transparent
         Me.Button5.FlatAppearance.BorderSize = 0
         Me.Button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button5.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold)
         Me.Button5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Button5.Location = New System.Drawing.Point(17, 97)
         Me.Button5.Name = "Button5"
@@ -1268,7 +1787,7 @@ Partial Class Form1
         Me.Button4.BackColor = System.Drawing.Color.Transparent
         Me.Button4.FlatAppearance.BorderSize = 0
         Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button4.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold)
         Me.Button4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Button4.Location = New System.Drawing.Point(17, 221)
         Me.Button4.Name = "Button4"
@@ -1282,7 +1801,7 @@ Partial Class Form1
         Me.Button2.BackColor = System.Drawing.Color.Transparent
         Me.Button2.FlatAppearance.BorderSize = 0
         Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold)
         Me.Button2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Button2.Location = New System.Drawing.Point(17, 159)
         Me.Button2.Name = "Button2"
@@ -1295,7 +1814,7 @@ Partial Class Form1
         '
         Me.Label11.AutoSize = True
         Me.Label11.BackColor = System.Drawing.Color.Transparent
-        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.25!, System.Drawing.FontStyle.Bold)
         Me.Label11.ForeColor = System.Drawing.Color.Gray
         Me.Label11.Location = New System.Drawing.Point(30, 25)
         Me.Label11.Name = "Label11"
@@ -1306,10 +1825,10 @@ Partial Class Form1
         'PictureBox2
         '
         Me.PictureBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox2.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.PictureBox2.BackgroundImage = CType(resources.GetObject("PictureBox2.BackgroundImage"), System.Drawing.Image)
         Me.PictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.SizeNWSE
-        Me.PictureBox2.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.PictureBox2.InitialImage = CType(resources.GetObject("PictureBox2.InitialImage"), System.Drawing.Image)
         Me.PictureBox2.Location = New System.Drawing.Point(1264, 663)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(16, 16)
@@ -1322,7 +1841,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LoginPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
-        Me.LoginPanel.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.loginbg
+        Me.LoginPanel.BackgroundImage = CType(resources.GetObject("LoginPanel.BackgroundImage"), System.Drawing.Image)
         Me.LoginPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.LoginPanel.Controls.Add(Me.UpdateButton2)
         Me.LoginPanel.Controls.Add(Me.UpdateButton1)
@@ -1344,7 +1863,7 @@ Partial Class Form1
         Me.UpdateButton2.BackColor = System.Drawing.Color.Transparent
         Me.UpdateButton2.FlatAppearance.BorderSize = 2
         Me.UpdateButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.UpdateButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdateButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.UpdateButton2.ForeColor = System.Drawing.Color.Silver
         Me.UpdateButton2.Location = New System.Drawing.Point(651, 667)
         Me.UpdateButton2.Name = "UpdateButton2"
@@ -1360,7 +1879,7 @@ Partial Class Form1
         Me.UpdateButton1.BackColor = System.Drawing.Color.Transparent
         Me.UpdateButton1.FlatAppearance.BorderSize = 2
         Me.UpdateButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.UpdateButton1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdateButton1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.UpdateButton1.ForeColor = System.Drawing.Color.Silver
         Me.UpdateButton1.Location = New System.Drawing.Point(328, 667)
         Me.UpdateButton1.Name = "UpdateButton1"
@@ -1387,7 +1906,7 @@ Partial Class Form1
         Me.LoginUpdateText.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LoginUpdateText.BackColor = System.Drawing.Color.Transparent
-        Me.LoginUpdateText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginUpdateText.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.LoginUpdateText.ForeColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(36, Byte), Integer))
         Me.LoginUpdateText.Location = New System.Drawing.Point(0, 0)
         Me.LoginUpdateText.Name = "LoginUpdateText"
@@ -1400,10 +1919,10 @@ Partial Class Form1
         '
         Me.ResizeGrabber2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ResizeGrabber2.BackColor = System.Drawing.Color.Transparent
-        Me.ResizeGrabber2.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber2.BackgroundImage = CType(resources.GetObject("ResizeGrabber2.BackgroundImage"), System.Drawing.Image)
         Me.ResizeGrabber2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ResizeGrabber2.Cursor = System.Windows.Forms.Cursors.SizeNWSE
-        Me.ResizeGrabber2.InitialImage = Global.DU_Market_API.My.Resources.Resources.grabber
+        Me.ResizeGrabber2.InitialImage = CType(resources.GetObject("ResizeGrabber2.InitialImage"), System.Drawing.Image)
         Me.ResizeGrabber2.Location = New System.Drawing.Point(1264, 711)
         Me.ResizeGrabber2.Name = "ResizeGrabber2"
         Me.ResizeGrabber2.Size = New System.Drawing.Size(16, 16)
@@ -1414,11 +1933,11 @@ Partial Class Form1
         '
         Me.LoginLabel3.AutoSize = True
         Me.LoginLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Italic)
         Me.LoginLabel3.ForeColor = System.Drawing.Color.DarkGray
         Me.LoginLabel3.Location = New System.Drawing.Point(445, 463)
         Me.LoginLabel3.Name = "LoginLabel3"
-        Me.LoginLabel3.Size = New System.Drawing.Size(353, 16)
+        Me.LoginLabel3.Size = New System.Drawing.Size(352, 16)
         Me.LoginLabel3.TabIndex = 26
         Me.LoginLabel3.Text = "A Third-Party, Open-Source Market Tool for Dual Universe"
         '
@@ -1426,7 +1945,7 @@ Partial Class Form1
         '
         Me.LoginLabel2.AutoSize = True
         Me.LoginLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.LoginLabel2.ForeColor = System.Drawing.Color.DarkGray
         Me.LoginLabel2.Location = New System.Drawing.Point(518, 424)
         Me.LoginLabel2.Name = "LoginLabel2"
@@ -1438,7 +1957,7 @@ Partial Class Form1
         '
         Me.LoginLabel1.AutoSize = True
         Me.LoginLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoginLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!)
         Me.LoginLabel1.ForeColor = System.Drawing.Color.DarkGray
         Me.LoginLabel1.Location = New System.Drawing.Point(536, 401)
         Me.LoginLabel1.Name = "LoginLabel1"
@@ -1449,9 +1968,9 @@ Partial Class Form1
         'LoginLogoPictureBox
         '
         Me.LoginLogoPictureBox.BackColor = System.Drawing.Color.Transparent
-        Me.LoginLogoPictureBox.BackgroundImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.LoginLogoPictureBox.BackgroundImage = CType(resources.GetObject("LoginLogoPictureBox.BackgroundImage"), System.Drawing.Image)
         Me.LoginLogoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.LoginLogoPictureBox.InitialImage = Global.DU_Market_API.My.Resources.Resources.logo
+        Me.LoginLogoPictureBox.InitialImage = CType(resources.GetObject("LoginLogoPictureBox.InitialImage"), System.Drawing.Image)
         Me.LoginLogoPictureBox.Location = New System.Drawing.Point(467, 101)
         Me.LoginLogoPictureBox.Name = "LoginLogoPictureBox"
         Me.LoginLogoPictureBox.Size = New System.Drawing.Size(309, 294)
@@ -1463,7 +1982,7 @@ Partial Class Form1
         Me.DiscordLoginButton2.BackColor = System.Drawing.Color.Transparent
         Me.DiscordLoginButton2.FlatAppearance.BorderSize = 2
         Me.DiscordLoginButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DiscordLoginButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DiscordLoginButton2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Bold)
         Me.DiscordLoginButton2.ForeColor = System.Drawing.Color.Silver
         Me.DiscordLoginButton2.Location = New System.Drawing.Point(450, 526)
         Me.DiscordLoginButton2.Name = "DiscordLoginButton2"
@@ -1497,39 +2016,6 @@ Partial Class Form1
         '
         Me.LogFileCheckTimer.Interval = 60000
         '
-        'TableLayoutPanel4
-        '
-        Me.TableLayoutPanel4.ColumnCount = 2
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.TableLayoutPanel4.Controls.Add(Me.Label1, 0, 0)
-        Me.TableLayoutPanel4.Controls.Add(Me.BuyOrderSortButton, 1, 0)
-        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
-        Me.TableLayoutPanel4.Margin = New System.Windows.Forms.Padding(0)
-        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
-        Me.TableLayoutPanel4.RowCount = 1
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel4.Size = New System.Drawing.Size(790, 21)
-        Me.TableLayoutPanel4.TabIndex = 19
-        '
-        'TableLayoutPanel5
-        '
-        Me.TableLayoutPanel5.ColumnCount = 2
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.TableLayoutPanel5.Controls.Add(Me.SellOrderSortButton, 1, 0)
-        Me.TableLayoutPanel5.Controls.Add(Me.Label5, 0, 0)
-        Me.TableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel5.Location = New System.Drawing.Point(0, 214)
-        Me.TableLayoutPanel5.Margin = New System.Windows.Forms.Padding(0)
-        Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
-        Me.TableLayoutPanel5.RowCount = 1
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel5.Size = New System.Drawing.Size(790, 21)
-        Me.TableLayoutPanel5.TabIndex = 20
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1551,8 +2037,14 @@ Partial Class Form1
         Me.MarketPanel.PerformLayout()
         CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RawOrderTable.ResumeLayout(False)
+        Me.TableLayoutPanel5.ResumeLayout(False)
+        Me.TableLayoutPanel5.PerformLayout()
         CType(Me.SellOrderGridViewRaw, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BuyOrderGridViewRaw, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel4.ResumeLayout(False)
+        Me.TableLayoutPanel4.PerformLayout()
+        Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.Panel2.ResumeLayout(False)
         Me.StatsPanel.ResumeLayout(False)
         Me.StatsPanel.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
@@ -1567,6 +2059,12 @@ Partial Class Form1
         Me.TableLayoutPanel1.PerformLayout()
         Me.BookmarkPanel.ResumeLayout(False)
         Me.BookmarkPanel.PerformLayout()
+        Me.HistogramPanel.ResumeLayout(False)
+        CType(Me.HistogramChart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.OrderTablePanel.ResumeLayout(False)
+        Me.OrderTablePanel.PerformLayout()
+        Me.GraphingControlsPanel.ResumeLayout(False)
+        Me.GraphingControlsPanel.PerformLayout()
         Me.ResourcePanel.ResumeLayout(False)
         Me.ResourcePanel.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1576,10 +2074,6 @@ Partial Class Form1
         CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel4.ResumeLayout(False)
-        Me.TableLayoutPanel4.PerformLayout()
-        Me.TableLayoutPanel5.ResumeLayout(False)
-        Me.TableLayoutPanel5.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1672,7 +2166,6 @@ Partial Class Form1
     Friend WithEvents Button2 As Button
     Friend WithEvents Label11 As Label
     Friend WithEvents ResourcesToolPanel As Panel
-    Friend WithEvents ThemeToggleButton As Button
     Friend WithEvents BookmarkButton As Button
     Friend WithEvents AddBookmarkButton As Button
     Friend WithEvents ItemTreeBookmarks As TreeView
@@ -1683,4 +2176,37 @@ Partial Class Form1
     Friend WithEvents SellOrderSortButton As Button
     Friend WithEvents TableLayoutPanel5 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents HistogramPanel As Panel
+    Friend WithEvents HistogramChart As DataVisualization.Charting.Chart
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Button7 As Button
+    Friend WithEvents APIHistoriesLabel As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents GraphingControlsPanel As Panel
+    Friend WithEvents OrderTablePanel As Panel
+    Friend WithEvents Label24 As Label
+    Friend WithEvents Label25 As Label
+    Friend WithEvents Label26 As Label
+    Friend WithEvents Label27 As Label
+    Friend WithEvents Label23 As Label
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label19 As Label
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents Label28 As Label
+    Friend WithEvents EconStatLabel_Sell_Volume As Label
+    Friend WithEvents EconStatLabel_Sell_Total As Label
+    Friend WithEvents EconStatLabel_Sell_Low As Label
+    Friend WithEvents EconStatLabel_Sell_Avg As Label
+    Friend WithEvents EconStatLabel_Sell_High As Label
+    Friend WithEvents EconStatLabel_Buy_Volume As Label
+    Friend WithEvents EconStatLabel_Buy_Total As Label
+    Friend WithEvents EconStatLabel_Buy_Low As Label
+    Friend WithEvents EconStatLabel_Buy_Avg As Label
+    Friend WithEvents EconStatLabel_Buy_High As Label
+    Friend WithEvents Label30 As Label
+    Friend WithEvents Label29 As Label
 End Class

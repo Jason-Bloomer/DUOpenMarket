@@ -2,6 +2,8 @@
     Dim Go As Boolean
     Dim LeftSet As Boolean
     Dim TopSet As Boolean
+    Dim deltaX As Integer
+    Dim deltaY As Integer
     Dim HoldLeft As Integer
     Dim HoldTop As Integer
     Dim OffLeft As Integer
@@ -14,55 +16,54 @@
     End Sub
 
     Private Sub LoadCurrentSettings()
-        CheckBox1.Checked = CBool(Form1.Setting_SaveWindowLoc)
-        CheckBox2.Checked = CBool(Form1.Setting_SaveGridLayout)
-        CheckBox3.Checked = CBool(Form1.Setting_SaveWindowSz)
-        CheckBox4.Checked = CBool(Form1.Setting_Processinbatch)
-        NumericUpDown1.Value = CInt(Form1.Setting_LogCheckTimer)
+        If Form1.Setting_SaveWindowLoc IsNot Nothing And Form1.Setting_SaveWindowLoc IsNot "" Then
+            CheckBox1.Checked = CBool(Form1.Setting_SaveWindowLoc)
+        End If
+        If Form1.Setting_SaveGridLayout IsNot Nothing And Form1.Setting_SaveGridLayout IsNot "" Then
+            CheckBox2.Checked = CBool(Form1.Setting_SaveGridLayout)
+        End If
+        If Form1.Setting_SaveWindowSz IsNot Nothing And Form1.Setting_SaveWindowSz IsNot "" Then
+            CheckBox3.Checked = CBool(Form1.Setting_SaveWindowSz)
+        End If
+        If Form1.Setting_Processinbatch IsNot Nothing And Form1.Setting_Processinbatch IsNot "" Then
+            CheckBox4.Checked = CBool(Form1.Setting_Processinbatch)
+        End If
+        If Form1.Setting_LogCheckTimer IsNot Nothing And Form1.Setting_LogCheckTimer IsNot "" Then
+            NumericUpDown1.Value = CInt(Form1.Setting_LogCheckTimer)
+        End If
         UpdateThemeState()
     End Sub
 
     Public Sub UpdateThemeState()
-        If Form1.ThemeState = 0 Then
-            Me.BackColor = Color.FromArgb(255, 30, 36, 42)
-            Panel1.BackgroundImage = My.Resources.loginbg
-            Panel1.BackColor = Color.FromArgb(255, 30, 36, 42)
-            Label22.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            Label1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            Button1.BackColor = Color.FromArgb(255, 30, 36, 42)
-            Button1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            Button2.BackColor = Color.FromArgb(255, 30, 36, 42)
-            Button2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            Button8.BackColor = Color.FromArgb(255, 30, 36, 42)
-            Button8.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            GroupBox1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            CheckBox1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            CheckBox2.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            CheckBox3.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            CheckBox4.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            NumericUpDown1.ForeColor = Color.FromArgb(255, 224, 224, 224)
-            NumericUpDown1.BackColor = Color.FromArgb(255, 30, 36, 42)
+        If Form1.Setting_ThemeState = 0 Then
+            Button3.Text = "Theme: Dark"
         End If
-        If Form1.ThemeState = 1 Then
-            Me.BackColor = Color.FromArgb(255, 224, 224, 224)
-            Panel1.BackgroundImage = My.Resources.loginbgneg
-            Panel1.BackColor = Color.FromArgb(255, 224, 224, 224)
-            Label22.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            Label1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            Button1.BackColor = Color.FromArgb(255, 224, 224, 224)
-            Button1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            Button2.BackColor = Color.FromArgb(255, 224, 224, 224)
-            Button2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            Button8.BackColor = Color.FromArgb(255, 224, 224, 224)
-            Button8.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            GroupBox1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            CheckBox1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            CheckBox2.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            CheckBox3.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            CheckBox4.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            NumericUpDown1.ForeColor = Color.FromArgb(255, 30, 36, 42)
-            NumericUpDown1.BackColor = Color.FromArgb(255, 224, 224, 224)
+        If Form1.Setting_ThemeState = 1 Then
+            Button3.Text = "Theme: Light"
         End If
+        If Form1.Setting_ThemeState = 2 Then
+            Button3.Text = "Theme: Custom"
+        End If
+        Me.BackColor = Form1.BackgroundColor1
+        Panel1.BackgroundImage = Nothing
+        Panel1.BackColor = Form1.BackgroundColor1
+        Label22.ForeColor = Form1.ForegroundColor1
+        Label1.ForeColor = Form1.ForegroundColor1
+        Button1.BackColor = Form1.BackgroundColor1
+        Button1.ForeColor = Form1.ForegroundColor1
+        Button2.BackColor = Form1.BackgroundColor1
+        Button2.ForeColor = Form1.ForegroundColor1
+        Button3.BackColor = Form1.BackgroundColor1
+        Button3.ForeColor = Form1.ForegroundColor1
+        Button8.BackColor = Form1.BackgroundColor1
+        Button8.ForeColor = Form1.ForegroundColor1
+        GroupBox1.ForeColor = Form1.ForegroundColor1
+        CheckBox1.ForeColor = Form1.ForegroundColor1
+        CheckBox2.ForeColor = Form1.ForegroundColor1
+        CheckBox3.ForeColor = Form1.ForegroundColor1
+        CheckBox4.ForeColor = Form1.ForegroundColor1
+        NumericUpDown1.ForeColor = Form1.ForegroundColor1
+        NumericUpDown1.BackColor = Form1.BackgroundColor1
     End Sub
 
     Private Sub TitleBar_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseUp
@@ -73,25 +74,24 @@
 
     Private Sub TitleBar_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseDown
         Go = True
+        HoldLeft = (Control.MousePosition.X - Me.Location.X)
+        HoldTop = (Control.MousePosition.Y - Me.Location.Y)
     End Sub
 
     Private Sub TitleBar_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles SettingsTitleBar.MouseMove
         If Go = True Then
-            HoldLeft = (Control.MousePosition.X)
-            HoldTop = (Control.MousePosition.Y)
-            If TopSet = False Then
-                OffTop = HoldTop - sender.Parent.Location.Y
-                TopSet = True
-            End If
-            If LeftSet = False Then
-                OffLeft = HoldLeft - sender.Parent.Location.X
-                LeftSet = True
-            End If
+            deltaX = Control.MousePosition.X - HoldLeft
+            deltaY = Control.MousePosition.Y - HoldTop
+
+            OffLeft = deltaX
+            OffTop = deltaY
+
             Dim newpoint As New Point
-            newpoint.X = HoldLeft - OffLeft
-            newpoint.Y = HoldTop - OffTop
-            sender.Parent.Location = newpoint
-            sender.Parent.Refresh()
+            newpoint.X = OffLeft
+            newpoint.Y = OffTop
+
+            Me.Location = newpoint
+            Me.Refresh()
         End If
     End Sub
 
@@ -123,10 +123,27 @@
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Form1.LoadPrefsFromIni()
         LoadCurrentSettings()
-        AboutForm.UpdateThemeState()
+        UpdateThemeState()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Form1.SavePrefsToIni()
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        If Form1.Setting_ThemeState = 0 Then
+            Form1.Setting_ThemeState = 1
+            Form1.SetLightTheme()
+        Else
+            If Form1.Setting_ThemeState = 1 Then
+                Form1.Setting_ThemeState = 2
+                Form1.SetCustomTheme()
+            Else
+                Form1.Setting_ThemeState = 0
+                Form1.SetDarkTheme()
+            End If
+        End If
+        AboutForm.UpdateThemeState()
+        UpdateThemeState()
     End Sub
 End Class
