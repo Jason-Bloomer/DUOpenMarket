@@ -4908,7 +4908,7 @@ Public Class Form1
 
     Private Sub TestDiscordLogin() Handles DiscordLoginButton.Click, DiscordLoginButton2.Click
         If API_Connected = False Then
-            Dim Discord_Login_Page As String = "https://duopenmarket.xyz/discordclientGetAuthCode.php"
+            Dim Discord_Login_Page As String = "https://duopenmarket.com/discordclientGetAuthCode.php"
             Discord_Login_Window_Handle = Process.Start(Discord_Login_Page)
             If ListenerStarted = False Then
                 CreateListener()
@@ -6602,7 +6602,7 @@ Public Class Form1
             ' Get the response object to send our confirmation.
             Dim response As HttpListenerResponse = context.Response
             ' Construct a minimal response string.
-            Dim responseString As String = "<HTML onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><BODY onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><script>setTimeout(function() {window.close();}, 50);</script><img style=""position:absolute;top:0;left:0;width:100%;height:100%"" src=""https://duopenmarket.xyz/assets/images/bg2.png""/><div style=""position:absolute;top:15%;left:27%;width:50%;height:35%;color:#FFFFFF;font-family:'Courier New';font-size:24px""><center><H1>DUOpenMarket - Authentication Successful</H1><br><br><br><br><H1>This window should close automatically.<br>You may close it if it does not.</H1></center></div></BODY></HTML>"
+            Dim responseString As String = "<HTML onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><BODY onload=""self.close()"" onfocus=""self.close()"" onclick=""self.close()""><script>setTimeout(function() {window.close();}, 50);</script><img style=""position:absolute;top:0;left:0;width:100%;height:100%"" src=""https://duopenmarket.com/assets/images/bg2.png""/><div style=""position:absolute;top:15%;left:27%;width:50%;height:35%;color:#FFFFFF;font-family:'Courier New';font-size:24px""><center><H1>DUOpenMarket - Authentication Successful</H1><br><br><br><br><H1>This window should close automatically.<br>You may close it if it does not.</H1></center></div></BODY></HTML>"
             Dim buffer As Byte() = System.Text.Encoding.UTF8.GetBytes(responseString)
             ' Get the response OutputStream and write the response to it.
             response.ContentLength64 = buffer.Length
