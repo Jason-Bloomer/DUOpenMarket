@@ -5461,7 +5461,7 @@ Public Class Form1
                                     NewEventMsg("Server returned no data for item.")
                                 Else
                                     Dim first As Boolean = True
-                                    While TempResponse4.Length > 48
+                                    While TempResponse4.Length > 128
                                         Dim orderid3 As String
                                         If first = True Then
                                             orderid3 = TempResponse4.Remove(0, 2)
@@ -5503,18 +5503,18 @@ Public Class Form1
                                         If ordertype3 = 1 Then
                                             API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                             API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                            EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
-                                            EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
-                                            If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
-                                                EconomyStat_Buy_High = (CInt(price3) * 0.01)
-                                            End If
-                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
-                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
-                                            End If
-                                            If EconomyStat_Buy_Low = 0 Then
-                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
-                                            End If
-                                            EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
+                                            'EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            'EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
+                                            'If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
+                                            '    EconomyStat_Buy_High = (CInt(price3) * 0.01)
+                                            'End If
+                                            'If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                            '    EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            'End If
+                                            'If EconomyStat_Buy_Low = 0 Then
+                                            '    EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            'End If
+                                            'EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
                                         End If
                                         If ordertype3 = 2 Then
                                             If quantity3.StartsWith("-") Then
@@ -5522,18 +5522,18 @@ Public Class Form1
                                             End If
                                             API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                             API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                            EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
-                                            EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
-                                            If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
-                                                EconomyStat_Sell_High = (CInt(price3) * 0.01)
-                                            End If
-                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
-                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
-                                            End If
-                                            If EconomyStat_Sell_Low = 0 Then
-                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
-                                            End If
-                                            EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
+                                            'EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            'EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
+                                            'If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
+                                            '    EconomyStat_Sell_High = (CInt(price3) * 0.01)
+                                            'End If
+                                            'If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                            '    EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            'End If
+                                            'If EconomyStat_Sell_Low = 0 Then
+                                            '    EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            'End If
+                                            'EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
 
                                         End If
                                         Application.DoEvents()
@@ -5653,7 +5653,7 @@ Public Class Form1
                                             NewEventMsg("Server returned no data for item.")
                                         Else
                                             Dim first As Boolean = True
-                                            While TempResponse4.Length > 48
+                                            While TempResponse4.Length > 128
                                                 Dim orderid3 As String
                                                 If first = True Then
                                                     orderid3 = TempResponse4.Remove(0, 2)
