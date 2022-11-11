@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://github.com/Jason-Bloomer/DUOpenMarket/releases/" target="_blank">
+    <img src="img/banner.png" width="720" />
+  </a>
+</p>
+
 # DUOpenMarket
 Open Source Third-Party Market API for Dual Universe
 
