@@ -32,7 +32,7 @@ Public Class Form1
     Dim WindowSavedBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
 
-    Dim API_Client_Version As String = "1.61.1"
+    Dim API_Client_Version As String = "1.61.2"
     Dim API_Available_Version As String
     Dim API_Connected As Boolean = False
     Dim API_LogfileDirectory As String = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
@@ -327,7 +327,38 @@ Public Class Form1
                 SettingsForm.NumericUpDown1.Value = CInt(Setting_LogCheckTimer)
             End If
         Else
-            SavePrefsToIni()
+            'set default values
+            SetIniValue("Application", "SaveWindowSz", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
+            SetIniValue("Application", "SaveWindowLoc", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
+            SetIniValue("Application", "SaveGridLayout", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveGridLayout))
+            SetIniValue("Application", "BatchProcessing", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_Processinbatch))
+            If Setting_SaveWindowLoc = "True" Then
+                SetIniValue("Application", "WindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.X))
+                SetIniValue("Application", "WindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Me.Location.Y))
+                SetIniValue("Application", "AbtWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(AboutForm.Location.X))
+                SetIniValue("Application", "AbtWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(AboutForm.Location.Y))
+                SetIniValue("Application", "SetWindowLocX", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SettingsForm.Location.X))
+                SetIniValue("Application", "SetWindowLocY", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(SettingsForm.Location.Y))
+            End If
+            If Setting_SaveWindowSz = "True" Then
+                SetIniValue("Application", "WindowState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(WindowMaximizedState))
+                SetIniValue("Application", "WindowSizeW", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Parent.Size.Width))
+                SetIniValue("Application", "WindowSizeH", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(MainPanel.Parent.Size.Height))
+            End If
+            If Setting_SaveGridLayout = "True" Then
+                SetIniValue("Application", "SellOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "SellOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "SellOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "SellOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "SellOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "BuyOrdrGridCol1W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "BuyOrdrGridCol2W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "BuyOrdrGridCol3W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "BuyOrdrGridCol4W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+                SetIniValue("Application", "BuyOrdrGridCol5W", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(200))
+            End If
+            SetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_ThemeState))
+            SetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_LogCheckTimer))
         End If
     End Sub
 
@@ -5921,8 +5952,8 @@ Public Class Form1
                                                             If histbuymax.Length > 2 Then
 
                                                             End If
-                                                            Me.HistogramChart.Series("Buy Orders").Points.AddXY(histdate, CInt(histbuymax) * 0.01, CInt(histbuymin) * 0.01)
-                                                            Me.HistogramChart.Series("Sell Orders").Points.AddXY(histdate, CInt(histsellmax) * 0.01, CInt(histsellmin) * 0.01)
+                                                            Me.HistogramChart.Series("Buy Orders").Points.AddXY(histdate, CInt(histbuyavg) * 0.01, CInt(histbuymin) * 0.01)
+                                                            Me.HistogramChart.Series("Sell Orders").Points.AddXY(histdate, CInt(histsellavg) * 0.01, CInt(histsellmin) * 0.01)
                                                             Application.DoEvents()
                                                         End While
                                                         NewEventMsg("Loaded history for " & filterItem.Text & " (ID: " & queryitemid & ")")

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DUOpenMarket Client.exe" size="5434880">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DUOpenMarket Client.exe" size="5436416">
       <assemblyIdentity name="DUOpenMarket Client" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>sgaRmSLsRZ52lxKFBi55j4dDZjsYt/qI7eqBVJejL+0=</dsig:DigestValue>
+        <dsig:DigestValue>CBddhp1zAUnqOwecPJ3y5U7ra+wkS4BSwe8UGH6dfN8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
