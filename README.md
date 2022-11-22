@@ -44,3 +44,9 @@ Add profit-margin and yeild-margin calculators for industry, which use the curre
 Add fuel/warp-cost and transportation-related calculators using current fuel prices, factoring for talents.
 
 Add an interface for tracking relationships bewteen player accounts and discord ID's, for the purpose of providing a "reputation" for a given player.
+
+Allow DUOM to be minimized to the system tray as a background-worker.
+
+Allow DUOM to set system registry keys for automatic startup after Windows boot.
+
+Allow DUOM to automatically login with the last account used, if the access_code is still valid.
