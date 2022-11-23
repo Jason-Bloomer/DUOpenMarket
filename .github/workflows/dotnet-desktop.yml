@@ -21,7 +21,7 @@ jobs:
           env: 
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with: 
-              tag_name: v1.61.3
+              tag_name: v1.61.4
               release_name: 'DUOpenMarket v1.61.4'
               draft: false
               prerelease: false
