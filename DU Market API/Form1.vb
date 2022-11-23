@@ -600,7 +600,7 @@ Public Class Form1
     End Sub
 
     '############################## - Custom Sorting - #############################
-    Private Sub BuyOrderSortButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BuyOrderGridViewRaw.ColumnHeaderMouseClick
+    Private Sub BuyOrderSortButton_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles BuyOrderGridViewRaw.ColumnHeaderMouseClick
         SortDataTable(API_Buy_Orders_UI, BuyOrderGridViewRaw, e)
     End Sub
 
@@ -616,6 +616,7 @@ Public Class Form1
                 Dim sortColumn As DataGridViewColumn = gridref.Columns(e.ColumnIndex)
                 Dim oldsortColumn As DataGridViewColumn = Nothing
                 Dim sortDirection As System.ComponentModel.ListSortDirection
+                'NewEventMsg(sortColumn.Index & "," & oldsortColumn.Index & "," & sortDirection)
                 If gridref Is BuyOrderGridViewRaw Then
                     oldsortColumn = gridref.Columns(SortedColumnIndex1)
                     sortDirection = SortedColumnDirection1
@@ -646,6 +647,7 @@ Public Class Form1
                 If gridref Is SellOrderGridViewRaw Then
                     SortedColumnDirection2 = sortDirection
                 End If
+                NewEventMsg(CStr(sortColumn.Index) & "," & CStr(oldsortColumn.Index) & "," & CStr(sortDirection))
                 If (sortColumn Is Nothing) Then
                     NewEventMsg("Select a single column and try again.")
                 Else
@@ -655,16 +657,7 @@ Public Class Form1
                     End If
                     If sortColumn.Index = 1 Or sortColumn.Index = 2 Then
                         'reset string sorting, it conflicts with the way we custom-sort doubles
-                        If gridref Is BuyOrderGridViewRaw Then
-                            If SortedColumnIndex1 < 1 Or SortedColumnIndex1 > 2 Then
-                                dt.DefaultView.Sort = Nothing
-                            End If
-                        End If
-                        If gridref Is SellOrderGridViewRaw Then
-                            If SortedColumnIndex2 < 1 Or SortedColumnIndex2 > 2 Then
-                                dt.DefaultView.Sort = Nothing
-                            End If
-                        End If
+                        dt.DefaultView.Sort = Nothing
                         'custom numerical sort
                         'For quantity and price, we need to sort numerically. The values are stored as strings, and include decimal places.
                         'we'll need to cast them to Doubles in order to interpret / compare them properly.
