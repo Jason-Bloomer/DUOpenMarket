@@ -32,7 +32,7 @@ Public Class Form1
     Dim WindowSavedBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
 
-    Dim API_Client_Version As String = "1.61.3"
+    Dim API_Client_Version As String = "1.61.4"
     Dim API_Available_Version As String
     Dim API_Connected As Boolean = False
     Dim API_LogfileDirectory As String = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
