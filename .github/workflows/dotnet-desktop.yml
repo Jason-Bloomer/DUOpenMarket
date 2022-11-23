@@ -21,9 +21,9 @@ jobs:
           env: 
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with: 
-              tag_name: Auto-build
-              release_name: Auto-build
-              draft: true
+              tag_name: v1.61.3
+              release_name: 'DUOpenMarket v1.61.3'
+              draft: false
               prerelease: false
         - name: Remove old release
           uses: dev-drprasad/delete-tag-and-release@v0.2.0
