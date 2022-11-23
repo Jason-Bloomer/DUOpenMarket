@@ -10,7 +10,6 @@ DUOpenMarket (DUOM for short) is an Open-Source, Third-Party Market API for Dual
 Download the DUOpenMarket Client, and place the EXE anywhere you wish. (any non-admin protected directory)
 It is at least recommended to create a subfolder for the DUOM client to reside in, as it will create several files of its own, in the same directory as the EXE.
 
-
 # F.A.Q.
 For the full list of questions and answers, please see the project's website.
 
