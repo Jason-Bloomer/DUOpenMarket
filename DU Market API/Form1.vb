@@ -198,7 +198,6 @@ Public Class Form1
         Dim Name As String
         Dim Id As String
         Dim Market As String
-
     End Structure
 
     Structure APIRequestQueueStructure
