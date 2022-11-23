@@ -29,6 +29,7 @@ Partial Class SettingsForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -37,7 +38,8 @@ Partial Class SettingsForm
         Me.CheckBox3 = New System.Windows.Forms.CheckBox()
         Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.Button3 = New System.Windows.Forms.Button()
+        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SettingsTitleBar.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -111,6 +113,8 @@ Partial Class SettingsForm
         'GroupBox1
         '
         Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox1.Controls.Add(Me.Label2)
+        Me.GroupBox1.Controls.Add(Me.CheckBox5)
         Me.GroupBox1.Controls.Add(Me.Button3)
         Me.GroupBox1.Controls.Add(Me.Button2)
         Me.GroupBox1.Controls.Add(Me.Button1)
@@ -128,6 +132,17 @@ Partial Class SettingsForm
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Preferences"
+        '
+        'Button3
+        '
+        Me.Button3.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
+        Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button3.Location = New System.Drawing.Point(16, 160)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(142, 23)
+        Me.Button3.TabIndex = 14
+        Me.Button3.Text = "Theme: Dark"
+        Me.Button3.UseVisualStyleBackColor = False
         '
         'Button2
         '
@@ -175,7 +190,7 @@ Partial Class SettingsForm
         Me.CheckBox4.AutoSize = True
         Me.CheckBox4.BackColor = System.Drawing.Color.Transparent
         Me.CheckBox4.ForeColor = System.Drawing.Color.Silver
-        Me.CheckBox4.Location = New System.Drawing.Point(16, 98)
+        Me.CheckBox4.Location = New System.Drawing.Point(16, 137)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(160, 17)
         Me.CheckBox4.TabIndex = 9
@@ -218,16 +233,26 @@ Partial Class SettingsForm
         Me.CheckBox1.Text = "Save Window Position on Close"
         Me.CheckBox1.UseVisualStyleBackColor = False
         '
-        'Button3
+        'CheckBox5
         '
-        Me.Button3.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
-        Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button3.Location = New System.Drawing.Point(16, 136)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(142, 23)
-        Me.Button3.TabIndex = 14
-        Me.Button3.Text = "Theme: Dark"
-        Me.Button3.UseVisualStyleBackColor = False
+        Me.CheckBox5.AutoSize = True
+        Me.CheckBox5.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox5.ForeColor = System.Drawing.Color.Silver
+        Me.CheckBox5.Location = New System.Drawing.Point(16, 97)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(124, 17)
+        Me.CheckBox5.TabIndex = 15
+        Me.CheckBox5.Text = "Work in Background"
+        Me.CheckBox5.UseVisualStyleBackColor = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(33, 113)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(160, 13)
+        Me.Label2.TabIndex = 16
+        Me.Label2.Text = "(Close Minimizes to System Tray)"
         '
         'SettingsForm
         '
@@ -267,4 +292,6 @@ Partial Class SettingsForm
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Private WithEvents Button3 As Button
+    Friend WithEvents CheckBox5 As CheckBox
+    Friend WithEvents Label2 As Label
 End Class

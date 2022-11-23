@@ -1,18 +1,23 @@
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe.config
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbprojResolveAssemblyReference.cache
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.Form1.resources
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.Resources.resources
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbproj.GenerateResource.Cache
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.TrustInfo.xml
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.exe
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.xml
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.pdb
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe.manifest
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.application
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.pdb
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.xml
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.exe.manifest
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.application
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.AboutForm.resources
-E:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.SettingsForm.resources
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe.config
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe.manifest
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.application
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.exe
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.pdb
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\DUOpenMarket Client.xml
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\bin\Release\en-US\DUOpenMarket Client.resources.dll
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbproj.AssemblyReference.cache
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbproj.SuggestedBindingRedirects.cache
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbproj.GenerateResource.cache
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU Market API.vbproj.CoreCompileInputs.cache
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\en-US\DUOpenMarket Client.resources.dll
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.TrustInfo.xml
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.exe.manifest
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.application
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.exe
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.xml
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DUOpenMarket Client.pdb
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.AboutForm.resources
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.Form1.resources
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.Resources.resources
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.SettingsForm.resources
+G:\Files\Projects\DU Market API\DU Market API\DU Market API\obj\Release\DU_Market_API.Form1.en-US.resources

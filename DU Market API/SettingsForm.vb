@@ -28,6 +28,9 @@
         If Form1.Setting_Processinbatch IsNot Nothing And Form1.Setting_Processinbatch IsNot "" Then
             CheckBox4.Checked = CBool(Form1.Setting_Processinbatch)
         End If
+        If Form1.Setting_BackgroundWorker IsNot Nothing And Form1.Setting_BackgroundWorker IsNot "" Then
+            CheckBox5.Checked = CBool(Form1.Setting_BackgroundWorker)
+        End If
         If Form1.Setting_LogCheckTimer IsNot Nothing And Form1.Setting_LogCheckTimer IsNot "" Then
             NumericUpDown1.Value = CInt(Form1.Setting_LogCheckTimer)
         End If
@@ -62,6 +65,7 @@
         CheckBox2.ForeColor = Form1.ForegroundColor1
         CheckBox3.ForeColor = Form1.ForegroundColor1
         CheckBox4.ForeColor = Form1.ForegroundColor1
+        CheckBox5.ForeColor = Form1.ForegroundColor1
         NumericUpDown1.ForeColor = Form1.ForegroundColor1
         NumericUpDown1.BackColor = Form1.BackgroundColor1
     End Sub
@@ -113,6 +117,10 @@
 
     Private Sub CheckBox4_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox4.CheckedChanged
         Form1.Setting_Processinbatch = CStr(CheckBox4.Checked)
+    End Sub
+
+    Private Sub CheckBox5_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox5.CheckedChanged
+        Form1.Setting_BackgroundWorker = CStr(CheckBox5.Checked)
     End Sub
 
     Private Sub NumericUpDown1_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown1.ValueChanged

@@ -24,26 +24,25 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainPanel = New System.Windows.Forms.Panel()
         Me.TitleBarPanel = New System.Windows.Forms.Panel()
         Me.TitlebarSettingsButton = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.TitlebarAboutButton = New System.Windows.Forms.Button()
         Me.TitlebarCloseButton = New System.Windows.Forms.Button()
@@ -53,6 +52,14 @@ Partial Class Form1
         Me.ResourceManagerButton = New System.Windows.Forms.Button()
         Me.MarketOrdersButton = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
+        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
+        Me.OperationTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.LoginTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.ConnectionTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.SearchTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.LogFileCheckTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.MarketPanel = New System.Windows.Forms.Panel()
         Me.BookmarkButton = New System.Windows.Forms.Button()
         Me.ResizeGrabber = New System.Windows.Forms.PictureBox()
@@ -60,13 +67,11 @@ Partial Class Form1
         Me.AdvFilteringToggleButton = New System.Windows.Forms.Button()
         Me.RawOrderTable = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel5 = New System.Windows.Forms.TableLayoutPanel()
-        Me.SellOrderSortButton = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.SellOrderGridViewRaw = New System.Windows.Forms.DataGridView()
         Me.BuyOrderGridViewRaw = New System.Windows.Forms.DataGridView()
         Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.BuyOrderSortButton = New System.Windows.Forms.Button()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Button7 = New System.Windows.Forms.Button()
@@ -164,16 +169,13 @@ Partial Class Form1
         Me.LoginLabel1 = New System.Windows.Forms.Label()
         Me.LoginLogoPictureBox = New System.Windows.Forms.PictureBox()
         Me.DiscordLoginButton2 = New System.Windows.Forms.Button()
-        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
-        Me.OperationTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.LoginTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.ConnectionTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.SearchTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.LogFileCheckTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MainPanel.SuspendLayout()
         Me.TitleBarPanel.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel2.SuspendLayout()
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MarketPanel.SuspendLayout()
         CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RawOrderTable.SuspendLayout()
@@ -200,7 +202,7 @@ Partial Class Form1
         Me.LoginUpdateBanner.SuspendLayout()
         CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -260,17 +262,6 @@ Partial Class Form1
         Me.TitlebarSettingsButton.Text = "⚙"
         Me.TitlebarSettingsButton.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.TitlebarSettingsButton.UseVisualStyleBackColor = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = CType(resources.GetObject("PictureBox1.BackgroundImage"), System.Drawing.Image)
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.InitialImage = CType(resources.GetObject("PictureBox1.InitialImage"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 30)
-        Me.PictureBox1.TabIndex = 19
-        Me.PictureBox1.TabStop = False
         '
         'Label22
         '
@@ -408,6 +399,51 @@ Partial Class Form1
         Me.Button3.Text = "Tools and More Coming Soon..."
         Me.Button3.UseVisualStyleBackColor = False
         '
+        'FileSystemWatcher1
+        '
+        Me.FileSystemWatcher1.EnableRaisingEvents = True
+        Me.FileSystemWatcher1.SynchronizingObject = Me
+        '
+        'OperationTimer
+        '
+        Me.OperationTimer.Interval = 50
+        '
+        'LoginTimer
+        '
+        Me.LoginTimer.Interval = 60000
+        '
+        'ConnectionTimer
+        '
+        Me.ConnectionTimer.Interval = 50
+        '
+        'SearchTimer
+        '
+        Me.SearchTimer.Interval = 1000
+        '
+        'LogFileCheckTimer
+        '
+        Me.LogFileCheckTimer.Interval = 60000
+        '
+        'NotifyIcon1
+        '
+        Me.NotifyIcon1.BalloonTipText = "Running in Background"
+        Me.NotifyIcon1.BalloonTipTitle = "DUOpenMarket"
+        Me.NotifyIcon1.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.NotifyIcon1.Icon = CType(resources.GetObject("NotifyIcon1.Icon"), System.Drawing.Icon)
+        Me.NotifyIcon1.Text = "DUOpenMarket"
+        Me.NotifyIcon1.Visible = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackgroundImage = CType(resources.GetObject("PictureBox1.BackgroundImage"), System.Drawing.Image)
+        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.PictureBox1.InitialImage = CType(resources.GetObject("PictureBox1.InitialImage"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(2, 2)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 30)
+        Me.PictureBox1.TabIndex = 19
+        Me.PictureBox1.TabStop = False
+        '
         'MarketPanel
         '
         Me.MarketPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -521,7 +557,6 @@ Partial Class Form1
         Me.TableLayoutPanel5.ColumnCount = 2
         Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.TableLayoutPanel5.Controls.Add(Me.SellOrderSortButton, 1, 0)
         Me.TableLayoutPanel5.Controls.Add(Me.Label5, 0, 0)
         Me.TableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel5.Location = New System.Drawing.Point(0, 214)
@@ -531,19 +566,6 @@ Partial Class Form1
         Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel5.Size = New System.Drawing.Size(790, 21)
         Me.TableLayoutPanel5.TabIndex = 20
-        '
-        'SellOrderSortButton
-        '
-        Me.SellOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SellOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.SellOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.SellOrderSortButton.Location = New System.Drawing.Point(711, 0)
-        Me.SellOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
-        Me.SellOrderSortButton.Name = "SellOrderSortButton"
-        Me.SellOrderSortButton.Size = New System.Drawing.Size(79, 21)
-        Me.SellOrderSortButton.TabIndex = 28
-        Me.SellOrderSortButton.Text = "Sort"
-        Me.SellOrderSortButton.UseVisualStyleBackColor = True
         '
         'Label5
         '
@@ -562,49 +584,49 @@ Partial Class Form1
         '
         Me.SellOrderGridViewRaw.AllowUserToAddRows = False
         Me.SellOrderGridViewRaw.AllowUserToDeleteRows = False
-        DataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.Color.Silver
-        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Silver
+        Me.SellOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.SellOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SellOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.SellOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.SellOrderGridViewRaw.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.SellOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle3
         Me.SellOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
         Me.SellOrderGridViewRaw.Location = New System.Drawing.Point(3, 238)
         Me.SellOrderGridViewRaw.Name = "SellOrderGridViewRaw"
         Me.SellOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SellOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.SellOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.White
-        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White
+        Me.SellOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.SellOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SellOrderGridViewRaw.Size = New System.Drawing.Size(784, 190)
         Me.SellOrderGridViewRaw.TabIndex = 18
@@ -614,48 +636,48 @@ Partial Class Form1
         Me.BuyOrderGridViewRaw.AllowUserToAddRows = False
         Me.BuyOrderGridViewRaw.AllowUserToDeleteRows = False
         Me.BuyOrderGridViewRaw.AllowUserToResizeRows = False
-        DataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.Color.Silver
-        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(38, Byte), Integer), CType(CType(42, Byte), Integer))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Silver
+        Me.BuyOrderGridViewRaw.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.BuyOrderGridViewRaw.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BuyOrderGridViewRaw.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
         Me.BuyOrderGridViewRaw.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(92, Byte), Integer))
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.BuyOrderGridViewRaw.DefaultCellStyle = DataGridViewCellStyle8
         Me.BuyOrderGridViewRaw.GridColor = System.Drawing.Color.Gray
         Me.BuyOrderGridViewRaw.Location = New System.Drawing.Point(3, 24)
         Me.BuyOrderGridViewRaw.Name = "BuyOrderGridViewRaw"
         Me.BuyOrderGridViewRaw.ReadOnly = True
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.Color.Yellow
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Yellow
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.BuyOrderGridViewRaw.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.BuyOrderGridViewRaw.RowHeadersVisible = False
-        DataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.Silver
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.White
-        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Silver
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(68, Byte), Integer), CType(CType(72, Byte), Integer))
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.White
+        Me.BuyOrderGridViewRaw.RowsDefaultCellStyle = DataGridViewCellStyle10
         Me.BuyOrderGridViewRaw.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.BuyOrderGridViewRaw.Size = New System.Drawing.Size(784, 187)
         Me.BuyOrderGridViewRaw.TabIndex = 0
@@ -666,7 +688,6 @@ Partial Class Form1
         Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.TableLayoutPanel4.Controls.Add(Me.Label1, 0, 0)
-        Me.TableLayoutPanel4.Controls.Add(Me.BuyOrderSortButton, 1, 0)
         Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel4.Margin = New System.Windows.Forms.Padding(0)
@@ -689,19 +710,6 @@ Partial Class Form1
         Me.Label1.TabIndex = 15
         Me.Label1.Text = "Buy Orders:"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        '
-        'BuyOrderSortButton
-        '
-        Me.BuyOrderSortButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.BuyOrderSortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.BuyOrderSortButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.BuyOrderSortButton.Location = New System.Drawing.Point(711, 0)
-        Me.BuyOrderSortButton.Margin = New System.Windows.Forms.Padding(0)
-        Me.BuyOrderSortButton.Name = "BuyOrderSortButton"
-        Me.BuyOrderSortButton.Size = New System.Drawing.Size(79, 21)
-        Me.BuyOrderSortButton.TabIndex = 27
-        Me.BuyOrderSortButton.Text = "Sort"
-        Me.BuyOrderSortButton.UseVisualStyleBackColor = True
         '
         'TableLayoutPanel3
         '
@@ -1345,54 +1353,54 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.HistogramChart.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(36, Byte), Integer), CType(CType(42, Byte), Integer))
         Me.HistogramChart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        ChartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White
-        ChartArea2.AxisX.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisX.MajorTickMark.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisX.Title = "Date (DD-MM-YYYY)"
-        ChartArea2.AxisX.TitleForeColor = System.Drawing.Color.White
-        ChartArea2.AxisY.IsLabelAutoFit = False
-        ChartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White
-        ChartArea2.AxisY.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisY.MajorTickMark.LineColor = System.Drawing.Color.White
-        ChartArea2.AxisY.Title = "Quanta"
-        ChartArea2.AxisY.TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 10.0!)
-        ChartArea2.AxisY.TitleForeColor = System.Drawing.Color.White
-        ChartArea2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        ChartArea2.BorderColor = System.Drawing.Color.White
-        ChartArea2.Name = "ChartArea1"
-        Me.HistogramChart.ChartAreas.Add(ChartArea2)
-        Legend2.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
-        Legend2.ForeColor = System.Drawing.Color.White
-        Legend2.Name = "Legend1"
-        Me.HistogramChart.Legends.Add(Legend2)
+        ChartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White
+        ChartArea1.AxisX.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisX.MajorTickMark.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisX.Title = "Date (DD-MM-YYYY)"
+        ChartArea1.AxisX.TitleForeColor = System.Drawing.Color.White
+        ChartArea1.AxisY.IsLabelAutoFit = False
+        ChartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White
+        ChartArea1.AxisY.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.White
+        ChartArea1.AxisY.Title = "Quanta"
+        ChartArea1.AxisY.TitleFont = New System.Drawing.Font("Microsoft Sans Serif", 10.0!)
+        ChartArea1.AxisY.TitleForeColor = System.Drawing.Color.White
+        ChartArea1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        ChartArea1.BorderColor = System.Drawing.Color.White
+        ChartArea1.Name = "ChartArea1"
+        Me.HistogramChart.ChartAreas.Add(ChartArea1)
+        Legend1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(32, Byte), Integer))
+        Legend1.ForeColor = System.Drawing.Color.White
+        Legend1.Name = "Legend1"
+        Me.HistogramChart.Legends.Add(Legend1)
         Me.HistogramChart.Location = New System.Drawing.Point(3, 3)
         Me.HistogramChart.Name = "HistogramChart"
         Me.HistogramChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None
-        Series3.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
-        Series3.BackImage = "G:\Files\Projects\DU Market API\test1.png"
-        Series3.BackImageTransparentColor = System.Drawing.Color.Transparent
-        Series3.BackSecondaryColor = System.Drawing.Color.Lime
-        Series3.BorderColor = System.Drawing.Color.Yellow
-        Series3.ChartArea = "ChartArea1"
-        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
-        Series3.Color = System.Drawing.Color.Green
-        Series3.LabelAngle = 90
-        Series3.LabelBackColor = System.Drawing.Color.White
-        Series3.LabelBorderColor = System.Drawing.Color.White
-        Series3.LabelForeColor = System.Drawing.Color.White
-        Series3.Legend = "Legend1"
-        Series3.Name = "Sell Orders"
-        Series3.YValuesPerPoint = 2
-        Series4.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
-        Series4.ChartArea = "ChartArea1"
-        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
-        Series4.Legend = "Legend1"
-        Series4.Name = "Buy Orders"
-        Series4.YValuesPerPoint = 2
-        Me.HistogramChart.Series.Add(Series3)
-        Me.HistogramChart.Series.Add(Series4)
+        Series1.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
+        Series1.BackImage = "G:\Files\Projects\DU Market API\test1.png"
+        Series1.BackImageTransparentColor = System.Drawing.Color.Transparent
+        Series1.BackSecondaryColor = System.Drawing.Color.Lime
+        Series1.BorderColor = System.Drawing.Color.Yellow
+        Series1.ChartArea = "ChartArea1"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
+        Series1.Color = System.Drawing.Color.Green
+        Series1.LabelAngle = 90
+        Series1.LabelBackColor = System.Drawing.Color.White
+        Series1.LabelBorderColor = System.Drawing.Color.White
+        Series1.LabelForeColor = System.Drawing.Color.White
+        Series1.Legend = "Legend1"
+        Series1.Name = "Sell Orders"
+        Series1.YValuesPerPoint = 2
+        Series2.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight
+        Series2.ChartArea = "ChartArea1"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range
+        Series2.Legend = "Legend1"
+        Series2.Name = "Buy Orders"
+        Series2.YValuesPerPoint = 2
+        Me.HistogramChart.Series.Add(Series1)
+        Me.HistogramChart.Series.Add(Series2)
         Me.HistogramChart.Size = New System.Drawing.Size(784, 425)
         Me.HistogramChart.TabIndex = 0
         Me.HistogramChart.Text = "Chart1"
@@ -1991,30 +1999,23 @@ Partial Class Form1
         Me.DiscordLoginButton2.Text = "Login With Discord"
         Me.DiscordLoginButton2.UseVisualStyleBackColor = False
         '
-        'FileSystemWatcher1
+        'ContextMenuStrip1
         '
-        Me.FileSystemWatcher1.EnableRaisingEvents = True
-        Me.FileSystemWatcher1.SynchronizingObject = Me
+        Me.ContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(42, Byte), Integer))
+        Me.ContextMenuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1})
+        Me.ContextMenuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.ShowImageMargin = False
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(164, 48)
         '
-        'OperationTimer
+        'ToolStripMenuItem1
         '
-        Me.OperationTimer.Interval = 50
-        '
-        'LoginTimer
-        '
-        Me.LoginTimer.Interval = 60000
-        '
-        'ConnectionTimer
-        '
-        Me.ConnectionTimer.Interval = 50
-        '
-        'SearchTimer
-        '
-        Me.SearchTimer.Interval = 1000
-        '
-        'LogFileCheckTimer
-        '
-        Me.LogFileCheckTimer.Interval = 60000
+        Me.ToolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(163, 22)
+        Me.ToolStripMenuItem1.Text = "Close DUOpenMarket"
         '
         'Form1
         '
@@ -2031,8 +2032,9 @@ Partial Class Form1
         Me.MainPanel.ResumeLayout(False)
         Me.TitleBarPanel.ResumeLayout(False)
         Me.TitleBarPanel.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel2.ResumeLayout(False)
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MarketPanel.ResumeLayout(False)
         Me.MarketPanel.PerformLayout()
         CType(Me.ResizeGrabber, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2073,7 +2075,7 @@ Partial Class Form1
         Me.LoginUpdateBanner.ResumeLayout(False)
         CType(Me.ResizeGrabber2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LoginLogoPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -2172,8 +2174,6 @@ Partial Class Form1
     Friend WithEvents BookmarkPanel As Panel
     Friend WithEvents BookmarkLabel As Label
     Friend WithEvents LogFileCheckTimer As Timer
-    Friend WithEvents BuyOrderSortButton As Button
-    Friend WithEvents SellOrderSortButton As Button
     Friend WithEvents TableLayoutPanel5 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
     Friend WithEvents HistogramPanel As Panel
@@ -2209,4 +2209,7 @@ Partial Class Form1
     Friend WithEvents EconStatLabel_Buy_High As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents Label29 As Label
+    Friend WithEvents NotifyIcon1 As NotifyIcon
+    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
 End Class

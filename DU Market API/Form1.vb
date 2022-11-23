@@ -32,7 +32,7 @@ Public Class Form1
     Dim WindowSavedBoundsY As Integer = 760
     Dim ShowDevPanel As Boolean = False
 
-    Dim API_Client_Version As String = "1.61.2"
+    Dim API_Client_Version As String = "1.61.3"
     Dim API_Available_Version As String
     Dim API_Connected As Boolean = False
     Dim API_LogfileDirectory As String = GetFolderPath(SpecialFolder.LocalApplicationData) & "\NQ\DualUniverse\log"
@@ -46,7 +46,9 @@ Public Class Form1
     Dim API_Buy_Orders_UI As New DataTable
     Dim API_Sell_Orders_UI As New DataTable
     Dim SortedColumnIndex1 As Integer = 0
+    Dim SortedColumnDirection1 As System.ComponentModel.ListSortDirection
     Dim SortedColumnIndex2 As Integer = 0
+    Dim SortedColumnDirection2 As System.ComponentModel.ListSortDirection
 
     Dim ListenerStarted As Boolean = False
     Dim API_Discord_Auth_Code As String
@@ -100,6 +102,7 @@ Public Class Form1
     Public Setting_SaveGridLayout As String = "True"
     Public Setting_Processinbatch As String = "True"
     Public Setting_LogCheckTimer As String = "60000"
+    Public Setting_BackgroundWorker As String = "True"
 
     Dim savedSellOrdrGridCol1W As String
     Dim savedSellOrdrGridCol2W As String
@@ -326,6 +329,12 @@ Public Class Form1
                 LogFileCheckTimer.Interval = CInt(Setting_LogCheckTimer)
                 SettingsForm.NumericUpDown1.Value = CInt(Setting_LogCheckTimer)
             End If
+            Dim bgwrkrsettingtest As String = GetIniValue("Application", "BackgroundWorker", My.Application.Info.DirectoryPath & "\DUOMsettings.ini")
+            If bgwrkrsettingtest IsNot "" And bgwrkrsettingtest IsNot Nothing Then
+                Setting_BackgroundWorker = bgwrkrsettingtest
+                'LogFileCheckTimer.Interval = CInt(Setting_LogCheckTimer)
+                'SettingsForm.NumericUpDown1.Value = CInt(Setting_LogCheckTimer)
+            End If
         Else
             'set default values
             SetIniValue("Application", "SaveWindowSz", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_SaveWindowLoc))
@@ -359,6 +368,7 @@ Public Class Form1
             End If
             SetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_ThemeState))
             SetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_LogCheckTimer))
+            SetIniValue("Application", "BackgroundWorker", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_BackgroundWorker))
         End If
     End Sub
 
@@ -394,6 +404,7 @@ Public Class Form1
         End If
         SetIniValue("Application", "ThemeState", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_ThemeState))
         SetIniValue("Application", "LogFileCheckTimerInterval", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_LogCheckTimer))
+        SetIniValue("Application", "BackgroundWorker", My.Application.Info.DirectoryPath & "\DUOMsettings.ini", CStr(Setting_BackgroundWorker))
     End Sub
 
     Public Sub SaveCustomTheme()
@@ -538,6 +549,42 @@ Public Class Form1
         End If
     End Sub
 
+    '############################## - Registry-Key Constructors - ##############################
+    Private Sub CreateEnableStartupKey()
+        Dim StartupDirectory As String = GetFolderPath(SpecialFolder.ApplicationData) & "\Microsoft\Windows\Start Menu\Programs\Startup"
+        If Directory.Exists(StartupDirectory) = True Then
+            Dim oShell As Object
+            Dim oLink As Object
+            'you don’t need to import anything in the project reference to create the Shell Object
+            Try
+                oShell = CreateObject("WScript.Shell")
+                oLink = oShell.CreateShortcut(StartupDirectory & "\DUOpenMarket.lnk")
+                oLink.TargetPath = Application.ExecutablePath
+                oLink.WindowStyle = 1
+                oLink.Save()
+                NewEventMsg("Created Startup entry @: " & StartupDirectory & "\DUOpenMarket.lnk")
+                NewEventMsg("Target Path: " & Application.ExecutablePath)
+            Catch ex As Exception
+                NewEventMsg(ex.Message)
+            End Try
+        End If
+    End Sub
+
+    Private Sub DisableStartupKey()
+        Dim StartupDirectory As String = GetFolderPath(SpecialFolder.ApplicationData) & "\Microsoft\Windows\Start Menu\Programs\Startup"
+        If Directory.Exists(StartupDirectory) = True Then
+            If File.Exists(StartupDirectory & "\DUOpenMarket.lnk") = True Then
+                Try
+                    File.Delete(StartupDirectory & "\DUOpenMarket.lnk")
+                Catch ex As Exception
+                    NewEventMsg(ex.Message)
+                End Try
+            Else
+                NewEventMsg("No existing startup entry was found to remove.")
+            End If
+        End If
+    End Sub
+
     '############################## - Form Load - ##############################
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         TimeStampInt()
@@ -553,33 +600,39 @@ Public Class Form1
         NewEventMsg("Initialized.")
     End Sub
 
-    '############################## - Custom Sorting - ##############################
-    Private Sub BuyOrderSortButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BuyOrderSortButton.Click
-        SortDataTable(API_Buy_Orders_UI, BuyOrderGridViewRaw)
+    '############################## - Custom Sorting - #############################
+    Private Sub BuyOrderSortButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BuyOrderGridViewRaw.ColumnHeaderMouseClick
+        SortDataTable(API_Buy_Orders_UI, BuyOrderGridViewRaw, e)
     End Sub
 
-    Private Sub SellOrderSortButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles SellOrderSortButton.Click
-        SortDataTable(API_Sell_Orders_UI, SellOrderGridViewRaw)
+    Private Sub SellOrderSortButton_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles SellOrderGridViewRaw.ColumnHeaderMouseClick
+        SortDataTable(API_Sell_Orders_UI, SellOrderGridViewRaw, e)
     End Sub
 
-    Private Sub SortDataTable(ByRef dt As DataTable, ByVal gridref As DataGridView)
+    Private Sub SortDataTable(ByRef dt As DataTable, ByVal gridref As DataGridView, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs)
         Try
             If gridref.SelectedCells.Count > 0 Then
                 Dim newDT As DataTable = dt.Clone
                 Dim rowCount As Integer = dt.Rows.Count
-                Dim sortColumn As DataGridViewColumn = gridref.CurrentCell.OwningColumn
+                Dim sortColumn As DataGridViewColumn = gridref.Columns(e.ColumnIndex)
                 Dim oldsortColumn As DataGridViewColumn = Nothing
                 Dim sortDirection As System.ComponentModel.ListSortDirection
                 If gridref Is BuyOrderGridViewRaw Then
                     oldsortColumn = gridref.Columns(SortedColumnIndex1)
+                    sortDirection = SortedColumnDirection1
                 End If
                 If gridref Is SellOrderGridViewRaw Then
                     oldsortColumn = gridref.Columns(SortedColumnIndex2)
+                    sortDirection = SortedColumnDirection2
                 End If
                 If (Not (oldsortColumn) Is Nothing) Then
                     ' Sort the same column again, reversing the SortOrder.
-                    If (oldsortColumn Is sortColumn) AndAlso (gridref.SortOrder = SortOrder.Ascending) Then
-                        sortDirection = System.ComponentModel.ListSortDirection.Descending
+                    If (oldsortColumn Is sortColumn) Then
+                        If sortDirection = System.ComponentModel.ListSortDirection.Ascending Then
+                            sortDirection = System.ComponentModel.ListSortDirection.Descending
+                        Else
+                            sortDirection = System.ComponentModel.ListSortDirection.Ascending
+                        End If
                     Else
                         ' Sort a new column and remove the old SortGlyph.
                         sortDirection = System.ComponentModel.ListSortDirection.Ascending
@@ -587,6 +640,12 @@ Public Class Form1
                     End If
                 Else
                     sortDirection = System.ComponentModel.ListSortDirection.Ascending
+                End If
+                If gridref Is BuyOrderGridViewRaw Then
+                    SortedColumnDirection1 = sortDirection
+                End If
+                If gridref Is SellOrderGridViewRaw Then
+                    SortedColumnDirection2 = sortDirection
                 End If
                 If (sortColumn Is Nothing) Then
                     NewEventMsg("Select a single column and try again.")
@@ -610,47 +669,91 @@ Public Class Form1
                         'custom numerical sort
                         'For quantity and price, we need to sort numerically. The values are stored as strings, and include decimal places.
                         'we'll need to cast them to Doubles in order to interpret / compare them properly.
-                        For sorta As Integer = 1 To rowCount
-                            Dim HighestCellValue As Double = 0
-                            Dim HighestCellIndex As Integer = 0
+                        If sortDirection = System.ComponentModel.ListSortDirection.Ascending Then
+                            For sorta As Integer = 1 To rowCount
+                                Dim HighestCellValue As Double = 0
+                                Dim HighestCellIndex As Integer = 0
 
-                            For sortb As Integer = 1 To dt.Rows.Count
-                                If HighestCellValue = Nothing Then
-                                    If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
-                                        HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
-                                    Else
-                                        HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
-                                    End If
-                                Else
-                                    If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
-                                        Dim valuetemp1 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
-                                        If HighestCellValue >= valuetemp1 Then
-                                            'skip
+                                For sortb As Integer = 1 To dt.Rows.Count
+                                    If HighestCellValue = Nothing Then
+                                        If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                            HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
                                         Else
-                                            HighestCellValue = valuetemp1
-                                            HighestCellIndex = sortb - 1
+                                            HighestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
                                         End If
                                     Else
-                                        Dim valuetemp2 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
-                                        If HighestCellValue >= valuetemp2 Then
-                                            'skip
+                                        If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                            Dim valuetemp1 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
+                                            If HighestCellValue >= valuetemp1 Then
+                                                'skip
+                                            Else
+                                                HighestCellValue = valuetemp1
+                                                HighestCellIndex = sortb - 1
+                                            End If
                                         Else
-                                            HighestCellValue = valuetemp2
-                                            HighestCellIndex = sortb - 1
+                                            Dim valuetemp2 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
+                                            If HighestCellValue >= valuetemp2 Then
+                                                'skip
+                                            Else
+                                                HighestCellValue = valuetemp2
+                                                HighestCellIndex = sortb - 1
+                                            End If
                                         End If
                                     End If
-                                End If
-                            Next sortb
-                            Dim new_data_row As DataRow = newDT.NewRow
-                            new_data_row.ItemArray = dt.Rows(HighestCellIndex).ItemArray
-                            newDT.Rows.Add(new_data_row)
-                            dt.Rows(HighestCellIndex).Delete()
-                        Next sorta
-                        For sortc As Integer = 1 To newDT.Rows.Count
-                            Dim new_data_row2 As DataRow = dt.NewRow
-                            new_data_row2.ItemArray = newDT.Rows(sortc - 1).ItemArray
-                            dt.Rows.Add(new_data_row2)
-                        Next sortc
+                                Next sortb
+                                Dim new_data_row As DataRow = newDT.NewRow
+                                new_data_row.ItemArray = dt.Rows(HighestCellIndex).ItemArray
+                                newDT.Rows.Add(new_data_row)
+                                dt.Rows(HighestCellIndex).Delete()
+                            Next sorta
+                            For sortc As Integer = 1 To newDT.Rows.Count
+                                Dim new_data_row2 As DataRow = dt.NewRow
+                                new_data_row2.ItemArray = newDT.Rows(sortc - 1).ItemArray
+                                dt.Rows.Add(new_data_row2)
+                            Next sortc
+                        Else
+                            For sorta As Integer = 1 To rowCount
+                                Dim lowestCellValue As Double = 0
+                                Dim lowestCellIndex As Integer = 0
+
+                                For sortb As Integer = 1 To dt.Rows.Count
+                                    If lowestCellValue = Nothing Then
+                                        If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                            lowestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
+                                        Else
+                                            lowestCellValue = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
+                                        End If
+                                    Else
+                                        If dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Contains(".") = True Then
+                                            Dim valuetemp1 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.Remove(dt.Rows(sortb - 1).Item(sortColumn.Index).ToString.IndexOf("."), 1))
+                                            If lowestCellValue <= valuetemp1 Then
+                                                'skip
+                                            Else
+                                                lowestCellValue = valuetemp1
+                                                lowestCellIndex = sortb - 1
+                                            End If
+                                        Else
+                                            Dim valuetemp2 As Double = CDbl(dt.Rows(sortb - 1).Item(sortColumn.Index))
+                                            If lowestCellValue <= valuetemp2 Then
+                                                'skip
+                                            Else
+                                                lowestCellValue = valuetemp2
+                                                lowestCellIndex = sortb - 1
+                                            End If
+                                        End If
+                                    End If
+                                Next sortb
+                                Dim new_data_row As DataRow = newDT.NewRow
+                                new_data_row.ItemArray = dt.Rows(lowestCellIndex).ItemArray
+                                newDT.Rows.Add(new_data_row)
+                                dt.Rows(lowestCellIndex).Delete()
+                            Next sorta
+                            For sortc As Integer = 1 To newDT.Rows.Count
+                                Dim new_data_row2 As DataRow = dt.NewRow
+                                new_data_row2.ItemArray = newDT.Rows(sortc - 1).ItemArray
+                                dt.Rows.Add(new_data_row2)
+                            Next sortc
+                        End If
                     End If
                     sortColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending
                     If sortDirection = System.ComponentModel.ListSortDirection.Ascending Then
@@ -5032,9 +5135,16 @@ Public Class Form1
     End Sub
 
     Private Sub TitlebarCloseButton_Click(sender As Object, e As EventArgs) Handles TitlebarCloseButton.Click
-        SavePrefsToIni()
-        Application.Exit()
-        Me.Dispose()
+        If Setting_BackgroundWorker = True Then
+            NotifyIcon1.Visible = True
+            Me.Hide()
+            NotifyIcon1.BalloonTipText = "DUOpenMarket - Working in Background"
+            NotifyIcon1.ShowBalloonTip(500)
+        Else
+            SavePrefsToIni()
+            Application.Exit()
+            Me.Dispose()
+        End If
     End Sub
 
     Private Sub TitlebarSettingsButton_Click(sender As Object, e As EventArgs) Handles TitlebarSettingsButton.Click
@@ -5198,6 +5308,7 @@ Public Class Form1
             NewEventMsg("lastid  |  Print item ID's to the CLI as they are read from the logfile.")
             NewEventMsg("raw     |  Toggle between showing user-readable order data, or raw unmodified data.")
             NewEventMsg("process |  [arg1] - either 0, or 1. Turns batch order-processing on or off according to arg1")
+            NewEventMsg("startup |  [arg1] - either 0, or 1. Creates a registry key file on the desktop which will enable or disable starting DUOM when windows boots.")
             NewEventMsg("------------- End Console Help ------------")
         End If
         If inputstr.ToLower = "raw" Then
@@ -5232,6 +5343,14 @@ Public Class Form1
                 Setting_Processinbatch = "False"
                 NewEventMsg("Batch Processing Disabled.")
                 OperationTimer.Interval = 50
+            End If
+        End If
+        If inputstr.ToLower.StartsWith("startup") = True Then
+            match = True
+            If inputstr.ToLower.EndsWith("1") = True Then
+                CreateEnableStartupKey()
+            Else
+                DisableStartupKey()
             End If
         End If
         If match = False Then
@@ -5534,18 +5653,18 @@ Public Class Form1
                                         If ordertype3 = 1 Then
                                             API_Buy_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                             API_Buy_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                            'EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
-                                            'EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
-                                            'If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
-                                            '    EconomyStat_Buy_High = (CInt(price3) * 0.01)
-                                            'End If
-                                            'If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
-                                            '    EconomyStat_Buy_Low = (CInt(price3) * 0.01)
-                                            'End If
-                                            'If EconomyStat_Buy_Low = 0 Then
-                                            '    EconomyStat_Buy_Low = (CInt(price3) * 0.01)
-                                            'End If
-                                            'EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
+                                            EconomyStat_Buy_Total = EconomyStat_Buy_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            EconomyStat_Buy_Vol = EconomyStat_Buy_Vol + CInt(quantity3)
+                                            If (CInt(price3) * 0.01) > EconomyStat_Buy_High Then
+                                                EconomyStat_Buy_High = (CInt(price3) * 0.01)
+                                            End If
+                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            If EconomyStat_Buy_Low = 0 Then
+                                                EconomyStat_Buy_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            EconomyStat_Buy_Avg = Math.Round(EconomyStat_Buy_Total / EconomyStat_Buy_Vol, 2)
                                         End If
                                         If ordertype3 = 2 Then
                                             If quantity3.StartsWith("-") Then
@@ -5553,19 +5672,18 @@ Public Class Form1
                                             End If
                                             API_Sell_Orders.Rows.Add(marketid3, orderid3, itemid3, quantity3, price3, expdate3, lastupdated3)
                                             API_Sell_Orders_UI.Rows.Add(GetMarketName(marketid3), quantity3, price3String, GetTimeRemaining(expdate3, orderid3), e.Node.Text)
-                                            'EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
-                                            'EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
-                                            'If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
-                                            '    EconomyStat_Sell_High = (CInt(price3) * 0.01)
-                                            'End If
-                                            'If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
-                                            '    EconomyStat_Sell_Low = (CInt(price3) * 0.01)
-                                            'End If
-                                            'If EconomyStat_Sell_Low = 0 Then
-                                            '    EconomyStat_Sell_Low = (CInt(price3) * 0.01)
-                                            'End If
-                                            'EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
-
+                                            EconomyStat_Sell_Total = EconomyStat_Sell_Total + (CInt(price3) * 0.01) * CInt(quantity3)
+                                            EconomyStat_Sell_Vol = EconomyStat_Sell_Vol + CInt(quantity3)
+                                            If (CInt(price3) * 0.01) > EconomyStat_Sell_High Then
+                                                EconomyStat_Sell_High = (CInt(price3) * 0.01)
+                                            End If
+                                            If (CInt(price3) * 0.01) < EconomyStat_Buy_Low Then
+                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            If EconomyStat_Sell_Low = 0 Then
+                                                EconomyStat_Sell_Low = (CInt(price3) * 0.01)
+                                            End If
+                                            EconomyStat_Sell_Avg = Math.Round(EconomyStat_Sell_Total / EconomyStat_Sell_Vol, 2)
                                         End If
                                         Application.DoEvents()
                                     End While
@@ -5846,6 +5964,66 @@ Public Class Form1
         For Each selectedItemNode2 As TreeNode In AdvItemTreeView.Nodes
             selectedItemNode2.Checked = False
         Next selectedItemNode2
+    End Sub
+
+    '########## Order-Histogram Panel Controls ##########
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        GraphingControlsPanel.Visible = True
+        HistogramPanel.Visible = True
+        RawOrderTable.Visible = False
+        OrderTablePanel.Visible = False
+        CenterUXPanelMode = 2
+        'disable advanced searching for this might make this work eventually but for now, easiest to disable it.
+        If ShowFilters = False Then
+            AdvFilteringToggleButton.Text = "Hide Advanced Filtering"
+            ItemTree.Visible = False
+            ItemTree.Enabled = False
+            ItemTreeSearch.Visible = False
+            ItemTreeSearch.Enabled = False
+            FilterOrdersButton.Visible = True
+            FilterResetButton.Visible = True
+            FilterPanel.Visible = True
+            FilterPanel.BringToFront()
+            ShowFilters = True
+            If ShowBookmarks = True Then
+                LoadBookmarks()
+            End If
+        End If
+        GroupBox2.Visible = False
+        GroupBox3.Visible = False
+        AdvFilteringToggleButton.Enabled = False
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        GraphingControlsPanel.Visible = False
+        HistogramPanel.Visible = False
+        RawOrderTable.Visible = True
+        OrderTablePanel.Visible = True
+        CenterUXPanelMode = 1
+        GroupBox2.Visible = True
+        GroupBox3.Visible = True
+        AdvFilteringToggleButton.Enabled = True
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        If ComboBox1.SelectedIndex = 0 Then
+            HistEntries = 8
+        End If
+        If ComboBox1.SelectedIndex = 1 Then
+            HistEntries = 17
+        End If
+        If ComboBox1.SelectedIndex = 2 Then
+            HistEntries = 31
+        End If
+        If ComboBox1.SelectedIndex = 3 Then
+            HistEntries = 91
+        End If
+        If ComboBox1.SelectedIndex = 4 Then
+            HistEntries = 181
+        End If
+        If ComboBox1.SelectedIndex = 5 Then
+            HistEntries = 366
+        End If
     End Sub
 
     '########## Histogram Generation ##########
@@ -6899,13 +7077,6 @@ Public Class Form1
         SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionForeColor = ForegroundColor1
         SellOrderGridViewRaw.RowsDefaultCellStyle.SelectionBackColor = GridSelectColor1
 
-        BuyOrderSortButton.BackColor = BackgroundColor1
-        BuyOrderSortButton.ForeColor = ForegroundColor1
-        BuyOrderSortButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
-        SellOrderSortButton.BackColor = BackgroundColor1
-        SellOrderSortButton.ForeColor = ForegroundColor1
-        SellOrderSortButton.FlatAppearance.MouseOverBackColor = BackgroundColor2
-
         HistogramChart.BackColor = BackgroundColor1
         HistogramChart.ChartAreas("ChartArea1").BackColor = BackgroundColor3
         HistogramChart.ChartAreas("ChartArea1").AxisX.TitleForeColor = HistGridColor
@@ -6928,10 +7099,17 @@ Public Class Form1
         HistogramChart.Series("Buy Orders").BorderColor = HistBuyColor3
     End Sub
 
+    '############################## - System Tray Icon - ##############################
+    Private Sub NotifyIcon1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
+        Me.Show()
+        NotifyIcon1.Visible = False
+    End Sub
 
-
-
-
+    Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
+        SavePrefsToIni()
+        Application.Exit()
+        Me.Dispose()
+    End Sub
 
 
 
@@ -6951,64 +7129,5 @@ Public Class Form1
         MarketPanel.Visible = True
         ResourcePanel.Visible = False
         MarketPanel.BringToFront()
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        GraphingControlsPanel.Visible = True
-        HistogramPanel.Visible = True
-        RawOrderTable.Visible = False
-        OrderTablePanel.Visible = False
-        CenterUXPanelMode = 2
-        'disable advanced searching for this might make this work eventually but for now, easiest to disable it.
-        If ShowFilters = False Then
-            AdvFilteringToggleButton.Text = "Hide Advanced Filtering"
-            ItemTree.Visible = False
-            ItemTree.Enabled = False
-            ItemTreeSearch.Visible = False
-            ItemTreeSearch.Enabled = False
-            FilterOrdersButton.Visible = True
-            FilterResetButton.Visible = True
-            FilterPanel.Visible = True
-            FilterPanel.BringToFront()
-            ShowFilters = True
-            If ShowBookmarks = True Then
-                LoadBookmarks()
-            End If
-        End If
-        GroupBox2.Visible = False
-        GroupBox3.Visible = False
-        AdvFilteringToggleButton.Enabled = False
-    End Sub
-
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        GraphingControlsPanel.Visible = False
-        HistogramPanel.Visible = False
-        RawOrderTable.Visible = True
-        OrderTablePanel.Visible = True
-        CenterUXPanelMode = 1
-        GroupBox2.Visible = True
-        GroupBox3.Visible = True
-        AdvFilteringToggleButton.Enabled = True
-    End Sub
-
-    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        If ComboBox1.SelectedIndex = 0 Then
-            HistEntries = 8
-        End If
-        If ComboBox1.SelectedIndex = 1 Then
-            HistEntries = 17
-        End If
-        If ComboBox1.SelectedIndex = 2 Then
-            HistEntries = 31
-        End If
-        If ComboBox1.SelectedIndex = 3 Then
-            HistEntries = 91
-        End If
-        If ComboBox1.SelectedIndex = 4 Then
-            HistEntries = 181
-        End If
-        If ComboBox1.SelectedIndex = 5 Then
-            HistEntries = 366
-        End If
     End Sub
 End Class
