@@ -11,8 +11,10 @@ jobs:
           uses: actions/setup-dotnet@v3
           with: 
               dotnet-version: 5.0
-        - name: Dotnet Publish
-          run: dotnet publish -c Release -o DUOpenMarket --self-contained
+        - name: Add msbuild to PATH
+          uses: microsoft/setup-msbuild@v1.1
+        - name: Build app for release
+          run: msbuild 'DU Market API/DU Market API.vbproj' -t:rebuild -verbosity:diag -property:Configuration=Release
         - name: Create github Release
           id: create_release
           uses: actions/create-release@v1
